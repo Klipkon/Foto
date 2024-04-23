@@ -1,0 +1,42 @@
+---
+import '@/styles/globals.css'
+import {Button} from "@/components/ui/button";
+import fetchApi from "../lib/strapi";
+import {Page} from "../interfaces/page";
+
+
+export async function getStaticPaths() {
+
+	const pages = await fetchApi<Page[]>({
+		endpoint: 'pages',
+		wrappedByKey: 'data',
+	})
+
+	console.log(JSON.stringify(pages, null, 2))
+
+	return pages.map(page => {
+		return {
+			params: { slug: page.attributes.Slug ?? undefined },
+			props: page
+		}
+	})
+}
+
+const page = Astro.props;
+
+console.log(page)
+
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+
+	</body>
+</html>
