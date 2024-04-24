@@ -1,157 +1,132 @@
 export interface Page {
-    id: number
-    attributes: Attributes
+    id:         number;
+    attributes: PageAttributes;
 }
 
-export interface Attributes {
-    Slug: string
-    Title: string
-    createdAt: string
-    updatedAt: string
-    publishedAt: string
-    Components: Component[]
+export interface PageAttributes {
+    title:       string;
+    createdAt:   Date;
+    updatedAt:   Date;
+    publishedAt: Date;
+    slug:        string;
+    components:  Component[];
 }
 
 export interface Component {
-    id: number
-    __component: string
-    Description?: string
-    Title: any
-    Image?: Image
-    Video?: Video
-    Button: any
-    Cards?: Card[]
-    Logo?: Logo
-    Link?: Link[]
+    id:           number;
+    __component:  string;
+    logo?:        Logo;
+    navigation?:  Navigation[];
+    cta?:         Button;
+    description?: null | string;
+    title?:       TitleClass | string;
+    buttons?:     Button[];
+    image?:       Image;
+    cards?:       Card[];
 }
 
-export interface Image {
-    data: Data
-}
-
-export interface Data {
-    id: number
-    attributes: Attributes2
-}
-
-export interface Attributes2 {
-    name: string
-    alternativeText: any
-    caption: any
-    width: number
-    height: number
-    formats: Formats
-    hash: string
-    ext: string
-    mime: string
-    size: number
-    url: string
-    previewUrl: any
-    provider: string
-    provider_metadata: any
-    createdAt: string
-    updatedAt: string
-}
-
-export interface Formats {
-    thumbnail: Thumbnail
-    small: Small
-}
-
-export interface Thumbnail {
-    name: string
-    hash: string
-    ext: string
-    mime: string
-    path: any
-    width: number
-    height: number
-    size: number
-    sizeInBytes: number
-    url: string
-}
-
-export interface Small {
-    name: string
-    hash: string
-    ext: string
-    mime: string
-    path: any
-    width: number
-    height: number
-    size: number
-    sizeInBytes: number
-    url: string
-}
-
-export interface Video {
-    data: Data2
-}
-
-export interface Data2 {
-    id: number
-    attributes: Attributes3
-}
-
-export interface Attributes3 {
-    name: string
-    alternativeText: any
-    caption: any
-    width: any
-    height: any
-    formats: any
-    hash: string
-    ext: string
-    mime: string
-    size: number
-    url: string
-    previewUrl: any
-    provider: string
-    provider_metadata: any
-    createdAt: string
-    updatedAt: string
+export interface Button {
+    id:      number;
+    content: string;
+    variant: string;
+    size:    string;
+    href:    null | string;
 }
 
 export interface Card {
-    id: number
-    Title: string
-    Description: string
-    Highlighted: boolean
-    Link: boolean
+    id:          number;
+    title:       string;
+    description: string;
+    highlighted: boolean;
+    link:        boolean;
+    image:       Logo;
 }
 
 export interface Logo {
-    data: Data3
+    data: LogoData;
 }
 
-export interface Data3 {
-    id: number
-    attributes: Attributes4
+export interface LogoData {
+    id:         number;
+    attributes: LogoDataAttributes;
 }
 
-export interface Attributes4 {
-    name: string
-    alternativeText: any
-    caption: any
-    width: number
-    height: number
-    formats: any
-    hash: string
-    ext: string
-    mime: string
-    size: number
-    url: string
-    previewUrl: any
-    provider: string
-    provider_metadata: any
-    createdAt: string
-    updatedAt: string
+export interface LogoDataAttributes {
+    name:              string;
+    alternativeText:   null;
+    caption:           null;
+    width:             number;
+    height:            number;
+    formats:           LogoFormats | null;
+    hash:              string;
+    ext:               string;
+    mime:              string;
+    size:              number;
+    url:               string;
+    previewUrl:        null;
+    provider:          string;
+    provider_metadata: null;
+    createdAt:         Date;
+    updatedAt:         Date;
 }
 
-export interface Link {
-    id: number
-    Href: string
-    Title: string
+export interface LogoFormats {
+    thumbnail: Small;
 }
 
-export interface Meta {}
+export interface Small {
+    name:        string;
+    hash:        string;
+    ext:         string;
+    mime:        string;
+    path:        null;
+    width:       number;
+    height:      number;
+    size:        number;
+    sizeInBytes: number;
+    url:         string;
+}
+
+export interface Image {
+    data: ImageData;
+}
+
+export interface ImageData {
+    id:         number;
+    attributes: ImageDataAttributes;
+}
+
+export interface ImageDataAttributes {
+    name:              string;
+    alternativeText:   null;
+    caption:           null;
+    width:             number;
+    height:            number;
+    formats:           ImageFormats;
+    hash:              string;
+    ext:               string;
+    mime:              string;
+    size:              number;
+    url:               string;
+    previewUrl:        null;
+    provider:          string;
+    provider_metadata: null;
+    createdAt:         Date;
+    updatedAt:         Date;
+}
+
+export interface ImageFormats {
+    thumbnail: Small;
+    small:     Small;
+}
+
+export interface Navigation {
+    id:    number;
+    href:  string;
+    title: string;
+}
+
+export interface TitleClass {
+    id:      number;
+    content: string;
+}
