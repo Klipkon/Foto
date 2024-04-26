@@ -25,7 +25,7 @@ export default function Header({logo, navigation, cta}: IHeaderProps) {
                        <Button variant={cta.variant == "default" ? "default" : cta.variant} className="hidden md:flex" >{cta.content}</Button>
                ) : ""
             }
-            <Button variant="outline" size="icon" onClick={() => setOpen(prev => !prev)}><Menu className="h-4 w-4" /></Button>
+            <Button variant="outline" size="icon" className="md:hidden" onClick={() => setOpen(prev => !prev)}><Menu className="h-4 w-4" /></Button>
         </header>
         <Sheet open={open} onOpenChange={() => setOpen(prev => !prev)}>
             <SheetTrigger asChild>
@@ -37,7 +37,7 @@ export default function Header({logo, navigation, cta}: IHeaderProps) {
                 <nav className="flex flex-col items-center sm:items-start justify-center gap-5 py-6">
                     {navigation.map(element => <a className="text-lg" key={element.id} href={element.href}>{element.title}</a>)}
                 </nav>
-                <SheetFooter>
+                <SheetFooter className="flex justify-center sm:justify-start">
                     {
                         cta ? (
                                <Button variant={cta.variant == "default" ? "default" : cta.variant}>{cta.content}</Button>
