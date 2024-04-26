@@ -28,7 +28,7 @@ export interface Component {
 export interface Button {
     id:      number;
     content: string;
-    variant: string;
+    variant: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined;
     size:    string;
     href:    null | string;
 }

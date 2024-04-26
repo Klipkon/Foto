@@ -3,7 +3,7 @@ import '@/styles/globals.css'
 import {Button} from "@/components/ui/button";
 import fetchApi from "../lib/strapi";
 import {Page} from "../interfaces/page";
-import Header from "../components/Header.astro";
+import Header from "../components/Header";
 import BlockManager from "../components/BlockManager.astro";
 
 
@@ -27,7 +27,7 @@ export async function getStaticPaths() {
 const page = Astro.props;
 ---
 
-<html lang="en">
+<html lang="pl">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -35,7 +35,9 @@ const page = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{page.attributes.Title}</title>
 	</head>
-	<body class="container">
-		<BlockManager components={page.attributes.components} />
+	<body>
+		<div class="container">
+			<BlockManager components={page.attributes.components} />
+		</div>
 	</body>
 </html>
