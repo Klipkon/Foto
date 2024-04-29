@@ -2,6 +2,7 @@
 import {Component} from "../interfaces/page";
 import Header from "./Header";
 import Hero from "./Hero";
+import CardsSection from "./CardsSection";
 
 interface Props {
     components: Component[]
@@ -16,5 +17,7 @@ const { components } = Astro.props;
             return <Header {...component} client:load />
         case "components.hero":
             return <Hero {...component} />
-        }
-    })}
+        case "components.section-with-cards":
+            return <CardsSection {...component} />
+    }
+})}
