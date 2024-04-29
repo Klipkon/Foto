@@ -1,6 +1,7 @@
 ---
 import {Component} from "../interfaces/page";
 import Header from "./Header";
+import Hero from "./Hero";
 
 interface Props {
     components: Component[]
@@ -13,6 +14,7 @@ const { components } = Astro.props;
     switch(component.__component) {
         case "components.header":
             return <Header {...component} client:load />
-
+        case "components.hero":
+            return <Hero {...component} />
         }
     })}
