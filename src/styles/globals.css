@@ -61,4 +61,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .card-width {
+    width: calc(100% - 32px);
+  }
 }
