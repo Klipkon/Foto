@@ -15,8 +15,8 @@ export default function Header({logo, navigation, cta}: IHeaderProps) {
 
     return (
     <>
-        <header className="w-full flex items-center justify-between h-20">
-            <img src={import.meta.env.STRAPI_URL + logo.data.attributes.url}  alt=""/>
+        <header className="w-full flex items-center justify-between h-20 sticky top-0 z-50 backdrop-blur">
+            <img src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url}  alt=""/>
             <nav className="hidden lg:flex items-center justify-center gap-5 bg-secondary rounded-lg px-9 py-2">
                 {navigation.map(element => <a key={element.id} href={element.href}>{element.title}</a>)}
             </nav>
