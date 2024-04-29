@@ -16,7 +16,7 @@ const { components } = Astro.props;
         case "components.header":
             return <Header {...component} client:load />
         case "components.hero":
-            return <Hero {...component} />
+            return <Hero {...component} client:load/>
         case "components.section-with-cards":
             return <CardsSection {...component} />
     }
