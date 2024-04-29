@@ -17,15 +17,15 @@ export default function Header({logo, navigation, cta}: IHeaderProps) {
     <>
         <header className="w-full flex items-center justify-between h-20">
             <img src={import.meta.env.STRAPI_URL + logo.data.attributes.url}  alt=""/>
-            <nav className="hidden md:flex items-center justify-center gap-5 bg-secondary rounded-lg px-9 py-2">
+            <nav className="hidden lg:flex items-center justify-center gap-5 bg-secondary rounded-lg px-9 py-2">
                 {navigation.map(element => <a key={element.id} href={element.href}>{element.title}</a>)}
             </nav>
             {
                cta ? (
-                       <Button variant={cta.variant == "default" ? "default" : cta.variant} className="hidden md:flex" >{cta.content}</Button>
+                       <Button variant={cta.variant == "default" ? "default" : cta.variant} className="hidden lg:flex" >{cta.content}</Button>
                ) : ""
             }
-            <Button variant="outline" size="icon" className="md:hidden" onClick={() => setOpen(prev => !prev)}><Menu className="h-4 w-4" /></Button>
+            <Button variant="outline" size="icon" className="lg:hidden" onClick={() => setOpen(prev => !prev)}><Menu className="h-4 w-4" /></Button>
         </header>
         <Sheet open={open} onOpenChange={() => setOpen(prev => !prev)}>
             <SheetTrigger asChild>
