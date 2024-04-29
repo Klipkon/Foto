@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,7 +15,7 @@
     --popover-foreground: 20 14.3% 4.1%;
     --primary: 28 100% 56%;
     --primary-foreground: 60 9.1% 97.8%;
-    --secondary: 0 0% 99%;
+    --secondary: 0 0% 97%;
     --secondary-foreground: 24 9.8% 10%;
     --muted: 60 4.8% 95.9%;
     --muted-foreground: 25 5.3% 44.7%;
@@ -25,7 +27,7 @@
     --input: 20 5.9% 90%;
     --ring: 24.6 95% 53.1%;
     --radius: 1rem;
-
+    --radiusXL: 40px;
   }
 
   .dark {
