@@ -12,6 +12,11 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        display: ['Poppins', 'sans-serif'],
+        body: ['Poppins', 'sans-serif'],
+        sans: ['Poppins', 'sans-serif']
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -48,6 +53,7 @@ module.exports = {
         },
       },
       borderRadius: {
+        xl: "var(--radiusXL)",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
