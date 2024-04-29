@@ -1,0 +1,26 @@
+---
+import type {Navigation, Logo, Button as IButton} from "../interfaces/page";
+import {Button} from "@/components/ui/button";
+import MobileMenu from "./MobileMenu";
+
+interface Props {
+    logo: Logo;
+    navigation: Navigation[];
+    cta?: IButton;
+}
+
+const {logo, navigation, cta} = Astro.props
+
+---
+<header class="w-full flex items-center justify-between h-20 sticky top-0 z-50 backdrop-blur">
+    <img src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url}  alt=""/>
+    <nav class="hidden lg:flex items-center justify-center gap-5 bg-secondary rounded-lg px-9 py-2">
+        {navigation.map(element => <a href={element.href}>{element.title}</a>)}
+    </nav>
+    {
+        cta ? (
+                <Button variant={cta.variant == "default" ? "default" : cta.variant} className="hidden lg:flex" >{cta.content}</Button>
+        ) : ""
+    } 
+    <MobileMenu navigation={navigation} cta={cta} client:load />
+</header>

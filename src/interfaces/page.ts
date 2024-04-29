@@ -23,6 +23,7 @@ export interface Component {
     buttons?:     Button[];
     image?:       Image;
     cards?:       Card[];
+    video?:       Video;
 }
 
 export interface Button {
@@ -129,4 +130,32 @@ export interface Navigation {
 export interface TitleClass {
     id:      number;
     content: string;
+}
+
+export interface Video {
+    data: Data;
+}
+
+export interface Data {
+    id:         number;
+    attributes: Attributes;
+}
+
+export interface Attributes {
+    name:              string;
+    alternativeText:   null;
+    caption:           null;
+    width:             null;
+    height:            null;
+    formats:           null;
+    hash:              string;
+    ext:               string;
+    mime:              string;
+    size:              number;
+    url:               string;
+    previewUrl:        null;
+    provider:          string;
+    provider_metadata: null;
+    createdAt:         Date;
+    updatedAt:         Date;
 }

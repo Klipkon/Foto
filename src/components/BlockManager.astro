@@ -1,8 +1,8 @@
 ---
-import {Component} from "../interfaces/page";
-import Header from "./Header";
-import Hero from "./Hero";
-import CardsSection from "./CardsSection";
+import type {Component} from "../interfaces/page";
+import Header from "./Header.astro";
+import Hero from "./Hero.astro"
+import CardsSection from "./CardsSection.astro";
 
 interface Props {
     components: Component[]
@@ -14,9 +14,9 @@ const { components } = Astro.props;
 {components.map(component => {
     switch(component.__component) {
         case "components.header":
-            return <Header {...component} client:load />
+            return <Header {...component} />
         case "components.hero":
-            return <Hero {...component} client:load/>
+            return <Hero {...component} />
         case "components.section-with-cards":
             return <CardsSection {...component} />
     }
