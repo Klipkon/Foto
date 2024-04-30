@@ -4,6 +4,7 @@ import Header from "./Header.astro";
 import Hero from "./Hero.astro"
 import CardsSection from "./CardsSection.astro";
 import Portfolio from "./Portfolio.astro";
+import SectionWithImage from "./SectionWithImage.astro";
 
 interface Props {
     components: Component[]
@@ -22,5 +23,7 @@ const { components } = Astro.props;
             return <CardsSection {...component} />
         case "components.portfolio-section":
             return <Portfolio {...component} />
+        case "components.section-with-image":
+            return <SectionWithImage {...component} />
     }
 })}

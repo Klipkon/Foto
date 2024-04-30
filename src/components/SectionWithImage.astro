@@ -1,0 +1,26 @@
+---
+import { Image } from "astro:assets";
+import Title from "./Title.astro";
+import Description from "./Description.astro";
+import type { Image as IImage } from "@/interfaces/page";
+
+interface Props {
+    title: string;
+    description: string;
+    image: IImage;
+    reversed: boolean;
+}
+
+const { title, description, image, reversed } = Astro.props;
+---
+
+<div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-20">
+    <div class="p-4 md:p-8 bg-secondary rounded-xl">
+        <Image alt="" class={(reversed ? "md:order-last" : "") + "order-first rounded-lg w-full lg:w-[420px] lg:max-w-none object-cover"} src={import.meta.env.STRAPI_URL + image.data.attributes.url} width={image.data.attributes.width} height={image.data.attributes.height}/>
+    </div>
+    <div class="flex flex-col gap-4">
+        <Title className="text-center lg:text-left">{title}</Title>
+        <Description className="text-center lg:text-left">{description}</Description> 
+    </div>
+
+</div>
