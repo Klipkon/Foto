@@ -11,7 +11,7 @@ export default function PresentationVideoDialog({video}: IHeroProps) {
     return (
          <Dialog>
             <DialogTrigger asChild>
-                <Button className="card-width lg:w-64 absolute bottom-4 left-4 rounded-lg flex justify-center items-center gap-2 p-6" variant="outline"><PlayCircle /> Zobacz prezentacje</Button>
+                <Button className="card-width modalButton lg:w-64 absolute bottom-4 left-4 rounded-lg flex justify-center items-center gap-2 p-6" variant="outline"><PlayCircle /> Zobacz prezentacje</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
