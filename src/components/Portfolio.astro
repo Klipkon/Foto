@@ -1,0 +1,37 @@
+---
+import Title from "@/components/Title.astro";
+import Description from "./Description.astro";
+import type { Images, Button as IButton } from "@/interfaces/page";
+import { Image } from "astro:assets";
+import { Button } from "./ui/button";
+
+interface Props {
+   title: string;
+   description: string;
+   images: Images;
+   button: IButton
+}
+
+const {title, description, images, button} = Astro.props;
+
+---
+
+<div class="py-20">
+    <div class="rounded-xl w-full bg-secondary p-8 lg:p-16">
+        <div class="flex items-center justify-center gap-24">
+            <Title>{title}</Title>
+            <Description className="hidden lg:flex">{description}</Description>
+        </div>
+        <div class="flex flex-col lg:flex-row items-center justify-center gap-5 py-10">
+            {images.data.map(image => (
+                <div class="w-full">
+                    <Image class="object-cover rounded-xl aspect-video w-full" alt="" src={import.meta.env.STRAPI_URL + image.attributes.url} width={image.attributes.width} height={image.attributes.height} />
+                </div>
+            ))} 
+        </div>
+        <div class="flex items-center justify-center">
+            <Button variant={button.variant} size={button.size}>{button.content}</Button>
+        </div>
+    </div>
+</div>
+
