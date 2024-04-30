@@ -22,6 +22,7 @@ export interface Component {
     title?:       TitleClass | string;
     buttons?:     Button[];
     image?:       Image;
+    images?:     Images;
     cards?:       Card[];
     video?:       Video;
 }
@@ -30,7 +31,7 @@ export interface Button {
     id:      number;
     content: string;
     variant: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined;
-    size:    string;
+    size:    "default" | "sm" | "lg" | "icon" | null | undefined;
     href:    null | string;
 }
 
@@ -92,6 +93,10 @@ export interface Image {
     data: ImageData;
 }
 
+export interface Images {
+    data: ImageData[];
+}
+
 export interface ImageData {
     id:         number;
     attributes: ImageDataAttributes;
@@ -118,7 +123,7 @@ export interface ImageDataAttributes {
 
 export interface ImageFormats {
     thumbnail: Small;
-    small:     Small;
+    small?:     Small;
 }
 
 export interface Navigation {

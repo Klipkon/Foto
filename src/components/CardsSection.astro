@@ -23,16 +23,16 @@ interface Props {
 const { title, description, cards, buttons } = Astro.props;
 ---
 
-<div class="w-full flex flex-col items-center justify-center gap-8 md:gap-12 py-[100px]">
+<div class="w-full flex flex-col items-center justify-center gap-8 md:gap-12 py-20">
     <Title className="text-center">{title.content}</Title>
     <Description className="text-center">{description}</Description>
     <div class="w-full md:w-1/2 lg:w-full grid grid-cols-1 lg:grid-cols-3 gap-10 xl:gap-10">
         {cards.map(card => (
             <Card key={card.id} className={(card.highlighted ? "shadow-[0_5px_50px_0_rgba(0,0,0,0.25)]" : "shadow-none") + " p-6 lg:p-8 border-none bg-transparent"}>
                 <CardContent className="flex flex-col justify-beetwen items-start p-0 gap-5 md:gap-6">
-                    <Image class="w-full rounded-lg" src={import.meta.env.STRAPI_URL + card.image.data.attributes.url} alt="" width={card.image.data.attributes.width} height={card.image.data.attributes.height}/>
+                    <Image class="w-full rounded-lg max-h-[302px]" src={import.meta.env.STRAPI_URL + card.image.data.attributes.url} alt="" width={card.image.data.attributes.width} height={card.image.data.attributes.height}/>
                     <CardTitle className="font-bold text-2xl lg::text-4xl">{card.title}</CardTitle>
-                    <CardDescription className="text-base text-black">{card.description}</CardDescription>
+                    {card.description && <CardDescription className="text-base text-black">{card.description}</CardDescription>}
                 </CardContent>
             </Card>
         ))}

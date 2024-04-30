@@ -19,7 +19,7 @@ export default function MobileMenu({navigation, cta}: IMobileMenuProps) {
                     <SheetTitle>Menu</SheetTitle>
                 </SheetHeader>
                 <nav className="flex flex-col items-center sm:items-start justify-center gap-5 py-6">
-                    {navigation.map(element => <a className="text-lg" href={element.href}>{element.title}</a>)}
+                    {navigation.map(element => <a key={element.id} className="text-lg" href={element.href}>{element.title}</a>)}
                 </nav>
                 <SheetFooter className="flex justify-center sm:justify-start">
                     {
