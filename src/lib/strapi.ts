@@ -25,8 +25,6 @@ export default async function fetchApi<T>({
 
     const url = new URL(`${import.meta.env.STRAPI_URL}/api/${endpoint}?${query ?? ""}`);
 
-    console.log(url)
-
     const res = await fetch(url.toString());
     let data = await res.json();
 

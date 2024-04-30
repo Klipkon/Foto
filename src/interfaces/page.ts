@@ -15,16 +15,14 @@ export interface PageAttributes {
 export interface Component {
     id:           number;
     __component:  string;
-    logo?:        Logo;
-    navigation?:  Navigation[];
-    cta?:         Button;
     description?: null | string;
     title?:       TitleClass | string;
     buttons?:     Button[];
     image?:       Image;
-    images?:     Images;
+    images?:      Images;
     cards?:       Card[];
     video?:       Video;
+    form?:        Form;
 }
 
 export interface Button {
@@ -41,39 +39,7 @@ export interface Card {
     description: string;
     highlighted: boolean;
     link:        boolean;
-    image:       Logo;
-}
-
-export interface Logo {
-    data: LogoData;
-}
-
-export interface LogoData {
-    id:         number;
-    attributes: LogoDataAttributes;
-}
-
-export interface LogoDataAttributes {
-    name:              string;
-    alternativeText:   null;
-    caption:           null;
-    width:             number;
-    height:            number;
-    formats:           LogoFormats | null;
-    hash:              string;
-    ext:               string;
-    mime:              string;
-    size:              number;
-    url:               string;
-    previewUrl:        null;
-    provider:          string;
-    provider_metadata: null;
-    createdAt:         Date;
-    updatedAt:         Date;
-}
-
-export interface LogoFormats {
-    thumbnail: Small;
+    image:       Image;
 }
 
 export interface Small {
@@ -126,12 +92,6 @@ export interface ImageFormats {
     small?:     Small;
 }
 
-export interface Navigation {
-    id:    number;
-    href:  string;
-    title: string;
-}
-
 export interface TitleClass {
     id:      number;
     content: string;
@@ -163,4 +123,18 @@ export interface Attributes {
     provider_metadata: null;
     createdAt:         Date;
     updatedAt:         Date;
+}
+
+export interface Form {
+    id:     number;
+    fields: Field[];
+    button: Button;
+}
+
+export interface Field {
+    id:          number;
+    label:       string;
+    type:        "email" | "text" | "password";
+    placeholder: string;
+    textarea:    boolean;
 }

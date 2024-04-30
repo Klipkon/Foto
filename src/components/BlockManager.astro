@@ -5,6 +5,7 @@ import Hero from "./Hero.astro"
 import CardsSection from "./CardsSection.astro";
 import Portfolio from "./Portfolio.astro";
 import SectionWithImage from "./SectionWithImage.astro";
+import SectionWithForm from "./SectionWithForm.astro";
 
 interface Props {
     components: Component[]
@@ -15,8 +16,6 @@ const { components } = Astro.props;
 
 {components.map(component => {
     switch(component.__component) {
-        case "components.header":
-            return <Header {...component} />
         case "components.hero":
             return <Hero {...component} />
         case "components.section-with-cards":
@@ -25,5 +24,7 @@ const { components } = Astro.props;
             return <Portfolio {...component} />
         case "components.section-with-image":
             return <SectionWithImage {...component} />
+        case "components.section-with-form":
+            return <SectionWithForm {...component} />
     }
 })}

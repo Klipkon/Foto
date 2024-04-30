@@ -1,0 +1,30 @@
+---
+import type {Footer} from "@/interfaces/footer.interface";
+import fetchApi from "@/lib/strapi";
+import { Button } from "./ui/button";
+import Description from "@/components/Description.astro";
+
+const footer = await fetchApi<Footer>({
+    endpoint: 'footer',
+    wrappedByKey: 'data',
+    query: "populate=*",
+})
+
+const {logo, navigation, cta, description} = footer.attributes;
+---
+
+<footer class="container flex flex-col items-center justify-center rounded-xl bg-secondary p-8 my-20">
+    <div class="w-full flex flex-col lg:flex-row gap-8 items-center justify-between pb-8 border-b">
+        <img src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url}  alt=""/>
+        <nav class="flex flex-col lg:flex-row items-center justify-center gap-5">
+            {navigation.map(element => <a class="hover:underline" href={element.href}>{element.title}</a>)}
+        </nav>
+        {
+            cta ? (
+                    <Button variant={cta.variant} size={cta.size} >{cta.content}</Button>
+            ) : ""
+        } 
+    </div>
+    <Description className="pt-8" >{description}</Description>
+</footer>
+
