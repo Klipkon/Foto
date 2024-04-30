@@ -1,0 +1,36 @@
+---
+import type { Form } from "@/interfaces/page";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
+
+
+interface Props {
+    form: Form;
+}
+
+const {form} = Astro.props;
+---
+
+<div class="bg-secondary rounded-xl px-5 py-8 md:p-8 w-full lg:w-auto">
+    <form class="w-full lg:w-[500px] flex flex-col items-center justify-center gap-4">
+        {
+            form.fields.map((field) => {
+                return (
+                    <div class="grid w-full items-center gap-2">
+                        <Label htmlFor={field.type + field.id}>{field.label}</Label>
+                        {
+                            field.textarea ? (
+                                <Textarea id={field.type + field.id.toString()} placeholder={field.placeholder} />
+                            ) : (
+                                <Input type={field.type} id={field.type + field.id.toString()} placeholder={field.placeholder} />
+                            )
+                        }
+                    </div>
+                );
+            })
+        }
+        <Button type="submit" variant={form.button.variant} size={form.button.size} className="w-full mt-4">{form.button.content}</Button>
+    </form>
+</div>
