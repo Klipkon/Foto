@@ -16,22 +16,54 @@ const {title, description, images, button} = Astro.props;
 
 ---
 
-<div class="py-20">
+<div class="py-20" id="portfolioSection">
     <div class="rounded-xl w-full bg-secondary p-8 lg:p-16">
         <div class="flex items-center justify-center gap-24">
-            <Title>{title}</Title>
-            <Description className="hidden lg:flex">{description}</Description>
+            <Title className="portfolioTitle">{title}</Title>
+            <Description className="hidden lg:flex portfolioDesc">{description}</Description>
         </div>
         <div class="flex flex-col lg:flex-row items-center justify-center gap-5 py-10">
-            {images.data.map(image => (
-                <div class="w-full">
+            {images.data.map((image, i) => (
+                <div class="w-full" id={"img" + (i+1)}>
                     <Image class="object-cover rounded-xl aspect-video w-full" alt="" src={import.meta.env.STRAPI_URL + image.attributes.url} width={image.attributes.width} height={image.attributes.height} />
                 </div>
             ))} 
         </div>
         <div class="flex items-center justify-center">
-            <Button variant={button.variant} size={button.size}>{button.content}</Button>
+            <Button id="portfolioButton" variant={button.variant} size={button.size}>{button.content}</Button>
         </div>
     </div>
 </div>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    import {isMobile} from "@/lib/utils";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (!isMobile()) {
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#portfolioSection",
+                start: "top center",
+                end: "top center",
+                markers: true
+            }
+        });
+        
+        tl.from("#portfolioSection", {y: "20%", opacity: 0})
+        .to("#portfolioSection", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+        .from(".portfolioTitle", {y: "20%", opacity: 0}, 0.2)
+        .to(".portfolioTitle", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+        .from(".portfolioDesc", {y: "20%", opacity: 0}, 0.3)
+        .to(".portfolioDesc", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+        .from("#img1", {y: "20%", opacity: 0},0.5)
+        .to("#img1", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+        .from("#img2", {y: "20%", opacity: 0}, 0.6)
+        .to("#img2", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+        .from("#portfolioButton", {y: "20%", opacity: 0}, 0.8)
+        .to("#portfolioButton", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"});
+    }
+</script>
 
