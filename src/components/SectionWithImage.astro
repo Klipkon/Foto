@@ -9,18 +9,44 @@ interface Props {
     description: string;
     image: IImage;
     reversed: boolean;
+    id: number;
 }
 
-const { title, description, image, reversed } = Astro.props;
+const { title, description, image, reversed, id } = Astro.props;
 ---
 
-<div class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-20">
-    <div class="p-4 md:p-8 bg-secondary rounded-xl">
+<div id={"sectionWithImage" + id} class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-20 sectionWithImage">
+    <div class="p-4 md:p-8 bg-secondary rounded-xl image">
         <Image alt="" class={(reversed ? "md:order-last" : "") + "order-first rounded-lg w-full lg:w-[420px] lg:max-w-none object-cover"} src={import.meta.env.STRAPI_URL + image.data.attributes.url} width={image.data.attributes.width} height={image.data.attributes.height}/>
     </div>
-    <div class="flex flex-col gap-4">
-        <Title className="text-center lg:text-left">{title}</Title>
-        <Description className="text-center lg:text-left">{description}</Description> 
+    <div class="flex flex-col gap-4 text">
+        <Title className="text-center lg:text-left title">{title}</Title>
+        <Description className="text-center lg:text-left desc">{description}</Description> 
     </div>
 
 </div>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    import {isMobile} from "@/lib/utils";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (!isMobile()) {
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".sectionWithImage",
+                start: "top center",
+                end: "top center",
+            }
+        });
+        
+        tl.from(".sectionWithImage .image", {y: "20%", opacity: 0})
+        .to(".sectionWithImage .image", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+        .from(".sectionWithImage .text .title", {y: "20%", opacity: 0}, 0.2)
+        .to(".sectionWithImage .text .title", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+        .from(".sectionWithImage .text .desc", {y: "20%", opacity: 0}, 0.3)
+        .to(".sectionWithImage .text .desc", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+    }
+</script>
