@@ -4,6 +4,7 @@ import {Button} from "@/components/ui/button";
 import MobileMenu from "./MobileMenu";
 import type { Header, Logo, Navigation } from "@/interfaces/header";
 import fetchApi from "@/lib/strapi";
+import { Image } from "astro:assets";
 
 const header = await fetchApi<Header>({
     endpoint: 'header',
@@ -16,7 +17,7 @@ const {logo, navigation, cta} = header.attributes;
 
 <div class="container backdrop-blur bg-white/50 sticky top-0 z-40">
     <header id="header" class="w-full flex items-center justify-between h-20">
-        <img src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url}  alt=""/>
+        <Image src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url} width={logo.data.attributes.width} height={logo.data.attributes.height}  alt=""/>
         <nav class="hidden lg:flex items-center justify-center gap-5 bg-secondary rounded-lg px-9 py-2">
             {navigation.map(element => <a class="hover:underline" href={element.href}>{element.title}</a>)}
         </nav>
