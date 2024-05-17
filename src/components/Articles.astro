@@ -1,28 +1,73 @@
 ---
-import type { ArticleData } from '@/interfaces/article.interface'
+import type { ArticleData, CategoryData } from '@/interfaces/article.interface'
 import { Card, CardContent, CardTitle } from './ui/card';
 import { Image } from 'astro:assets';
 import fetchApi from '@/lib/strapi';
 import {titleToSlug} from '@/lib/utils';
+import Title from './Title.astro';
+import Description from './Description.astro';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
+import { Label } from './ui/label';
 
 const articles = await fetchApi<ArticleData[]>({
     endpoint: 'articles',
     wrappedByKey: 'data',
     query: "populate=*"
 })
----
 
-<div id="cardsContainer" class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-10">
-{
-    articles.map((article, i) => (
-        <a href={"/blog/" + titleToSlug(article.attributes.title)} class="group">
-            <Card key={article.id} id={"card" + (i+1)} className="p-6 lg:p-8 border-none shadow-none bg-secondary h-full">
-                <CardContent className="flex flex-col justify-beetwen items-start p-0 gap-5 md:gap-6">
-                    <Image class="w-full rounded-lg max-h-[302px]" src={import.meta.env.STRAPI_URL + article.attributes.image.data.attributes.url} alt="" width={article.attributes.image.data.attributes.width} height={article.attributes.image.data.attributes.height} transition:name={titleToSlug(article.attributes.title)}/>
-                    <CardTitle className="font-semibold text-2xl">{article.attributes.title}</CardTitle>
-                </CardContent>
-            </Card>
-        </a>
-    ))
+const categories = await fetchApi<CategoryData[]>({
+    endpoint: 'categories',
+    wrappedByKey: 'data'
+})
+
+interface Props {
+    title: string;
+    description: string;
 }
+
+const { title, description } = Astro.props;
+---
+<div class="flex flex-col items-start justify-center pb-14">
+    <div class="flex flex-col lg:flex-row items-start justify-between gap-6">
+        <div class="flex flex-col items-start justify-center gap-4 w-full lg:w-1/2">
+           <Title>{title}</Title>
+           <Description>{description}</Description> 
+        </div>
+        <div class="w-full lg:w-1/2 flex items-center justify-end">
+            <div class="bg-secondary rounded-xl p-8 w-full lg:w-3/4">
+                <form >
+                    <div class="grid w-full items-center gap-3">
+                    <Label htmlFor="searchTitle">Szukaj artykułu</Label>
+                        <div class="flex items-center justify-between gap-2">
+                            <Input id='searchTitle' placeholder="Tytuł artykułu..." />
+                            <Button>Szukaj</Button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-wrap items-center justify-start gap-6 pt-14">
+        <Button>Wszystko</Button>
+        {
+            categories.map((category, i) => (
+                <Button variant="secondary">{category.attributes.name}</Button>
+            ))
+        }
+    </div>
+</div>
+<div id="cardsContainer" class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-10">
+    {
+        articles.map((article, i) => (
+            <a href={"/blog/" + titleToSlug(article.attributes.title)} class="group">
+                <Card key={article.id} id={"card" + (i+1)} className="p-6 lg:p-8 border-none shadow-none bg-secondary h-full">
+                    <CardContent className="flex flex-col justify-beetwen items-start p-0 gap-5 md:gap-6">
+                        <Image class="w-full rounded-lg max-h-[302px]" src={import.meta.env.STRAPI_URL + article.attributes.image.data.attributes.url} alt="" width={article.attributes.image.data.attributes.width} height={article.attributes.image.data.attributes.height} loading="eager" />
+                        <CardTitle className="font-semibold text-lg sm:text-2xl">{article.attributes.title}</CardTitle>
+                    </CardContent>
+                </Card>
+            </a>
+        ))
+    }
 </div>

@@ -45,6 +45,7 @@ export interface DataAttributes {
     provider_metadata: null;
     createdAt:         Date;
     updatedAt:         Date;
+    category:          CategoryData
 }
 
 export interface Formats {
@@ -74,4 +75,16 @@ export interface Pagination {
     pageSize:  number;
     pageCount: number;
     total:     number;
+}
+
+export interface CategoryData {
+    id:         number;
+    attributes: CategoryAttributes;
+}
+
+export interface CategoryAttributes {
+    name:        string;
+    createdAt:   Date;
+    updatedAt:   Date;
+    publishedAt: Date;
 }

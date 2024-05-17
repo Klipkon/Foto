@@ -9,6 +9,7 @@ import {marked} from "marked";
 import DOMPurify from "isomorphic-dompurify";
 import { titleToSlug } from "@/lib/utils";
 import { Image } from "astro:assets";
+import Description from "@/components/Description.astro";
 
 export async function getStaticPaths() {
 
@@ -29,12 +30,23 @@ export async function getStaticPaths() {
 const article = Astro.props;
 
 const content = await marked.parse(article.attributes.content);
-
 ---
+
 <MainLayout title={article.attributes.title}>
 	<div class="flex flex-col items-start justify-center gap-10">
-		<Image class="w-full rounded-lg max-h-[302px] object-cover" src={import.meta.env.STRAPI_URL + article.attributes.image.data.attributes.url} alt="" width={article.attributes.image.data.attributes.width} height={article.attributes.image.data.attributes.height}  />
-		<Title>{article.attributes.title}</Title>
-		<Prose set:html={DOMPurify.sanitize(content)} />
+		<div class="relative w-full after:bg-black/50 after:absolute after:top-0 after:left-0 after:z-20 after:content-[' '] after:w-full after:h-full after:rounded-xl">
+			<Image class="relative w-full rounded-xl max-h-[302px] object-cover" src={import.meta.env.STRAPI_URL + article.attributes.image.data.attributes.url} alt="" width={article.attributes.image.data.attributes.width} height={article.attributes.image.data.attributes.height}  />
+			<div class="z-50 absolute left-10 bottom-5 flex flex-col items-start justify-center w-full gap-3">
+				<Title className="text-white" >{article.attributes.title}</Title>
+				<div class="flex items-center justify-start">
+					<p class="text-white" >Opublikowano: {new Date(article.attributes.createdAt).toLocaleString()}</p>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<p class="text-white" >Aktualizacja: {new Date(article.attributes.updatedAt).toLocaleString()}</p>
+				</div>
+			</div>
+		</div>	
+		<div class="w-full flex justify-center">
+			<Prose set:html={DOMPurify.sanitize(content)} />
+		</div>
 	</div>
 </MainLayout>

@@ -13,3 +13,15 @@ export function isMobile() {
 export function titleToSlug(title: string) {
   return title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase().replace(/ /g, "-").replace(/[^a-z0-9-]/g, "")
 }
+
+export function getBreadcrumbs(path: string) {
+    const splitPath = path.split('/'); 
+    if (path.endsWith("/")) splitPath.pop();
+    if (splitPath[0] === "") splitPath.shift();
+    
+    return splitPath;
+}
+
+export function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
