@@ -1,0 +1,47 @@
+---
+import { Slash } from "lucide-react";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "./ui/breadcrumb";
+import { capitalizeFirstLetter, getBreadcrumbs } from "@/lib/utils";
+
+interface Props {
+    currentPath: string;
+}
+
+const {currentPath} = Astro.props;
+
+
+
+const breadcrumbs = getBreadcrumbs(currentPath);
+console.log(breadcrumbs, currentPath)
+---
+
+{
+    <Breadcrumb>
+        <BreadcrumbList>
+            <BreadcrumbItem>
+                <BreadcrumbLink href="/">Strona Główna</BreadcrumbLink>
+            </BreadcrumbItem>
+            {
+                breadcrumbs.map((path, index) => (
+                        <>
+                            <BreadcrumbSeparator>
+                                <Slash />
+                            </BreadcrumbSeparator>
+                            {
+                                index == breadcrumbs.length - 1 ? (
+                                    <BreadcrumbItem>
+                                        <BreadcrumbPage>{capitalizeFirstLetter(path)}</BreadcrumbPage>
+                                    </BreadcrumbItem>
+                                ) : (
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink href={"/" + path}>{capitalizeFirstLetter(path)}</BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                )
+                            }
+                        </>
+                    )
+                )
+            }
+        </BreadcrumbList>
+    </Breadcrumb>
+}
