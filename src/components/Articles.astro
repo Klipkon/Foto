@@ -1,14 +1,12 @@
 ---
 import type { ArticleData, CategoryData } from '@/interfaces/article.interface'
-import { Card, CardContent, CardTitle } from './ui/card';
-import { Image } from 'astro:assets';
 import fetchApi from '@/lib/strapi';
-import {titleToSlug} from '@/lib/utils';
 import Title from './Title.astro';
 import Description from './Description.astro';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Label } from './ui/label';
+import AtriclesCards from './ArticlesCards'
 
 const articles = await fetchApi<ArticleData[]>({
     endpoint: 'articles',
@@ -20,6 +18,17 @@ const categories = await fetchApi<CategoryData[]>({
     endpoint: 'categories',
     wrappedByKey: 'data'
 })
+
+categories.push( {
+    id: 0,
+    attributes:  {
+        name: "Wszystko",
+        createdAt:   new Date(),
+        updatedAt:   new Date(),
+        publishedAt: new Date()
+        }
+    }
+)
 
 interface Props {
     title: string;
@@ -48,16 +57,16 @@ const { title, description } = Astro.props;
             </div>
         </div>
     </div>
-    <div class="flex flex-wrap items-center justify-start gap-6 pt-14">
+    <!-- <div class="flex flex-wrap items-center justify-start gap-6 pt-14">
         <Button>Wszystko</Button>
         {
             categories.map((category, i) => (
                 <Button variant="secondary">{category.attributes.name}</Button>
             ))
         }
-    </div>
+    </div> -->
 </div>
-<div id="cardsContainer" class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-10">
+<!--
     {
         articles.map((article, i) => (
             <a href={"/blog/" + titleToSlug(article.attributes.title)} class="group">
@@ -69,5 +78,5 @@ const { title, description } = Astro.props;
                 </Card>
             </a>
         ))
-    }
-</div>
+    } -->
+<AtriclesCards articles={articles} categories={categories.sort((a, b) => a.id - b.id )} client:load />

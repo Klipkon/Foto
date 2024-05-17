@@ -10,7 +10,9 @@ export interface ArticleData {
 
 export interface DatumAttributes {
     title:       string;
-    categorie:   string;
+    category:    {
+        data: CategoryData;
+    }
     content:     string;
     createdAt:   Date;
     updatedAt:   Date;
@@ -45,7 +47,6 @@ export interface DataAttributes {
     provider_metadata: null;
     createdAt:         Date;
     updatedAt:         Date;
-    category:          CategoryData
 }
 
 export interface Formats {

@@ -1,3 +1,4 @@
+import type { ArticleData } from "@/interfaces/article.interface";
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -24,4 +25,9 @@ export function getBreadcrumbs(path: string) {
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function filterArticlesByCategory(articles: ArticleData[], category: string) {
+  if (category === "Wszystko") return articles;
+  return articles.filter(article => article.attributes.category.data.attributes.name === category);
 }
