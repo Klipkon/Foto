@@ -42,10 +42,12 @@ const {logo, navigation, cta, description} = footer.attributes;
     const sections = document.querySelector("#container")?.children!;
     const lastSection = sections[sections.length - 1];
 
+
+
     if (!isMobile()) {
         let tl = gsap.timeline({
             scrollTrigger: {
-                trigger: `#${lastSection.id}`,
+                trigger: `#${lastSection.id ? lastSection.id : "container"}`,
                 start: "top center",
                 end: "top center",
             }
