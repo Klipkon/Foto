@@ -5,6 +5,7 @@ import CardsSection from "./CardsSection.astro";
 import Portfolio from "./Portfolio.astro";
 import SectionWithImage from "./SectionWithImage.astro";
 import SectionWithForm from "./SectionWithForm.astro";
+import Articles from "./Articles.astro";
 
 interface Props {
     components: Component[]
@@ -25,5 +26,7 @@ const { components } = Astro.props;
             return <SectionWithImage {...component} />
         case "components.section-with-form":
             return <SectionWithForm {...component} />
+        case "components.articles":
+            return <Articles {...component} />
     }
 })}

@@ -1,0 +1,40 @@
+---
+import "@/styles/globals.css"
+import fetchApi from "@/lib/strapi";
+import MainLayout from "@/layouts/MainLayout.astro";
+import type {ArticleData} from "@/interfaces/article.interface";
+import Title from "@/components/Title.astro";
+import Prose from "@/components/Prose.astro";
+import {marked} from "marked";
+import DOMPurify from "isomorphic-dompurify";
+import { titleToSlug } from "@/lib/utils";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+
+	const articles = await fetchApi<ArticleData[]>({
+		endpoint: 'articles',
+		wrappedByKey: 'data',
+		query: "populate=*"
+	})
+	
+	return articles.map(article => {
+		return {
+			params: { article: titleToSlug(article.attributes.title) },
+			props: article,
+		}
+	})
+}
+
+const article = Astro.props;
+
+const content = await marked.parse(article.attributes.content);
+
+---
+<MainLayout title={article.attributes.title}>
+	<div class="flex flex-col items-start justify-center gap-10">
+		<Image class="w-full rounded-lg max-h-[302px] object-cover" src={import.meta.env.STRAPI_URL + article.attributes.image.data.attributes.url} alt="" width={article.attributes.image.data.attributes.width} height={article.attributes.image.data.attributes.height}  />
+		<Title>{article.attributes.title}</Title>
+		<Prose set:html={DOMPurify.sanitize(content)} />
+	</div>
+</MainLayout>
