@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Card, CardContent, CardTitle } from "./ui/card";
 import { filterArticlesByCategory, titleToSlug } from "@/lib/utils";
 
-export default function ArticlesCards({ articles, categories}: { articles: ArticleData[], categories: CategoryData[]}) {
+export default function ArticlesCards({ articles, categories, portfolio}: { articles: ArticleData[], categories: CategoryData[], portfolio?: boolean}) {
     console.log(articles, categories);
 
     return (
@@ -21,7 +21,7 @@ export default function ArticlesCards({ articles, categories}: { articles: Artic
                         <div id="cardsContainer" className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-10 pt-14">
                         {
                             filterArticlesByCategory(articles, category.attributes.name).map((article, i) => (
-                                <a key={article.id} href={"/blog/" + titleToSlug(article.attributes.title)} className="group">
+                                <a key={article.id} href={(portfolio ? "/portfolio/" : "/blog/") + titleToSlug(article.attributes.title)} className="group">
                                     <Card className="p-6 lg:p-8 border-none shadow-none bg-secondary h-full">
                                         <CardContent className="flex flex-col justify-beetwen items-start p-0 gap-5 md:gap-6">
                                             <img className="w-full rounded-lg max-h-[302px]" src={import.meta.env.PUBLIC_STRAPI_URL + article.attributes.image.data.attributes.formats.thumbnail.url} alt="" width={article.attributes.image.data.attributes.formats.thumbnail.width} height={article.attributes.image.data.attributes.formats.thumbnail.height} loading="eager" />
