@@ -22,7 +22,7 @@ export default function ArticlesCards({ articles, categories}: { articles: Artic
                         {
                             filterArticlesByCategory(articles, category.attributes.name).map((article, i) => (
                                 <a key={article.id} href={"/blog/" + titleToSlug(article.attributes.title)} className="group">
-                                    <Card  id={"card" + (i+1)} className="p-6 lg:p-8 border-none shadow-none bg-secondary h-full">
+                                    <Card className="p-6 lg:p-8 border-none shadow-none bg-secondary h-full">
                                         <CardContent className="flex flex-col justify-beetwen items-start p-0 gap-5 md:gap-6">
                                             <img className="w-full rounded-lg max-h-[302px]" src={import.meta.env.PUBLIC_STRAPI_URL + article.attributes.image.data.attributes.formats.thumbnail.url} alt="" width={article.attributes.image.data.attributes.formats.thumbnail.width} height={article.attributes.image.data.attributes.formats.thumbnail.height} loading="eager" />
                                             <CardTitle className="font-semibold text-lg sm:text-2xl">{article.attributes.title}</CardTitle>
