@@ -16,13 +16,15 @@ export interface Component {
     id:           number;
     __component:  string;
     description?: null | string;
-    title?:       TitleClass | string;
+    title?:       string;
     buttons?:     Button[];
+    button?:      Button;
     image?:       Image;
     images?:      Images;
     cards?:       Card[];
     video?:       Video;
     form?:        Form;
+    reversed?:    boolean;
 }
 
 export interface Button {

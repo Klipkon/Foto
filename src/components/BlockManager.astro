@@ -2,10 +2,11 @@
 import type {Component} from "../interfaces/page";
 import Hero from "./Hero.astro"
 import CardsSection from "./CardsSection.astro";
-import Portfolio from "./Portfolio.astro";
+import Portfolio from "./PortfolioSection.astro";
 import SectionWithImage from "./SectionWithImage.astro";
 import SectionWithForm from "./SectionWithForm.astro";
 import Articles from "./Articles.astro";
+import Projects from "./Projects.astro";
 
 interface Props {
     components: Component[]
@@ -17,16 +18,18 @@ const { components } = Astro.props;
 {components.map(component => {
     switch(component.__component) {
         case "components.hero":
-            return <Hero {...component} />
+            return <Hero image={component.image!} title={component.title!} description={component.description!} buttons={component.buttons!} video={component.video!} />
         case "components.section-with-cards":
-            return <CardsSection {...component} />
+            return <CardsSection  title={component.title!} description={component.description!} cards={component.cards!} buttons={component.buttons!} />
         case "components.portfolio-section":
-            return <Portfolio {...component} />
+            return <Portfolio title={component.title!} description={component.description!} button={component.button!} images={component.images!} />
         case "components.section-with-image":
-            return <SectionWithImage {...component} />
+            return <SectionWithImage title={component.title!} description={component.description!} image={component.image!} reversed={component.reversed!} id={component.id!} />
         case "components.section-with-form":
-            return <SectionWithForm {...component} />
+            return <SectionWithForm title={component.title!} description={component.description!} form={component.form!} id={component.id} />
         case "components.articles":
-            return <Articles {...component} />
+            return <Articles title={component.title!} description={component.description!} />
+        case "components.portfolio":
+            return <Projects title={component.title!} description={component.description!} />
     }
 })}
