@@ -1,0 +1,58 @@
+---
+import "@/styles/globals.css"
+import fetchApi from "../../lib/strapi";
+import MainLayout from "@/layouts/MainLayout.astro";
+import { titleToSlug } from "../../lib/utils";
+import qs from "qs";
+import type { ArticleData } from "@/interfaces/article.interface";
+import { marked } from "marked";
+import { Image } from "astro:assets";
+import Title from "@/components/Title.astro";
+import DOMPurify from "isomorphic-dompurify";
+import Prose from "@/components/Prose.astro";
+
+
+export async function getStaticPaths() {
+
+	const projects = await fetchApi<ArticleData[]>({
+		endpoint: 'projects',
+		wrappedByKey: 'data',
+		query: qs.stringify({populate: {
+        	image: true,
+        }}),
+	})
+	
+	return projects.map(project => {
+		return {
+			params: { project: titleToSlug(project.attributes.title) },
+			props: project,
+		}
+	})
+}
+
+const project = Astro.props;
+
+const content = await marked.parse(project.attributes.content);
+
+console.log(JSON.stringify(project, null, 2));
+
+---
+
+<MainLayout title={project.attributes.title}>
+	<div class="flex flex-col items-start justify-center gap-10">
+		<div class="relative w-full after:bg-black/50 after:absolute after:top-0 after:left-0 after:z-20 after:content-[' '] after:w-full after:h-full after:rounded-xl">
+			<Image class="relative w-full rounded-xl max-h-[302px] object-cover" src={import.meta.env.STRAPI_URL + project.attributes.image.data.attributes.url} alt="" width={project.attributes.image.data.attributes.width} height={project.attributes.image.data.attributes.height}  />
+			<div class="z-50 absolute left-10 bottom-5 flex flex-col items-start justify-center gap-3" style="width: calc(100% - 80px);">
+				<Title className="text-white" >{project.attributes.title}</Title>
+				<div class="flex items-center justify-start">
+					<p class="text-white text-sm" >Opublikowano: {new Date(project.attributes.createdAt).toLocaleString()}</p>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<p class="text-white text-sm" >Aktualizacja: {new Date(project.attributes.updatedAt).toLocaleString()}</p>
+				</div>
+			</div>
+		</div>	
+		<div class="w-full flex justify-center">
+			<Prose set:html={DOMPurify.sanitize(content)} />
+		</div>
+	</div>
+</MainLayout>
