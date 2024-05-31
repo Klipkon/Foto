@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 	
 	return articles.map(article => {
 		return {
-			params: { article: titleToSlug(article.attributes.title) },
+			params: {category: titleToSlug(article.attributes.category.data.attributes.name), article: titleToSlug(article.attributes.title) },
 			props: article,
 		}
 	})

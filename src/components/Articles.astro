@@ -19,17 +19,6 @@ const categories = await fetchApi<CategoryData[]>({
     wrappedByKey: 'data'
 })
 
-categories.push( {
-    id: 0,
-    attributes:  {
-        name: "Wszystko",
-        createdAt:   new Date(),
-        updatedAt:   new Date(),
-        publishedAt: new Date()
-        }
-    }
-)
-
 interface Props {
     title: string;
     description: string;

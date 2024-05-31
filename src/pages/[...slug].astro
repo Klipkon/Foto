@@ -3,12 +3,50 @@ import fetchApi from "@/lib/strapi";
 import type {Page} from "@/interfaces/page";
 import BlockManager from "@/components/BlockManager.astro";
 import MainLayout from "@/layouts/MainLayout.astro";
+import QueryString from "qs";
 
 export async function getStaticPaths() {
 
 	const pages = await fetchApi<Page[]>({
 		endpoint: 'pages',
 		wrappedByKey: 'data',
+		query: QueryString.stringify({
+			filters: {
+				$and: [
+					{
+						title: {
+							$ne: "Portfolio"
+						},
+					},
+					{
+						title: {
+							$ne: "Blog"
+						},
+					}
+				]	
+			},
+			populate: {
+				components: {
+					populate: {
+						logo: true,
+						navigation: true,
+						cta: true,
+						buttons: true,
+						button: true,
+						image: true,
+						images: true,
+						video: true,
+						title: true,
+						form: {
+							populate: "*",
+						},
+						cards: {
+							populate: "*",
+						},
+					},
+				},
+			},
+		})
 	})	
 
 	return pages.map(page => {

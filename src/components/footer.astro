@@ -47,7 +47,7 @@ const {logo, navigation, cta, description} = footer.attributes;
     if (!isMobile()) {
         let tl = gsap.timeline({
             scrollTrigger: {
-                trigger: `#${lastSection.id ? lastSection.id : "container"}`,
+                trigger: `#${lastSection.hasAttribute('id') ? lastSection.id : "container"}`,
                 start: "top center",
                 end: "top center",
             }

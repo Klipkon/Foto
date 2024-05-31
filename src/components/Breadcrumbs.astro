@@ -22,8 +22,10 @@ console.log(breadcrumbs, currentPath)
                 <BreadcrumbLink href="/">Strona Główna</BreadcrumbLink>
             </BreadcrumbItem>
             {
-                breadcrumbs.map((path, index) => (
-                        <>
+                breadcrumbs.map((path, index) => {
+                        const entirePath = breadcrumbs.slice(0, index + 1).join("/");
+
+                        return <>
                             <BreadcrumbSeparator>
                                 <Slash />
                             </BreadcrumbSeparator>
@@ -34,12 +36,12 @@ console.log(breadcrumbs, currentPath)
                                     </BreadcrumbItem>
                                 ) : (
                                     <BreadcrumbItem>
-                                        <BreadcrumbLink href={"/" + path}>{capitalizeFirstLetter(path)}</BreadcrumbLink>
+                                        <BreadcrumbLink href={"/" + entirePath}>{capitalizeFirstLetter(path)}</BreadcrumbLink>
                                     </BreadcrumbItem>
                                 )
                             }
                         </>
-                    )
+                    }
                 )
             }
         </BreadcrumbList>
