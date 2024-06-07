@@ -1,0 +1,94 @@
+---
+import "@/styles/globals.css"
+import type { ArticleData, CategoryData } from '@/interfaces/article.interface'
+import Title from '@/components/Title.astro';
+import Description from '@/components/Description.astro';
+import { Button } from '@/components/ui/button';
+import MainLayout from "@/layouts/MainLayout.astro";
+import Pagination from "@/components/Pagination.astro";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { titleToSlug } from "@/lib/utils";
+import fetchApi from "@/lib/strapi";
+import QueryString from "qs";
+import type { Page } from "@/interfaces/page";
+import Image from "astro/components/Image.astro";
+
+const portfolioPage = await fetchApi<Page[]>({
+    endpoint: 'pages',
+    wrappedByKey: 'data',
+    query: QueryString.stringify({
+        filters: {
+            title: {
+                $eq: 'Portfolio',
+            },
+        },
+        populate: {
+            components: {
+                populate: {
+                    articles: true
+                }
+            }
+        }
+    })
+})
+
+const types = await fetchApi<CategoryData[]>({
+    endpoint: 'types',
+    wrappedByKey: 'data'
+})
+
+interface Props {
+    articles: ArticleData[];
+    previousUrl?: string;
+    nextUrl?: string;
+    currentPage: number;
+}
+
+const {articles,  previousUrl, nextUrl, currentPage} = Astro.props;
+const title = portfolioPage[0].attributes.components[0].title!;
+const description = portfolioPage[0].attributes.components[0].description!;
+
+const typeUrl = () => {
+    const params = Astro.params;
+    return 'type' in params ? params.type : '';
+}
+---
+
+<MainLayout title={portfolioPage[0].attributes.title}>
+    <div class="flex flex-col items-start justify-center pb-14">
+        <div class="flex flex-col lg:flex-row items-start justify-between gap-6">
+            <div class="flex flex-col items-start justify-center gap-4 w-full lg:w-1/2">
+            <Title>{title}</Title>
+            <Description>{description}</Description> 
+            </div>
+            <div class="w-full lg:w-1/2 flex items-center justify-end">
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-wrap items-center justify-start gap-5">
+        {
+            types.map((type, i) => {
+                const slug = (type.attributes.name == "Wszystko" ? '' : titleToSlug(type.attributes.name));
+
+                return <a href={"/portfolio/" + slug}>
+                    <Button size="sm" variant={slug == typeUrl() ? 'default' : 'secondary'}  >{type.attributes.name}</Button>
+                </a>
+            })
+        }
+    </div>
+    <div id="cardsContainer" class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-10 pt-14">
+        {
+            articles.map((article, i) => (
+                <a href={"/portfolio/" + titleToSlug(article.attributes.category.data.attributes.name) + '/' + titleToSlug(article.attributes.title)} class="group">
+                    <Card className="p-6 lg:p-8 border-none shadow-none bg-secondary h-full">
+                        <CardContent className="flex flex-col justify-beetwen items-start p-0 gap-5 md:gap-6">
+                            <Image class="w-full rounded-lg max-h-[302px]" src={import.meta.env.PUBLIC_STRAPI_URL + article.attributes.image.data.attributes.formats.thumbnail.url} alt="" width={article.attributes.image.data.attributes.formats.thumbnail.width} height={article.attributes.image.data.attributes.formats.thumbnail.height} loading="eager" />
+                            <CardTitle className="font-semibold text-lg sm:text-2xl">{article.attributes.title}</CardTitle>
+                        </CardContent>
+                    </Card>
+                </a>
+            ))
+        }
+    </div>
+    <Pagination previous={previousUrl} next={nextUrl} currentPage={currentPage} />
+</MainLayout>
