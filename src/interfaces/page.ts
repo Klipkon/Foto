@@ -42,6 +42,8 @@ export interface Card {
     highlighted: boolean;
     link:        boolean;
     image:       Image;
+    price?:      number;
+    featured?:   boolean;
 }
 
 export interface Small {

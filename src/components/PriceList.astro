@@ -1,0 +1,41 @@
+---
+import type { Card } from '@/interfaces/page';
+import MainLayout from '@/layouts/MainLayout.astro';
+import Title from './Title.astro';
+import Description from './Description.astro';
+import { cn } from '@/lib/utils';
+
+interface Props {
+    title: string;
+    description?: string;
+    cards?: Card[];
+}
+
+const {title, description, cards} = Astro.props;
+---
+
+<div class="flex flex-col items-start justify-center pb-14">
+    <div class="flex flex-col lg:flex-row items-start justify-between gap-6">
+        <div class="flex flex-col items-start justify-center gap-4 w-full lg:w-1/2">
+        <Title>{title}</Title>
+        <Description>{description}</Description> 
+        </div>
+        <div class="w-full lg:w-1/2 flex items-center justify-end">
+        </div>
+    </div>
+    <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 xl:gap-10 mt-12">
+        {
+            cards!.map((card, i) => (
+                <div class={cn(card.featured ? "before:absolute before:rounded-xl before:w-[200%] before:h-[200%] before:top-[-50%] before:left-[-50%] before:z-[-1] before:bg-[conic-gradient(var(--tw-gradient-stops))] before:from-white before:via-primary before:to-white before:animate-rotate after:p-[2px] after:rounded-xl after:bg-secondary after:absolute after:inset-0 after:bg-clip-content after:z-[-1]" : "bg-secondary", "relative  p-8 rounded-xl overflow-hidden")}>
+                    <div class="flex flex-col items-start justify-between gap-11 lg:gap-24">
+                        <div class="flex flex-col items-start justify-center gap-2">
+                            <h3 class="text-2xl font-bold">{card.title}</h3>
+                            <p class="text-base text-black">{card.description}</p>
+                        </div>
+                        <p class="text-3xl lg:text-3xl font-bold">{card.price}</p>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</div>
