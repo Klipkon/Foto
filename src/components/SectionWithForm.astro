@@ -1,26 +1,39 @@
 ---
-import { Image } from "astro:assets";
 import Title from "./Title.astro";
 import Description from "./Description.astro";
-import type { Form as IForm, Image as IImage } from "@/interfaces/page";
+import type { Field, Button as IButton } from "@/interfaces/page";
 import Form from "./Form.astro";
+import { Home, Phone } from "lucide-react";
 
 interface Props {
     title: string;
     description: string;
-    form: IForm;
-    id: number
+    fields: Field[]; 
+    id: number;
+    button: IButton;
+    address: string;
+    phone: string;
 }
 
-const { title, description, form, id } = Astro.props;
+const { title, description, fields, id, address, phone, button } = Astro.props;
 ---
 
 <div id={"sectionWithForm" + id} class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-20 sectionWithForm">
     <div class="flex flex-col gap-4 text">
         <Title className="text-center lg:text-left title">{title}</Title>
-        <Description className="text-center lg:text-left desc">{description}</Description> 
+        <Description className="text-center lg:text-left desc">{description}</Description>
+        <div class="flex flex-col gap-4 pt-6">
+            <div class="flex justify-start gap-4">
+                <Home size={24} />
+                <p class="text-lg">{address}</p>
+            </div>
+            <div class="flex justify-start gap-4">
+                <Phone size={24} />
+                <p class="text-lg">{phone}</p>
+            </div>
+        </div>   
     </div>
-    <Form form={form}/>
+    <Form fields={fields} button={button}/>
 </div>
 
 <script>

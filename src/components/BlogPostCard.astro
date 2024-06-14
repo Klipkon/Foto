@@ -1,0 +1,25 @@
+---
+import { Image } from "astro:assets";
+import { Card, CardContent, CardTitle } from "./ui/card";
+import { titleToSlug } from "@/lib/utils";
+
+interface Props {
+    title: string;
+    categoryName: string;
+    imageUrl: string;
+    imageWidth: number;
+    imageHeight: number;
+    id?: string;
+}
+
+const { title, categoryName, imageUrl, imageWidth, imageHeight, id } = Astro.props;
+---
+
+<a id={id} href={"/blog/" + titleToSlug(categoryName) + '/' + titleToSlug(title)} class="group">
+    <Card className="p-6 lg:p-8 border-none shadow-none bg-secondary h-full">
+        <CardContent className="flex flex-col justify-beetwen items-start p-0 gap-5 md:gap-6">
+            <Image class="w-full rounded-lg max-h-[302px]" src={import.meta.env.PUBLIC_STRAPI_URL + imageUrl} alt="" width={imageWidth} height={imageHeight} loading="eager" />
+            <CardTitle className="font-semibold text-lg sm:text-2xl">{title}</CardTitle>
+        </CardContent>
+    </Card>
+</a>

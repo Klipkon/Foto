@@ -1,0 +1,84 @@
+---
+import fetchApi from "@/lib/strapi";
+import Description from "./Description.astro";
+import Title from "./Title.astro";
+import type { ArticleData } from "@/interfaces/article.interface";
+import QueryString from "qs";
+import BlogPostCard from "./BlogPostCard.astro";
+import type { Button as IButton } from "@/interfaces/page";
+import { Button } from "./ui/button";
+
+const articles = await fetchApi<ArticleData[]>({
+    endpoint: 'articles',
+    wrappedByKey: 'data',
+    query: QueryString.stringify({
+        populate: {
+            category: true,
+            image: true
+        },
+        pagination: {
+            limit: 3,
+        },
+        sort: ['createdAt:desc']
+    }) 
+})
+
+interface Props {
+    title: string;
+    description: string;
+    button: IButton;
+}
+
+const { title, description, button } = Astro.props;
+
+---
+<div id="blogSection" class="w-full flex flex-col items-center justify-center gap-8 md:gap-12 py-20">
+    <Title className="text-center blogSectionTitle">{title}</Title>
+    <Description className="text-center blogSectionDesc">{description}</Description>
+    <div id="cardsContainer" class="w-full sm:w-3/4 md:w-1/2 lg:w-full grid grid-cols-1 lg:grid-cols-3 gap-10 xl:gap-10">
+        {articles.map( (article, i) => (
+            <BlogPostCard id={"blogCard" + (i + 1)} title={article.attributes.title} categoryName={article.attributes.category.data.attributes.name} imageUrl={article.attributes.image.data.attributes.url} imageWidth={article.attributes.image.data.attributes.width} imageHeight={article.attributes.image.data.attributes.height} />
+        ))}
+    </div>
+    <div class="pt-5 md:pt-10">
+        <a href={button.href}>
+            <Button key={button.id} id="servicesButton" variant={button.variant}>{button.content}</Button>
+        </a>
+    </div>
+</div>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    import { isMobile } from "@/lib/utils";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (!isMobile()) {
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#blogSection",
+                start: "top center",
+                end: "top center",
+            }
+        });
+        
+        tl.from(".blogSectionTitle", {y: "20%", opacity: 0})
+        .to(".blogSectionTitle", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+
+        .from(".blogSectionDesc", {y: "-20%", opacity: 0})
+        .to(".blogSectionDesc", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+
+        .from("#blogCard1", {y: "20%", opacity: 0, transformOrigin: "bottom left"}, 0.1)
+        .to("#blogCard1", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+
+        .from("#blogCard2", {y: "20%", opacity: 0, transformOrigin: "bottom left"}, 0.2)
+        .to("#blogCard2", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+
+        .from("#blogCard3", {y: "20%", opacity: 0, transformOrigin: "bottom left"}, 0.4)
+        .to("#blogCard3", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+
+        .from("#servicesButton", {y: "20%", opacity: 0, transformOrigin: "bottom left"}, 0.6)
+        .to("#servicesButton", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"});
+    }
+</script>

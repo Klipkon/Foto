@@ -8,6 +8,7 @@ import SectionWithForm from "./SectionWithForm.astro";
 import Articles from "./Articles.astro";
 import Projects from "./Projects.astro";
 import PriceList from "./PriceList.astro";
+import SectionWithBlogPosts from "./SectionWithBlogPosts.astro";
 
 interface Props {
     components: Component[]
@@ -27,12 +28,14 @@ const { components } = Astro.props;
         case "components.section-with-image":
             return <SectionWithImage title={component.title!} description={component.description!} image={component.image!} reversed={component.reversed!} id={component.id!} />
         case "components.section-with-form":
-            return <SectionWithForm title={component.title!} description={component.description!} form={component.form!} id={component.id} />
+            return <SectionWithForm title={component.title!} description={component.description!} fields={component.fields!} id={component.id} button={component.button!} address={component.address!} phone={component.phone!} />
         case "components.articles":
             return <Articles title={component.title!} description={component.description!} />
         case "components.portfolio":
             return <Projects title={component.title!} description={component.description!} />
         case "components.price-list":
             return <PriceList title={component.title!} description={component.description!} cards={component.cards!} />
+        case "components.section-with-blog-posts":
+            return <SectionWithBlogPosts title={component.title!} description={component.description!} button={component.button!} />
     }
 })}

@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import Title from "./Title.astro";
 import Description from "./Description.astro";
 import type { Image as IImage } from "@/interfaces/page";
+import { cn } from "@/lib/utils";
 
 interface Props {
     title: string;
@@ -16,8 +17,8 @@ const { title, description, image, reversed, id } = Astro.props;
 ---
 
 <div id={"sectionWithImage" + id} class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-20 sectionWithImage">
-    <div class="p-4 md:p-8 bg-secondary rounded-xl image">
-        <Image alt="" class={(reversed ? "md:order-last" : "") + "order-first rounded-lg w-full lg:w-[420px] lg:max-w-none object-cover"} src={import.meta.env.STRAPI_URL + image.data.attributes.url} width={image.data.attributes.width} height={image.data.attributes.height}/>
+    <div class={cn(reversed ? "md:order-last" : "md:order-first" ,"p-4 md:p-8 bg-secondary rounded-xl image")}>
+        <Image alt="" class="rounded-lg w-full lg:w-[420px] lg:max-w-none object-cover" src={import.meta.env.STRAPI_URL + image.data.attributes.url} width={image.data.attributes.width} height={image.data.attributes.height}/>
     </div>
     <div class="flex flex-col gap-4 text">
         <Title className="text-center lg:text-left title">{title}</Title>

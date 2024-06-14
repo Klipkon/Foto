@@ -3,17 +3,14 @@ import "@/styles/globals.css"
 import type { ArticleData, CategoryData } from '@/interfaces/article.interface'
 import Title from '@/components/Title.astro';
 import Description from '@/components/Description.astro';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import MainLayout from "@/layouts/MainLayout.astro";
 import Pagination from "@/components/Pagination.astro";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { titleToSlug } from "@/lib/utils";
 import fetchApi from "@/lib/strapi";
 import QueryString from "qs";
 import type { Page } from "@/interfaces/page";
-import Image from "astro/components/Image.astro";
+import BlogPostCard from "@/components/BlogPostCard.astro";
 
 const blogPage = await fetchApi<Page[]>({
     endpoint: 'pages',
@@ -66,17 +63,6 @@ const sortedCategories = categories.sort((a, b) => a.id > b.id ? 1 : -1);
             <Description>{description}</Description> 
             </div>
             <div class="w-full lg:w-1/2 flex items-center justify-end">
-                <div class="bg-secondary rounded-xl p-8 w-full lg:w-3/4">
-                    <form>
-                        <div class="grid w-full items-center gap-3">
-                        <Label htmlFor="searchTitle">Szukaj artykułu</Label>
-                            <div class="flex items-center justify-between gap-2">
-                                <Input id='searchTitle' placeholder="Tytuł artykułu..." />
-                                <Button>Szukaj</Button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
@@ -94,14 +80,7 @@ const sortedCategories = categories.sort((a, b) => a.id > b.id ? 1 : -1);
     <div id="cardsContainer" class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-10 pt-14">
         {
             articles.map((article, i) => (
-                <a href={"/blog/" + titleToSlug(article.attributes.category.data.attributes.name) + '/' + titleToSlug(article.attributes.title)} class="group">
-                    <Card className="p-6 lg:p-8 border-none shadow-none bg-secondary h-full">
-                        <CardContent className="flex flex-col justify-beetwen items-start p-0 gap-5 md:gap-6">
-                            <Image class="w-full rounded-lg max-h-[302px]" src={import.meta.env.PUBLIC_STRAPI_URL + article.attributes.image.data.attributes.formats.thumbnail.url} alt="" width={article.attributes.image.data.attributes.formats.thumbnail.width} height={article.attributes.image.data.attributes.formats.thumbnail.height} loading="eager" />
-                            <CardTitle className="font-semibold text-lg sm:text-2xl">{article.attributes.title}</CardTitle>
-                        </CardContent>
-                    </Card>
-                </a>
+               <BlogPostCard title={article.attributes.title} categoryName={article.attributes.category.data.attributes.name} imageUrl={article.attributes.image.data.attributes.formats.thumbnail.url} imageWidth={article.attributes.image.data.attributes.formats.thumbnail.width} imageHeight={article.attributes.image.data.attributes.formats.thumbnail.height} /> 
             ))
         }
     </div>

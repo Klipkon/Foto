@@ -1,5 +1,5 @@
 ---
-import type {Card as ICard, TitleClass, Button as IButton} from "@/interfaces/page.ts";
+import type {Card as ICard, Button as IButton} from "@/interfaces/page.ts";
 import Description from "@/components/Description.astro";
 import Title from "@/components/Title.astro";
 import {
@@ -37,7 +37,9 @@ const { title, description, cards, buttons } = Astro.props;
     </div>
     <div class="pt-5 md:pt-10">
         {buttons.map(button => (
-            <Button key={button.id} id="servicesButton" variant={button.variant}>{button.content}</Button>
+            <a href={button.href}>
+                <Button key={button.id} id="servicesButton" variant={button.variant}>{button.content}</Button>
+            </a>
         ))}
     </div>
 </div>

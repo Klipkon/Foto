@@ -1,5 +1,5 @@
 ---
-import type { Form } from "@/interfaces/page";
+import type { Field, Button as IButton } from "@/interfaces/page";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
@@ -7,16 +7,17 @@ import { Textarea } from "./ui/textarea";
 
 
 interface Props {
-    form: Form;
+    fields: Field[];
+    button: IButton;
 }
 
-const {form} = Astro.props;
+const { fields, button } = Astro.props;
 ---
 
 <div class="bg-secondary rounded-xl px-5 py-8 md:p-8 w-full lg:w-auto title form">
     <form class="w-full lg:w-[500px] flex flex-col items-center justify-center gap-4">
         {
-            form.fields.map((field) => {
+            fields.map((field) => {
                 return (
                     <div class="grid w-full items-center gap-2">
                         <Label htmlFor={field.type + field.id}>{field.label}</Label>
@@ -31,6 +32,6 @@ const {form} = Astro.props;
                 );
             })
         }
-        <Button type="submit" variant={form.button.variant} size={form.button.size} className="w-full mt-4">{form.button.content}</Button>
+        <Button type="submit" variant={button.variant} size={button.size} className="w-full mt-4">{button.content}</Button>
     </form>
 </div>

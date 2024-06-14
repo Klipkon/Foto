@@ -23,8 +23,10 @@ export interface Component {
     images?:      Images;
     cards?:       Card[];
     video?:       Video;
-    form?:        Form;
+    fields?:      Field[];
     reversed?:    boolean;
+    address?:     string;
+    phone?:       string;
 }
 
 export interface Button {
@@ -127,12 +129,6 @@ export interface Attributes {
     provider_metadata: null;
     createdAt:         Date;
     updatedAt:         Date;
-}
-
-export interface Form {
-    id:     number;
-    fields: Field[];
-    button: Button;
 }
 
 export interface Field {

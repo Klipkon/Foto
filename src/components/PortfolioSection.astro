@@ -30,7 +30,9 @@ const {title, description, images, button} = Astro.props;
             ))} 
         </div>
         <div class="flex items-center justify-center">
-            <Button id="portfolioButton" variant={button.variant} size={button.size}>{button.content}</Button>
+            <a href={button.href}>
+                <Button id="portfolioButton" variant={button.variant} size={button.size}>{button.content}</Button>
+            </a>
         </div>
     </div>
 </div>
