@@ -22,7 +22,7 @@ const { title, description, fields, id, address, phone, button } = Astro.props;
     <div class="flex flex-col gap-4 text">
         <Title className="text-center lg:text-left title">{title}</Title>
         <Description className="text-center lg:text-left desc">{description}</Description>
-        <div class="flex flex-col gap-4 pt-6">
+        <div class="flex flex-col gap-4 pt-6" id="contactInfo">
             <div class="flex justify-start gap-4">
                 <Home size={24} />
                 <p class="text-lg">{address}</p>
@@ -58,5 +58,7 @@ const { title, description, fields, id, address, phone, button } = Astro.props;
         .to(".sectionWithForm .text .title", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
         .from(".sectionWithForm .text .desc", {y: "20%", opacity: 0}, 0.3)
         .to(".sectionWithForm .text .desc", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
+        .from("#contactInfo", {y: "20%", opacity: 0}, 0.3)
+        .to("#contactInfo", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
     }
 </script>
