@@ -25,7 +25,11 @@ export default async function fetchApi<T>({
 
     const url = new URL(`${import.meta.env.STRAPI_URL}/api/${endpoint}?${query ?? ""}`);
 
-    const res = await fetch(url.toString());
+    const res = await fetch(url.toString(), {
+        headers: {
+            Authorization: `Bearer ${import.meta.env.STRAPI_API_TOKEN}`,
+        },
+    });
     let data = await res.json();
 
     if (wrappedByKey) {
