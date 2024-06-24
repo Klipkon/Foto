@@ -3,10 +3,10 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": ".",
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "src/*",
