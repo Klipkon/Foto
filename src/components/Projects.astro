@@ -3,9 +3,6 @@ import type { ArticleData, CategoryData } from '@/interfaces/article.interface'
 import fetchApi from '@/lib/strapi';
 import Title from './Title.astro';
 import Description from './Description.astro';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
-import { Label } from './ui/label';
 import AtriclesCards from './ArticlesCards'
 import QueryString from 'qs';
 
@@ -19,8 +16,6 @@ const categories = await fetchApi<CategoryData[]>({
     endpoint: 'types',
     wrappedByKey: 'data'
 })
-
-console.log(JSON.stringify(projects, null, 2))
 
 interface Props {
     title: string;

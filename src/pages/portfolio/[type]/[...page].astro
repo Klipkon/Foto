@@ -28,7 +28,6 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
         const typeName = type.attributes.name;
         const typeNameSlug = titleToSlug(typeName).toString();
         const filtredProjects = projects.filter(project => project.attributes.category.data.attributes.name == typeName);
-        console.log(typeNameSlug, filtredProjects)
         return paginate(filtredProjects, { 
             params: { type: typeNameSlug}, 
             pageSize: 9 

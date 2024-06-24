@@ -1,5 +1,6 @@
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
-import type {Navigation, Button as IButton} from "../interfaces/page";
+import type {Button as IButton} from "../interfaces/page";
+import type {Navigation} from "../interfaces/header";
 import { Button } from "./ui/button";
 import { Menu } from "lucide-react";
 

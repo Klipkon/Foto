@@ -1,9 +1,7 @@
 import type { ArticleData, CategoryData } from "@/interfaces/article.interface";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Card, CardContent, CardTitle } from "./ui/card";
-import { filterArticlesByCategory, titleToSlug } from "@/lib/utils";
 
-export default function ArticlesCards({ articles, categories, portfolio}: { articles: ArticleData[], categories: CategoryData[], portfolio?: boolean}) {
+export default function ArticlesCards({ categories }: { articles: ArticleData[], categories: CategoryData[], portfolio?: boolean}) {
    
     function currentCategory() {
         const urlParams = new URLSearchParams(window.location.search);
