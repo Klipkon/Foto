@@ -6,15 +6,11 @@ on:
   repository_dispatch:
     types: [ entry.publish, entry.unpublish ]
 
-jobs:
-  pre-job:
-    name: Pre-job
-    runs-on: self-hosted
-    steps:
-      - uses: technote-space/auto-cancel-redundant-workflow@v1
-      - name: Cancel redundant workflows
-        run: echo "Cancel redundant workflows finished"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
+jobs:
   build:
     runs-on: self-hosted
     env:
