@@ -21,7 +21,7 @@ jobs:
       STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       
       - name: Use Node.js
         uses: actions/setup-node@v2
@@ -35,7 +35,7 @@ jobs:
         run: npm run build
         
       - name: Deploy to server
-        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
