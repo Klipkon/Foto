@@ -14,7 +14,7 @@ const footer = await fetchApi<Footer>({
 const {logo, navigation, cta, description} = footer.attributes;
 ---
 <footer id="footer" class="container">
-    <div class="flex flex-col items-center justify-center rounded-xl bg-secondary p-8 my-20">
+    <div class="flex flex-col items-center justify-center rounded-xl bg-secondary p-8 mt-20 mb-5">
         <div class="w-full flex flex-col lg:flex-row gap-8 items-center justify-between pb-8 border-b">
             <a href="/">
                 <Image src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url} width={logo.data.attributes.width} height={logo.data.attributes.height}  alt="logo" loading="eager"/>
