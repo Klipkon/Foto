@@ -1,9 +1,9 @@
 ---
-import "@/styles/globals.css"
-import type { ArticleData, CategoryData } from '@/interfaces/article.interface'
-import Title from '@/components/Title.astro';
-import Description from '@/components/Description.astro';
-import { Button } from '@/components/ui/button';
+import "@/styles/globals.css";
+import type { ArticleData, CategoryData } from "@/interfaces/article.interface";
+import Title from "@/components/Title.astro";
+import Description from "@/components/Description.astro";
+import { Button } from "@/components/ui/button";
 import MainLayout from "@/layouts/MainLayout.astro";
 import Pagination from "@/components/Pagination.astro";
 import { titleToSlug } from "@/lib/utils";
@@ -13,76 +13,102 @@ import type { Page } from "@/interfaces/page";
 import BlogPostCard from "@/components/BlogPostCard.astro";
 
 const blogPage = await fetchApi<Page[]>({
-    endpoint: 'pages',
-    wrappedByKey: 'data',
-    query: QueryString.stringify({
-        filters: {
-            title: {
-                $eq: 'Blog',
-            },
-        },
+  endpoint: "pages",
+  wrappedByKey: "data",
+  query: QueryString.stringify({
+    filters: {
+      slug: {
+        $eq: "/blog",
+      },
+    },
+    populate: {
+      components: {
         populate: {
-            components: {
-                populate: {
-                    articles: true
-                }
-            }
-        }
-    })
-})
+          articles: true,
+        },
+      },
+    },
+  }),
+});
 
 const categories = await fetchApi<CategoryData[]>({
-    endpoint: 'categories',
-    wrappedByKey: 'data'
-})
+  endpoint: "categories",
+  wrappedByKey: "data",
+});
 
 interface Props {
-    articles: ArticleData[];
-    previousUrl?: string;
-    nextUrl?: string;
-    currentPage: number;
+  articles: ArticleData[];
+  previousUrl?: string;
+  nextUrl?: string;
+  currentPage: number;
 }
 
-const {articles,  previousUrl, nextUrl, currentPage} = Astro.props;
+const { articles, previousUrl, nextUrl, currentPage } = Astro.props;
 const title = blogPage[0].attributes.components[0].title!;
 const description = blogPage[0].attributes.components[0].description!;
 
 const categoryUrl = () => {
-    const params = Astro.params;
-    return 'category' in params ? params.category : '';
-}
+  const params = Astro.params;
+  return "category" in params ? params.category : "";
+};
 
-const sortedCategories = categories.sort((a, b) => a.id > b.id ? 1 : -1);
+const sortedCategories = categories.sort((a, b) => (a.id > b.id ? 1 : -1));
 ---
 
 <MainLayout title={blogPage[0].attributes.title}>
-    <div class="flex flex-col items-start justify-center pb-14">
-        <div class="flex flex-col lg:flex-row items-start justify-between gap-6">
-            <div class="flex flex-col items-start justify-center gap-4 w-full lg:w-1/2">
-            <Title>{title}</Title>
-            <Description>{description}</Description> 
-            </div>
-            <div class="w-full lg:w-1/2 flex items-center justify-end">
-            </div>
-        </div>
+  <div class="flex flex-col items-start justify-center pb-14">
+    <div class="flex flex-col lg:flex-row items-start justify-between gap-6">
+      <div
+        class="flex flex-col items-start justify-center gap-4 w-full lg:w-1/2"
+      >
+        <Title>{title}</Title>
+        <Description>{description}</Description>
+      </div>
+      <div class="w-full lg:w-1/2 flex items-center justify-end"></div>
     </div>
-    <div class="flex flex-wrap items-center justify-start gap-5">
-        {
-            sortedCategories.map((category) => {
-                const slug = (category.attributes.name == "Wszystko" ? '' : titleToSlug(category.attributes.name));
+  </div>
+  <div class="flex flex-wrap items-center justify-start gap-5">
+    {
+      sortedCategories.map((category) => {
+        const slug =
+          category.attributes.name == "Wszystko"
+            ? ""
+            : titleToSlug(category.attributes.name);
 
-                return <a href={"/blog/" + slug}>
-                    <Button size="sm" variant={slug == categoryUrl() ? 'default' : 'secondary'}>{category.attributes.name}</Button>
-                </a>
-            })
-        }
-    </div>
-    <div id="cardsContainer" class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-10 pt-14">
-        {
-            articles.map((article) => (
-               <BlogPostCard title={article.attributes.title} categoryName={article.attributes.category.data.attributes.name} imageUrl={article.attributes.image.data.attributes.formats.thumbnail.url} imageWidth={article.attributes.image.data.attributes.formats.thumbnail.width} imageHeight={article.attributes.image.data.attributes.formats.thumbnail.height} /> 
-            ))
-        }
-    </div>
-    <Pagination previous={previousUrl} next={nextUrl} currentPage={currentPage} />
+        return (
+          <a href={"/blog/" + slug}>
+            <Button
+              size="sm"
+              variant={slug == categoryUrl() ? "default" : "secondary"}
+            >
+              {category.attributes.name}
+            </Button>
+          </a>
+        );
+      })
+    }
+  </div>
+  <div
+    id="cardsContainer"
+    class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-10 pt-14"
+  >
+    {
+      articles.map((article) => (
+        <BlogPostCard
+          title={article.attributes.title}
+          categoryName={article.attributes.category.data.attributes.name}
+          imageUrl={
+            article.attributes.image.data.attributes.formats.thumbnail.url
+          }
+          imageWidth={
+            article.attributes.image.data.attributes.formats.thumbnail.width
+          }
+          imageHeight={
+            article.attributes.image.data.attributes.formats.thumbnail.height
+          }
+        />
+      ))
+    }
+  </div>
+  <Pagination previous={previousUrl} next={nextUrl} currentPage={currentPage} />
 </MainLayout>

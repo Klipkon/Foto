@@ -1,63 +1,62 @@
 ---
 import fetchApi from "@/lib/strapi";
-import type {Page} from "@/interfaces/page";
+import type { Page } from "@/interfaces/page";
 import BlockManager from "@/components/BlockManager.astro";
 import MainLayout from "@/layouts/MainLayout.astro";
 import QueryString from "qs";
 
 export async function getStaticPaths() {
+  const pages = await fetchApi<Page[]>({
+    endpoint: "pages",
+    wrappedByKey: "data",
+    query: QueryString.stringify({
+      filters: {
+        $and: [
+          {
+            slug: {
+              $ne: "/portfolio",
+            },
+          },
+          {
+            slug: {
+              $ne: "/blog",
+            },
+          },
+        ],
+      },
+      populate: {
+        components: {
+          populate: {
+            logo: true,
+            navigation: true,
+            cta: true,
+            buttons: true,
+            button: true,
+            image: true,
+            images: true,
+            video: true,
+            fields: true,
+            title: true,
+            cards: {
+              populate: "*",
+            },
+          },
+        },
+      },
+    }),
+  });
 
-	const pages = await fetchApi<Page[]>({
-		endpoint: 'pages',
-		wrappedByKey: 'data',
-		query: QueryString.stringify({
-			filters: {
-				$and: [
-					{
-						title: {
-							$ne: "Portfolio"
-						},
-					},
-					{
-						title: {
-							$ne: "Blog"
-						},
-					}
-				]	
-			},
-			populate: {
-				components: {
-					populate: {
-						logo: true,
-						navigation: true,
-						cta: true,
-						buttons: true,
-						button: true,
-						image: true,
-						images: true,
-						video: true,
-						fields: true,
-						title: true,
-						cards: {
-							populate: "*",
-						},
-					},
-				},
-			},
-		})
-	})	
-
-	return pages.map(page => {
-		return {
-			params: { slug: page.attributes.slug ?? undefined },
-			props: page,
-		}
-	})
+  return pages.map((page) => {
+    return {
+      params: { slug: page.attributes.slug ?? undefined },
+      props: page,
+    };
+  });
 }
 
 const page = Astro.props;
 ---
 
 <MainLayout title={page.attributes.title}>
-	<BlockManager components={page.attributes.components} />
+  <BlockManager components={page.attributes.components} />
 </MainLayout>
