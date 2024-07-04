@@ -1,44 +1,71 @@
 ---
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import MobileMenu from "./MobileMenu";
 import type { Header } from "@/interfaces/header";
 import fetchApi from "@/lib/strapi";
 import { Image } from "astro:assets";
 
 const header = await fetchApi<Header>({
-    endpoint: 'header',
-    wrappedByKey: 'data',
-    query: "populate=*",
-})
+  endpoint: "header",
+  wrappedByKey: "data",
+  query: "populate=*",
+});
 
-const {logo, navigation, cta} = header.attributes;
+const { logo, navigation, cta } = header.attributes;
 ---
 
-<div class="container backdrop-blur bg-white/50 sticky top-0 z-40" transition:animate="none">
-    <header id="header" class="w-full flex items-center justify-between h-20">
-        <a href="/">
-            <Image src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url} width={logo.data.attributes.width} height={logo.data.attributes.height}  alt="logo" loading="eager" />
-        </a>
-        <nav class="hidden lg:flex items-center justify-center gap-5 bg-secondary rounded-lg px-9 py-2">
-            {navigation.map(element => <a class="hover:underline" href={element.href}>{element.title}</a>)}
-        </nav>
-        {
-            cta ? (
-                    <Button variant={cta.variant} size={cta.size} className="hidden lg:flex" >{cta.content}</Button>
-            ) : ""
-        } 
-        <MobileMenu navigation={navigation} cta={cta} client:load />
-    </header>
+<div
+  class="container bg-background sticky top-0 z-40"
+  transition:animate="none"
+>
+  <header id="header" class="w-full flex items-center justify-between h-20">
+    <a href="/">
+      <Image
+        src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url}
+        width={logo.data.attributes.width}
+        height={logo.data.attributes.height}
+        alt="logo"
+        loading="eager"
+      />
+    </a>
+    <nav class="hidden lg:flex items-center justify-center gap-5">
+      {
+        navigation.map((element) => (
+          <a class="hover:underline" href={element.href}>
+            <Button variant="ghost">{element.title}</Button>
+          </a>
+        ))
+      }
+    </nav>
+    {
+      cta ? (
+        <Button
+          variant={cta.variant}
+          size={cta.size}
+          className="hidden lg:flex"
+        >
+          {cta.content}
+        </Button>
+      ) : (
+        ""
+      )
+    }
+    <MobileMenu navigation={navigation} cta={cta} client:load />
+  </header>
 </div>
 
 <script>
-    import gsap from 'gsap';
-    import {isMobile} from "@/lib/utils";
+  import gsap from "gsap";
+  import { isMobile } from "@/lib/utils";
 
-    if (!isMobile()) {
-        let tl = gsap.timeline();
-        
-        tl.from("#header", {y: "20%", opacity: 0})
-        .to("#header", {y: 0, opacity: 1, duration: 1, ease: "power2.in"})
-    }
+  if (!isMobile()) {
+    let tl = gsap.timeline();
+
+    tl.from("#header", { y: "20%", opacity: 0 }).to("#header", {
+      y: 0,
+      opacity: 1,
+      duration: 1,
+      ease: "power2.in",
+    });
+  }
 </script>
