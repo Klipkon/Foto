@@ -1,74 +1,121 @@
 ---
-import type {Card as ICard, Button as IButton} from "@/interfaces/page.ts";
+import type { Card as ICard, Button as IButton } from "@/interfaces/page.ts";
 import Description from "@/components/Description.astro";
 import Title from "@/components/Title.astro";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardTitle,
-} from "@/components/ui/card"
-import {Button} from "@/components/ui/button.tsx";
-import { Image } from 'astro:assets';
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button.tsx";
+import { Image } from "astro:assets";
+import { cn } from "@/lib/utils";
 
 interface Props {
-    title: string;
-    description: string | null;
-    cards: ICard[];
-    buttons: IButton[];
+  title: string;
+  description: string | null;
+  cards: ICard[];
+  buttons: IButton[];
 }
 
 const { title, description, cards, buttons } = Astro.props;
 ---
 
-<div id="servicesSection" class="w-full flex flex-col items-center justify-center gap-8 md:gap-12 py-20">
-    <Title className="text-center servicesTitle">{title}</Title>
-    <Description className="text-center">{description}</Description>
-    <div id="cardsContainer" class="w-full sm:w-3/4 md:w-1/2 lg:w-full grid grid-cols-1 lg:grid-cols-3 gap-10 xl:gap-10">
-        {cards.map((card, i) => (
-            <Card key={card.id} id={"card" + (i+1)} className={(card.highlighted ? "shadow-[0_5px_50px_0_rgba(0,0,0,0.25)]" : "shadow-none") + " p-6 lg:p-8 border-none bg-transparent"}>
-                <CardContent className="flex flex-col justify-beetwen items-start p-0 gap-5 md:gap-6">
-                    <Image class="w-full rounded-lg max-h-[302px] object-cover" src={import.meta.env.STRAPI_URL + card.image.data.attributes.url} alt="" width={card.image.data.attributes.width} height={card.image.data.attributes.height}/>
-                    <CardTitle className="font-bold text-2xl lg::text-4xl">{card.title}</CardTitle>
-                    {card.description && <CardDescription className="text-base text-black">{card.description}</CardDescription>}
-                </CardContent>
-            </Card>
-        ))}
-    </div>
-    <div class="pt-5 md:pt-10">
-        {buttons.map(button => (
-            <a href={button.href}>
-                <Button key={button.id} id="servicesButton" variant={button.variant}>{button.content}</Button>
-            </a>
-        ))}
-    </div>
+<div
+  id="servicesSection"
+  class="w-full flex flex-col items-center justify-center gap-12 py-24 px-5"
+>
+  <Title className="text-center servicesTitle">{title}</Title>
+  <Description className="text-center">{description}</Description>
+  <div id="cardsContainer" class="w-full flex flex-col lg:flex-row gap-12">
+    {
+      cards.map((card, i) => (
+        <Card key={card.id} id={"card" + (i + 1)} featured={card.highlighted}>
+          <CardContent>
+            <Image
+              class={cn(
+                card.highlighted ? "lg:w-[418px] h-auto" : "max-h-[302px]",
+                "rounded-md w-auto object-cover"
+              )}
+              src={import.meta.env.STRAPI_URL + card.image.data.attributes.url}
+              alt=""
+              width={card.image.data.attributes.width}
+              height={card.image.data.attributes.height}
+            />
+            <CardTitle className="font-bold text-2xl lg::text-4xl">
+              {card.title}
+            </CardTitle>
+            {card.description && (
+              <CardDescription className="text-base text-black">
+                {card.description}
+              </CardDescription>
+            )}
+          </CardContent>
+        </Card>
+      ))
+    }
+  </div>
+  <div class="pt-5 md:pt-10">
+    {
+      buttons.map((button) => (
+        <a href={button.href}>
+          <Button key={button.id} id="servicesButton" variant={button.variant}>
+            {button.content}
+          </Button>
+        </a>
+      ))
+    }
+  </div>
 </div>
 
 <script>
-    import gsap from 'gsap';
-    import { ScrollTrigger } from 'gsap/ScrollTrigger';
-    import {isMobile} from "@/lib/utils";
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { isMobile } from "@/lib/utils";
 
-    gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger);
 
-    if (!isMobile()) {
-        let tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "#servicesSection",
-                start: "top center",
-                end: "top center",
-            }
-        });
-        
-        tl.from(".servicesTitle", {x: "-20%", opacity: 0})
-        .to(".servicesTitle", {x: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-        .from("#card2", {y: "20%", opacity: 0, transformOrigin: "bottom left"})
-        .to("#card2", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-        .from("#card1", {y: "20%", opacity: 0, transformOrigin: "bottom left"}, 0.2)
-        .to("#card1", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-        .from("#card3", {y: "20%", opacity: 0, transformOrigin: "bottom left"},0.4)
-        .to("#card3", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-        .from("#servicesButton", {y: "20%", opacity: 0, transformOrigin: "bottom left"}, 0.6)
-        .to("#servicesButton", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"});
-    }
+  if (!isMobile()) {
+    let tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#servicesSection",
+        start: "top center",
+        end: "top center",
+      },
+    });
+
+    tl.from(".servicesTitle", { x: "-20%", opacity: 0 })
+      .to(".servicesTitle", {
+        x: 0,
+        opacity: 1,
+        duration: 0.1,
+        ease: "power4.in",
+      })
+      .from("#card2", { y: "20%", opacity: 0, transformOrigin: "bottom left" })
+      .to("#card2", { y: 0, opacity: 1, duration: 0.1, ease: "power4.in" })
+      .from(
+        "#card1",
+        { y: "20%", opacity: 0, transformOrigin: "bottom left" },
+        0.2
+      )
+      .to("#card1", { y: 0, opacity: 1, duration: 0.1, ease: "power4.in" })
+      .from(
+        "#card3",
+        { y: "20%", opacity: 0, transformOrigin: "bottom left" },
+        0.4
+      )
+      .to("#card3", { y: 0, opacity: 1, duration: 0.1, ease: "power4.in" })
+      .from(
+        "#servicesButton",
+        { y: "20%", opacity: 0, transformOrigin: "bottom left" },
+        0.6
+      )
+      .to("#servicesButton", {
+        y: 0,
+        opacity: 1,
+        duration: 0.1,
+        ease: "power4.in",
+      });
+  }
 </script>
