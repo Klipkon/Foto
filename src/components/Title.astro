@@ -1,11 +1,24 @@
 ---
 interface Props {
-    className?: string;
+  className?: string;
+  h1?: boolean;
 }
 
-const {className} = Astro.props;
+const { className, h1 } = Astro.props;
 ---
 
-<h2 class={`text-2xl sm:text-4xl font-bold lg:leading-[3rem] ${className}`}>
-    <slot />
-</h2>
+{
+  h1 ? (
+    <h1
+      class={`text-2xl lg:text-[40px] font-bold lg:leading-[3rem] ${className}`}
+    >
+      <slot />
+    </h1>
+  ) : (
+    <h2
+      class={`text-2xl lg:text-[40px] font-bold lg:leading-[3rem] ${className}`}
+    >
+      <slot />
+    </h2>
+  )
+}
