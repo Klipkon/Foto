@@ -13,9 +13,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Poppins', 'sans-serif'],
-        body: ['Poppins', 'sans-serif'],
-        sans: ['Poppins', 'sans-serif']
+        display: ["Poppins", "sans-serif"],
+        body: ["Poppins", "sans-serif"],
+        sans: ["Poppins", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -52,11 +52,18 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      borderWidth: {
+        1: "1px",
+      },
       borderRadius: {
         xl: "var(--radiusXL)",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        accent: "3px 3px 0 0 var(--bg-accent)",
+        "accent-button": "6px 6px 0 0 var(--bg-accent)",
       },
       keyframes: {
         "accordion-down": {
@@ -67,16 +74,16 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "rotate": {
-          "100%": {"transform": "rotate(-360deg)"},
-        }
+        rotate: {
+          "100%": { transform: "rotate(-360deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "rotate": "rotate 6s linear infinite",
+        rotate: "rotate 6s linear infinite",
       },
     },
   },
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
-}
+};
