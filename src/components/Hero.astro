@@ -1,61 +1,79 @@
 ---
-import type {Button as IButton, Image as IImage, Video} from "../interfaces/page";
+import type {
+  Button as IButton,
+  Image as IImage,
+  Video,
+} from "../interfaces/page";
 import Title from "./Title.astro";
-import Description from "@/components/Description.astro";
-import {Button} from "@/components/ui/button.tsx";
-import { Image } from "astro:assets";
-import PresentationVideoDialog from "./PresentationVideoModal";
+import { Button } from "@/components/ui/button.tsx";
 
 interface Props {
-    image: IImage;
-    description: string;
-    title: string;
-    buttons: IButton[]
-    video: Video;
+  image: IImage;
+  description: string;
+  title: string;
+  buttons: IButton[];
+  video: Video;
 }
 
-const {image, video, buttons, description, title} = Astro.props;
-
+const { image, video, buttons, description, title } = Astro.props;
 ---
-<div class="flex flex-col items-center justify-center lg:flex-row" style={{height: "calc(100vh - 80px)"}}>
-   <div id="textPanel" class="flex justify-center items-center lg:justify-start w-full lg:w-auto lg:bg-secondary lg:p-8 xl:p-11 lg:rounded-l-xl z-10">
-       <div class="lg:justify-start w-full md:w-3/4 flex flex-col justify-center items-center lg:items-start gap-[25px] lg:gap-[40px] lg:max-w-[400px]">
-           <Title className="xl:text-5xl xl:leading-[4rem] text-center lg:text-left">{title}</Title>
-           <Description className="text-center lg:text-left">{description}</Description>
-           {buttons.map(button => (
-               <Button key={button.id} size={button.size} variant={button.variant} className="w-full md:w-3/4 lg:w-40">{button.content}</Button>
-           ))}
-       </div>
-   </div>
-    <div class="mt-10 lg:mt-0 w-full flex items-center justify-center lg:justify-start max-h-[700px] max-w-[657px] z-20 relative">
-        <Image class="shadow-[0_5px_100px_0_rgba(0,0,0,0.25)] rounded-xl w-100 w-full hero-image" src={import.meta.env.STRAPI_URL + image.data.attributes.formats.small!.url} alt="" width={image.data.attributes.formats.small!.width} height={image.data.attributes.formats.small!.height} />
-        <PresentationVideoDialog video={video} client:load />
-    </div>
+
+<div
+  class="flex flex-col items-center justify-center gap-10 py-5"
+  style={{ height: "calc(100dvh - 80px)" }}
+>
+  <Title h1 className="text-center max-w-[426px]">{title}</Title>
+  <div class="flex items-center justify-center gap-8">
+    {
+      buttons.map((button) => (
+        <>
+          <Button key={button.id} size={button.size} variant={button.variant}>
+            {button.content}
+          </Button>
+          <Button key={button.id} size={button.size} variant="secondary">
+            {button.content}
+          </Button>
+        </>
+      ))
+    }
+  </div>
+  <div class="">
+    <video
+      class="w-full max-w-[1130px] aspect-video h-auto rounded-xl shadow-[0_0_40px_0_rgba(0,0,0,0.25)]"
+      autoplay
+      muted
+      loop
+      src={import.meta.env.STRAPI_URL + video.data.attributes.url}></video>
+  </div>
 </div>
 
 <script>
-    import gsap from "gsap";
-    import {isMobile} from "@/lib/utils";
+  // import gsap from "gsap";
+  // import { isMobile } from "@/lib/utils";
 
-    let width = window.innerWidth;
-    let x = "100%";
-    let y = "0";
+  // let width = window.innerWidth;
+  // let x = "100%";
+  // let y = "0";
 
-    if (width < 1024) {
-        x = "0";
-        y = "100%";
-    }
+  // if (width < 1024) {
+  //   x = "0";
+  //   y = "100%";
+  // }
 
-    if (!isMobile()) {
-        let tl = gsap.timeline();
-        
-        tl.from(".hero-image", {scale: 0, transformOrigin: "bottom left"})
-        .to(".hero-image", {scale: 1, duration: 0.5, ease: "power4.in"})
-        .from(".modalButton", {scale: 0, transformOrigin: "bottom left"}, 0.5)
-        .to(".modalButton", {scale: 1, duration: 0.5, ease: "power4.in"})
-        .from("#textPanel", {x: x, y:y, opacity: 0}, 0.9)
-        .to("#textPanel", {x: 0, y: 0, duration: 0.25, opacity: 1, ease: "power4.in"})
-    }
+  // if (!isMobile()) {
+  //   let tl = gsap.timeline();
 
-
+  //   tl.from(".hero-image", { scale: 0, transformOrigin: "bottom left" })
+  //     .to(".hero-image", { scale: 1, duration: 0.5, ease: "power4.in" })
+  //     .from(".modalButton", { scale: 0, transformOrigin: "bottom left" }, 0.5)
+  //     .to(".modalButton", { scale: 1, duration: 0.5, ease: "power4.in" })
+  //     .from("#textPanel", { x: x, y: y, opacity: 0 }, 0.9)
+  //     .to("#textPanel", {
+  //       x: 0,
+  //       y: 0,
+  //       duration: 0.25,
+  //       opacity: 1,
+  //       ease: "power4.in",
+  //     });
+  // }
 </script>
