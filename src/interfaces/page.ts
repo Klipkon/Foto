@@ -33,6 +33,7 @@ export interface Component {
   fields?: Field[];
   reversed?: boolean;
   address?: string;
+  featured?: boolean;
   phone?: string;
 }
 

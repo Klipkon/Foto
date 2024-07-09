@@ -51,6 +51,8 @@ const { components } = Astro.props;
       case "components.section-with-image":
         return (
           <SectionWithImage
+            button={component.button}
+            featured={component.featured!}
             title={component.title!}
             description={component.description!}
             image={component.image!}

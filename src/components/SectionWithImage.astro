@@ -2,8 +2,9 @@
 import { Image } from "astro:assets";
 import Title from "./Title.astro";
 import Description from "./Description.astro";
-import type { Image as IImage } from "@/interfaces/page";
+import type { Image as IImage, Button as IButton } from "@/interfaces/page";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   title: string;
@@ -11,34 +12,44 @@ interface Props {
   image: IImage;
   reversed: boolean;
   id: number;
+  featured: boolean;
+  button?: IButton;
 }
 
-const { title, description, image, reversed, id } = Astro.props;
+const { title, description, image, reversed, id, featured, button } =
+  Astro.props;
 ---
 
 <div
   id={"sectionWithImage" + id}
-  class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-20 sectionWithImage"
+  class={cn(
+    featured ? "bg-secondary rounded-xl shadow-accent" : "",
+    "flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-48 sectionWithImage p-12"
+  )}
 >
-  <div
+  <Image
+    alt={image.data.attributes.alternativeText}
     class={cn(
-      reversed ? "md:order-last" : "md:order-first",
-      "p-4 md:p-8 bg-secondary rounded-xl image"
+      featured ? "" : "shadow-green",
+      reversed ? "md:order-first" : "md:order-last",
+      "rounded-lg w-full lg:w-[420px] lg:max-w-none object-cover"
     )}
-  >
-    <Image
-      alt={image.data.attributes.alternativeText}
-      class="rounded-lg w-full lg:w-[420px] lg:max-w-none object-cover"
-      src={import.meta.env.STRAPI_URL + image.data.attributes.url}
-      width={image.data.attributes.width}
-      height={image.data.attributes.height}
-    />
-  </div>
-  <div class="flex flex-col gap-4 text">
+    src={import.meta.env.STRAPI_URL + image.data.attributes.url}
+    width={image.data.attributes.width}
+    height={image.data.attributes.height}
+  />
+  <div class="flex flex-col gap-8 text items-center lg:items-start">
     <Title className="text-center lg:text-left title">{title}</Title>
     <Description className="text-center lg:text-left desc"
       >{description}</Description
     >
+    {
+      button ? (
+        <Button key={button.id} size={button.size} variant={button.variant}>
+          {button.content}
+        </Button>
+      ) : null
+    }
   </div>
 </div>
 
