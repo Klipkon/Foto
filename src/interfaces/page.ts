@@ -9,7 +9,14 @@ export interface PageAttributes {
   updatedAt: Date;
   publishedAt: Date;
   slug: string;
+  seo: Seo;
   components: Component[];
+}
+
+export interface Seo {
+  id: number;
+  title: string;
+  description: string;
 }
 
 export interface Component {
