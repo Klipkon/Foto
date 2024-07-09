@@ -24,22 +24,32 @@ const { title, description, cards, buttons } = Astro.props;
 
 <div
   id="servicesSection"
-  class="w-full flex flex-col items-center justify-center gap-12 py-24 px-5"
+  class="w-full flex flex-col items-center justify-center gap-12 py-52"
 >
   <Title className="text-center servicesTitle">{title}</Title>
   <Description className="text-center">{description}</Description>
-  <div id="cardsContainer" class="w-full flex flex-col lg:flex-row gap-12">
+  <div
+    id="cardsContainer"
+    class="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-full flex flex-col items-center justify-center xl:flex-row gap-12"
+  >
     {
       cards.map((card, i) => (
-        <Card key={card.id} id={"card" + (i + 1)} featured={card.highlighted}>
-          <CardContent>
+        <Card
+          key={card.id}
+          id={"card" + (i + 1)}
+          featured={card.highlighted}
+          className={card.highlighted ? "" : "w-full md:w-5/6 xl:w-[360px]"}
+        >
+          <CardContent className={card.highlighted ? "gap-5" : ""}>
             <Image
               class={cn(
-                card.highlighted ? "lg:w-[418px] h-auto" : "max-h-[302px]",
-                "rounded-md w-auto object-cover"
+                card.highlighted
+                  ? "max-h-[334px]"
+                  : "max-h-[245px] w-full xl:w-auto xl:max-w-[300px]",
+                "rounded-md object-cover hidden md:block"
               )}
               src={import.meta.env.STRAPI_URL + card.image.data.attributes.url}
-              alt=""
+              alt={card.image.data.attributes.alternativeText}
               width={card.image.data.attributes.width}
               height={card.image.data.attributes.height}
             />
@@ -72,7 +82,7 @@ const { title, description, cards, buttons } = Astro.props;
 <script>
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { isMobile } from "@/lib/utils";
+  import { isMobile } from "@/lib/utils.ts";
 
   gsap.registerPlugin(ScrollTrigger);
 

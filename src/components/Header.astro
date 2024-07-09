@@ -56,7 +56,7 @@ const { logo, navigation, cta } = header.attributes;
 
 <script>
   import gsap from "gsap";
-  import { isMobile } from "@/lib/utils";
+  import { isMobile } from "@/lib/utils.ts";
 
   if (!isMobile()) {
     let tl = gsap.timeline();

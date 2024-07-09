@@ -76,7 +76,7 @@ export interface ImageData {
 
 export interface ImageDataAttributes {
   name: string;
-  alternativeText: null;
+  alternativeText: string;
   caption: null;
   width: number;
   height: number;
@@ -114,7 +114,7 @@ export interface Data {
 
 export interface Attributes {
   name: string;
-  alternativeText: null;
+  alternativeText: string;
   caption: null;
   width: null;
   height: null;

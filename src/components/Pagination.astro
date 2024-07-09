@@ -1,34 +1,42 @@
 ---
-import { Pagination as PaginationContainer, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "./ui/pagination";
+import {
+  Pagination as PaginationContainer,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "./ui/pagination";
 
 interface Props {
-    currentPage: number;
-    previous?: string;
-    next?: string;
+  currentPage: number;
+  previous?: string;
+  next?: string;
 }
 
 const { currentPage, previous, next } = Astro.props;
 ---
 
 <div class="flex w-100 items-center justify-center pt-10">
-    <PaginationContainer>
-        <PaginationContent>
-            {
-                previous && (
-                    <PaginationItem>
-                        <PaginationPrevious href={previous} />
-                    </PaginationItem>
-                )
-            }
-            <PaginationItem>
-                <PaginationLink href="#">{currentPage}</PaginationLink>
-            </PaginationItem>
-            {
-                next && (
-                    <PaginationItem>
-                        <PaginationNext href={next} />
-                    </PaginationItem>)
-            }
-        </PaginationContent>
-    </PaginationContainer>
+  <PaginationContainer>
+    <PaginationContent>
+      {
+        previous && (
+          <PaginationItem>
+            <PaginationPrevious size="sm" href={previous} />
+          </PaginationItem>
+        )
+      }
+      <PaginationItem>
+        <PaginationLink size="sm" href="#">{currentPage}</PaginationLink>
+      </PaginationItem>
+      {
+        next && (
+          <PaginationItem>
+            <PaginationNext size="sm" href={next} />
+          </PaginationItem>
+        )
+      }
+    </PaginationContent>
+  </PaginationContainer>
 </div>

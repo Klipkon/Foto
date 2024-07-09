@@ -1,37 +1,51 @@
 ---
 import type { Field, Button as IButton } from "@/interfaces/page";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
-
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Card } from "@/components/ui/card";
 
 interface Props {
-    fields: Field[];
-    button: IButton;
+  fields: Field[];
+  button: IButton;
 }
 
 const { fields, button } = Astro.props;
 ---
 
-<div class="bg-secondary rounded-xl px-5 py-8 md:p-8 w-full lg:w-auto title form">
-    <form class="w-full lg:w-[500px] flex flex-col items-center justify-center gap-4">
-        {
-            fields.map((field) => {
-                return (
-                    <div class="grid w-full items-center gap-2">
-                        <Label htmlFor={field.type + field.id}>{field.label}</Label>
-                        {
-                            field.textarea ? (
-                                <Textarea id={field.type + field.id.toString()} placeholder={field.placeholder} />
-                            ) : (
-                                <Input type={field.type} id={field.type + field.id.toString()} placeholder={field.placeholder} />
-                            )
-                        }
-                    </div>
-                );
-            })
-        }
-        <Button type="submit" variant={button.variant} size={button.size} className="w-full mt-4">{button.content}</Button>
-    </form>
-</div>
+<Card
+  className="title form p-[35px] lg:px-[35px] w-full md:w-2/3 xl:w-1/2"
+  featured
+>
+  <form class="w-full flex flex-col items-center justify-center gap-4">
+    {
+      fields.map((field) => {
+        return (
+          <div class="grid w-full items-center gap-2">
+            <Label htmlFor={field.type + field.id}>{field.label}</Label>
+            {field.textarea ? (
+              <Textarea
+                id={field.type + field.id.toString()}
+                placeholder={field.placeholder}
+              />
+            ) : (
+              <Input
+                type={field.type}
+                id={field.type + field.id.toString()}
+                placeholder={field.placeholder}
+              />
+            )}
+          </div>
+        );
+      })
+    }
+    <Button
+      fullwidth={true}
+      type="submit"
+      variant={button.variant}
+      size={button.size}
+      className="w-full mt-4">{button.content}</Button
+    >
+  </form>
+</Card>

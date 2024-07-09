@@ -1,29 +1,31 @@
 ---
-import "@/styles/globals.css"
+import "@/styles/globals.css";
 import fetchApi from "@/lib/strapi";
 import MainLayout from "@/layouts/MainLayout.astro";
-import type {ArticleData} from "@/interfaces/article.interface";
+import type { ArticleData } from "@/interfaces/article.interface";
 import Title from "@/components/Title.astro";
 import Prose from "@/components/Prose.astro";
-import {marked} from "marked";
+import { marked } from "marked";
 import DOMPurify from "isomorphic-dompurify";
 import { titleToSlug } from "@/lib/utils";
 import { Image } from "astro:assets";
 
 export async function getStaticPaths() {
+  const articles = await fetchApi<ArticleData[]>({
+    endpoint: "articles",
+    wrappedByKey: "data",
+    query: "populate=*",
+  });
 
-	const articles = await fetchApi<ArticleData[]>({
-		endpoint: 'articles',
-		wrappedByKey: 'data',
-		query: "populate=*"
-	})
-	
-	return articles.map(article => {
-		return {
-			params: {category: titleToSlug(article.attributes.category.data.attributes.name), article: titleToSlug(article.attributes.title) },
-			props: article,
-		}
-	})
+  return articles.map((article) => {
+    return {
+      params: {
+        category: titleToSlug(article.attributes.category.data.attributes.name),
+        article: titleToSlug(article.attributes.title),
+      },
+      props: article,
+    };
+  });
 }
 
 const article = Astro.props;
@@ -32,20 +34,41 @@ const content = await marked.parse(article.attributes.content);
 ---
 
 <MainLayout title={article.attributes.title}>
-	<div class="flex flex-col items-start justify-center gap-10">
-		<div class="relative w-full after:bg-black/50 after:absolute after:top-0 after:left-0 after:z-20 after:content-[' '] after:w-full after:h-full after:rounded-xl">
-			<Image class="relative w-full rounded-xl max-h-[302px] object-cover" src={import.meta.env.STRAPI_URL + article.attributes.image.data.attributes.url} alt="" width={article.attributes.image.data.attributes.width} height={article.attributes.image.data.attributes.height}  />
-			<div class="z-50 absolute left-10 bottom-5 flex flex-col items-start justify-center gap-3" style="width: calc(100% - 80px);">
-				<Title className="text-white" >{article.attributes.title}</Title>
-				<div class="flex items-center justify-start">
-					<p class="text-white text-sm" >Opublikowano: {new Date(article.attributes.createdAt).toLocaleString()}</p>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<p class="text-white text-sm" >Aktualizacja: {new Date(article.attributes.updatedAt).toLocaleString()}</p>
-				</div>
-			</div>
-		</div>	
-		<div class="w-full flex justify-center">
-			<Prose set:html={DOMPurify.sanitize(content)} />
-		</div>
-	</div>
+  <div class="flex flex-col items-start justify-center gap-10">
+    <div
+      class="relative w-full after:bg-black/50 after:absolute after:top-0 after:left-0 after:z-20 after:content-[' '] after:w-full after:h-full after:rounded-xl"
+    >
+      <Image
+        class="relative w-full rounded-xl max-h-[302px] object-cover shadow-accent"
+        src={import.meta.env.STRAPI_URL +
+          article.attributes.image.data.attributes.url}
+        alt={article.attributes.image.data.attributes.alternativeText}
+        width={article.attributes.image.data.attributes.width}
+        height={article.attributes.image.data.attributes.height}
+        alt={article.attributes.image.data.attributes.alternativeText}
+      />
+      <div
+        class="z-50 absolute left-10 bottom-5 flex flex-col items-start justify-center gap-3"
+        style="width: calc(100% - 80px);"
+      >
+        <Title className="text-white">{article.attributes.title}</Title>
+        <div class="flex items-center justify-start">
+          <p class="text-white text-sm">
+            Opublikowano: {
+              new Date(article.attributes.createdAt).toLocaleString()
+            }
+          </p>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <p class="text-white text-sm">
+            Aktualizacja: {
+              new Date(article.attributes.updatedAt).toLocaleString()
+            }
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="w-full flex justify-center">
+      <Prose set:html={DOMPurify.sanitize(content)} />
+    </div>
+  </div>
 </MainLayout>

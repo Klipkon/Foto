@@ -1,14 +1,12 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils.ts";
 
 const buttonVariants = cva("", {
   variants: {
     variant: {
-      default:
-        "bg-primary text-primary-foreground border-1 border-black hover:border-white",
+      default: "bg-primary text-primary-foreground",
       secondary: "bg-white text-black border-[1px] border-black",
       ghost:
         "bg-background border-1 border-white hover:bg-black hover:text-white hover:shadow-[3px_3px_0_0_rgba(0,0,0,1)]",
@@ -30,6 +28,8 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  fullwidth?: boolean;
+  fontbold?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -38,9 +38,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(
-          size,
           className,
-          "w-fit text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative group"
+          props.fullwidth ? "w-full" : "w-fit",
+          "text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative group"
         )}
         ref={ref}
         {...props}
@@ -51,7 +51,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             variant == "ghost"
               ? ""
               : "group-hover:-translate-x-[3px] group-hover:-translate-y-[3px]",
-            "rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative transition-transform"
+            props.fullwidth ? "w-full" : "w-fit",
+            props.fontbold ? "font-bold" : "font-medium",
+            "rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative transition-transform"
           )}
         >
           {props.children}

@@ -51,6 +51,21 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        cyan: {
+          DEFAULT: "hsl(var(--cyan))",
+        },
+        green: {
+          DEFAULT: "hsl(var(--green))",
+        },
+        orange: {
+          DEFAULT: "hsl(var(--orange))",
+        },
+        fuchsia: {
+          DEFAULT: "hsl(var(--fuchsia))",
+        },
+        "ocean-green": {
+          DEFAULT: "hsl(var(--ocean-green))",
+        },
       },
       borderWidth: {
         1: "1px",
@@ -63,6 +78,11 @@ export default {
       },
       boxShadow: {
         accent: "3px 3px 0 0 var(--bg-accent)",
+        cyan: "3px 3px 0 0 hsl(var(--cyan))",
+        green: "3px 3px 0 0 hsl(var(--green))",
+        orange: "3px 3px 0 0 hsl(var(--orange))",
+        "ocean-green": "3px 3px 0 0 hsl(var(--ocean-green))",
+        fuchsia: "3px 3px 0 0 hsl(var(--fuchsia))",
         "accent-button": "6px 6px 0 0 var(--bg-accent)",
       },
       keyframes: {

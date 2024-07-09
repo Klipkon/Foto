@@ -1,63 +1,107 @@
 ---
-import type {Footer} from "@/interfaces/footer.interface";
+import type { Footer } from "@/interfaces/footer.interface";
 import fetchApi from "@/lib/strapi";
 import { Button } from "./ui/button";
-import Description from "@/components/Description.astro";
 import { Image } from "astro:assets";
+import QueryString from "qs";
 
 const footer = await fetchApi<Footer>({
-    endpoint: 'footer',
-    wrappedByKey: 'data',
-    query: "populate=*",
-})
+  endpoint: "footer",
+  wrappedByKey: "data",
+  query: QueryString.stringify({
+    populate: {
+      logo: true,
+      cta: true,
+      column: {
+        populate: "*",
+      },
+    },
+  }),
+});
 
-const {logo, navigation, cta, description} = footer.attributes;
+const { logo, column, cta } = footer.attributes;
 ---
-<footer id="footer" class="container">
-    <div class="flex flex-col items-center justify-center rounded-xl bg-secondary p-8 mt-20 mb-5">
-        <div class="w-full flex flex-col lg:flex-row gap-8 items-center justify-between pb-8 border-b">
-            <a href="/">
-                <Image src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url} width={logo.data.attributes.width} height={logo.data.attributes.height}  alt="logo" loading="eager"/>
-            </a>
-            <nav class="flex flex-col lg:flex-row items-center justify-center gap-5 footerElem">
-                {navigation.map(element => <a class="hover:underline" href={element.href}>{element.title}</a>)}
-            </nav>
-            {
-                cta ? (
-                        <Button variant={cta.variant} size={cta.size} >{cta.content}</Button>
-                ) : ""
-            } 
-        </div>
-        <Description className="pt-8" >{description}</Description>
+
+<footer id="footer" class="container pt-24">
+  <div
+    class="flex flex-col lg:flex-row items-center justify-center gap-12 lg:justify-between w-full border-y py-12"
+  >
+    <div class="flex flex-col gap-8 items-start">
+      <a href="/">
+        <Image
+          src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url}
+          width={logo.data.attributes.width}
+          height={logo.data.attributes.height}
+          alt="Logo"
+          loading="eager"
+          class="h-14"
+        />
+      </a>
+      {
+        cta ? (
+          <Button variant={cta.variant} size={cta.size}>
+            {cta.content}
+          </Button>
+        ) : (
+          ""
+        )
+      }
     </div>
+    <nav
+      class="flex flex-wrap items-start justify-center gap-6 px-10 py-3 footerElem"
+    >
+      {
+        column.map((elem) => (
+          <div class="flex flex-col gap-3 items-center md:items-start justify-start h-full column">
+            {elem.link.map((link, i) => (
+              <a href={link.href}>
+                <Button fontbold={i == 0} variant="ghost">
+                  {link.title}
+                </Button>
+              </a>
+            ))}
+          </div>
+        ))
+      }
+    </nav>
+  </div>
+  <div class="w-full py-6 flex items-center justify-center">
+    &copy; Klipkon {new Date().getFullYear()}
+  </div>
 </footer>
 
 <script>
-    import gsap from 'gsap';
-    import { ScrollTrigger } from 'gsap/ScrollTrigger';
-    import {isMobile} from "@/lib/utils";
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { isMobile } from "@/lib/utils.ts";
 
-    gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger);
 
-    const sections = document.querySelector("#container")?.children!;
-    const lastSection = sections[sections.length - 1];
+  const sections = document.querySelector("#container")?.children!;
+  const lastSection = sections[sections.length - 1];
 
+  if (!isMobile()) {
+    let tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: `#${lastSection.hasAttribute("id") ? lastSection.id : "container"}`,
+        start: "top center",
+        end: "top center",
+      },
+    });
 
-
-    if (!isMobile()) {
-        let tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: `#${lastSection.hasAttribute('id') ? lastSection.id : "container"}`,
-                start: "top center",
-                end: "top center",
-            }
-        });
-        
-        tl.from("#footer", {y: "20%", opacity: 0})
-        .to("#footer", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-        .from("#footer div", {y: "20%", opacity: 0})
-        .to("#footer div", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-        .from("#footer p", {y: "20%", opacity: 0})
-        .to("#footer p", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-    }
+    tl.from("footer", { y: "20%", opacity: 0 })
+      .to("footer", {
+        y: 0,
+        opacity: 1,
+        duration: 0.1,
+        ease: "power4.in",
+      })
+      .from("footer nav", { y: "20%", opacity: 0 })
+      .to("footer nav", {
+        y: 0,
+        opacity: 1,
+        duration: 0.1,
+        ease: "power4.in",
+      });
+  }
 </script>

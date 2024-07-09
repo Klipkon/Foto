@@ -95,6 +95,7 @@ const sortedCategories = categories.sort((a, b) => (a.id > b.id ? 1 : -1));
     {
       articles.map((article) => (
         <BlogPostCard
+          imageAltTxt={article.attributes.image.data.attributes.alternativeText}
           title={article.attributes.title}
           categoryName={article.attributes.category.data.attributes.name}
           imageUrl={

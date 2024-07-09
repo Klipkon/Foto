@@ -110,7 +110,7 @@ const typeUrl = () => {
                   import.meta.env.PUBLIC_STRAPI_URL +
                   article.attributes.image.data.attributes.formats.thumbnail.url
                 }
-                alt=""
+                alt={article.attributes.image.data.attributes.alternativeText}
                 width={
                   article.attributes.image.data.attributes.formats.thumbnail
                     .width

@@ -4,67 +4,143 @@ import Description from "./Description.astro";
 import type { Images, Button as IButton } from "@/interfaces/page";
 import { Image } from "astro:assets";
 import { Button } from "./ui/button";
+import fetchApi from "@/lib/strapi";
+import type { ArticleData } from "@/interfaces/article.interface";
+import QueryString from "qs";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { titleToSlug } from "@/lib/utils";
+
+const projects = await fetchApi<ArticleData[]>({
+  endpoint: "projects",
+  wrappedByKey: "data",
+  query: QueryString.stringify({
+    populate: { category: true, image: true },
+    pagination: {
+      limit: 2,
+    },
+    sort: ["createdAt:desc"],
+  }),
+});
 
 interface Props {
-   title: string;
-   description: string;
-   images: Images;
-   button: IButton
+  title: string;
+  description: string;
+  images: Images;
+  button: IButton;
 }
 
-const {title, description, images, button} = Astro.props;
-
+const { title, description, button } = Astro.props;
 ---
 
-<div class="py-20" id="portfolioSection">
-    <div class="rounded-xl w-full bg-secondary p-8 lg:p-16">
-        <div class="flex items-center justify-center gap-24">
-            <Title className="portfolioTitle">{title}</Title>
-            <Description className="hidden lg:flex portfolioDesc">{description}</Description>
-        </div>
-        <div class="flex flex-col lg:flex-row items-center justify-center gap-5 py-10">
-            {images.data.map((image, i) => (
-                <div class="w-full" id={"img" + (i+1)}>
-                    <Image class="object-cover rounded-xl aspect-video w-full" alt="" src={import.meta.env.STRAPI_URL + image.attributes.url} width={image.attributes.width} height={image.attributes.height} />
-                </div>
-            ))} 
-        </div>
-        <div class="flex items-center justify-center">
-            <a href={button.href}>
-                <Button id="portfolioButton" variant={button.variant} size={button.size}>{button.content}</Button>
-            </a>
-        </div>
+<div
+  id="portfolioSection"
+  class="p-7 md:p-12 lg:px-12 border-1 border-black rounded-xl"
+>
+  <CardContent>
+    <div class="flex items-center justify-center lg:justify-between gap-12">
+      <Title className="portfolioTitle text-[32px] lg:text-[40px]"
+        >{title}</Title
+      >
+      <Description className="hidden w-full lg:flex portfolioDesc"
+        >{description}</Description
+      >
     </div>
-</div>
+    <div
+      class="flex flex-col md:flex-row items-center justify-center gap-12 py-12"
+    >
+      {
+        projects.map((project, i) => (
+          <a
+            href={
+              "/portfolio/" +
+              titleToSlug(project.attributes.category.data.attributes.name) +
+              "/" +
+              titleToSlug(project.attributes.title)
+            }
+            class="flex-1"
+          >
+            <Card shadowcolor={i == 0 ? "bg-cyan" : "bg-green"} hover={true}>
+              <CardContent className="flex flex-col gap-5">
+                <Image
+                  class="rounded-md object-cover flex-1 aspect-video"
+                  src={
+                    import.meta.env.STRAPI_URL +
+                    project.attributes.image.data.attributes.url
+                  }
+                  alt={project.attributes.image.data.attributes.alternativeText}
+                  width={project.attributes.image.data.attributes.width}
+                  height={project.attributes.image.data.attributes.height}
+                />
+                <CardTitle
+                  className="font-bold text-2xl lg:font-[32px] line-clamp-3"
+                  title={project.attributes.title}
+                >
+                  {project.attributes.title}
+                </CardTitle>
+              </CardContent>
+            </Card>
+          </a>
+        ))
+      }
+    </div>
+    <div class="flex items-center justify-center">
+      <a href={button.href}>
+        <Button id="portfolioButton" variant={button.variant} size={button.size}
+          >{button.content}</Button
+        >
+      </a>
+    </div>
+  </CardContent>
 
-<script>
-    import gsap from 'gsap';
-    import { ScrollTrigger } from 'gsap/ScrollTrigger';
-    import {isMobile} from "@/lib/utils";
+  <script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import { isMobile } from "@/lib/utils.ts";
 
     gsap.registerPlugin(ScrollTrigger);
 
     if (!isMobile()) {
-        let tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "#portfolioSection",
-                start: "top center",
-                end: "top center",
-            }
-        });
-        
-        tl.from("#portfolioSection", {y: "20%", opacity: 0})
-        .to("#portfolioSection", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-        .from(".portfolioTitle", {y: "20%", opacity: 0}, 0.2)
-        .to(".portfolioTitle", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-        .from(".portfolioDesc", {y: "20%", opacity: 0}, 0.3)
-        .to(".portfolioDesc", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-        .from("#img1", {y: "20%", opacity: 0},0.5)
-        .to("#img1", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-        .from("#img2", {y: "20%", opacity: 0}, 0.6)
-        .to("#img2", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"})
-        .from("#portfolioButton", {y: "20%", opacity: 0}, 0.8)
-        .to("#portfolioButton", {y: 0, opacity: 1, duration: 0.1, ease: "power4.in"});
-    }
-</script>
+      let tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#portfolioSection",
+          start: "top center",
+          end: "top center",
+        },
+      });
 
+      tl.from("#portfolioSection", { y: "20%", opacity: 0 })
+        .to("#portfolioSection", {
+          y: 0,
+          opacity: 1,
+          duration: 0.1,
+          ease: "power4.in",
+        })
+        .from(".portfolioTitle", { y: "20%", opacity: 0 }, 0.2)
+        .to(".portfolioTitle", {
+          y: 0,
+          opacity: 1,
+          duration: 0.1,
+          ease: "power4.in",
+        })
+        .from(".portfolioDesc", { y: "20%", opacity: 0 }, 0.3)
+        .to(".portfolioDesc", {
+          y: 0,
+          opacity: 1,
+          duration: 0.1,
+          ease: "power4.in",
+        })
+        .from("#img1", { y: "20%", opacity: 0 }, 0.5)
+        .to("#img1", { y: 0, opacity: 1, duration: 0.1, ease: "power4.in" })
+        .from("#img2", { y: "20%", opacity: 0 }, 0.6)
+        .to("#img2", { y: 0, opacity: 1, duration: 0.1, ease: "power4.in" })
+        .from("#portfolioButton", { y: "20%", opacity: 0 }, 0.8)
+        .to("#portfolioButton", {
+          y: 0,
+          opacity: 1,
+          duration: 0.1,
+          ease: "power4.in",
+        });
+    }
+  </script>
+</div>
