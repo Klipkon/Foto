@@ -1,3 +1,5 @@
+import type { Seo } from "./page.ts";
+
 export interface Aricle {
   data: ArticleData[];
   meta: Meta;
@@ -19,6 +21,7 @@ export interface DatumAttributes {
   publishedAt: Date;
   slug: null;
   image: Image;
+  seo: Seo;
 }
 
 export interface Image {

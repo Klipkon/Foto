@@ -33,7 +33,7 @@ const article = Astro.props;
 const content = await marked.parse(article.attributes.content);
 ---
 
-<MainLayout title={article.attributes.title}>
+<MainLayout seo={article.attributes.seo}>
   <div class="flex flex-col items-start justify-center gap-10">
     <div
       class="relative w-full after:bg-black/50 after:absolute after:top-0 after:left-0 after:z-20 after:content-[' '] after:w-full after:h-full after:rounded-xl"
