@@ -9,6 +9,7 @@ import Articles from "./Articles.astro";
 import Projects from "./Projects.astro";
 import PriceList from "./PriceList.astro";
 import SectionWithBlogPosts from "./SectionWithBlogPosts.astro";
+import TitleWithDescription from "@/components/TitleWithDescription.astro";
 
 interface Props {
   components: Component[];
@@ -100,6 +101,13 @@ const { components } = Astro.props;
             title={component.title!}
             description={component.description!}
             button={component.button!}
+          />
+        );
+      case "components.title-and-description":
+        return (
+          <TitleWithDescription
+            title={component.title!}
+            description={component.description!}
           />
         );
     }
