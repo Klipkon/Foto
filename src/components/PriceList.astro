@@ -73,9 +73,9 @@ const { title, table, options } = Astro.props;
             if (i > 0) {
               cell.dataset.label = tableRows[0].cells[i].innerText;
 
-              if (cell.innerText == "TAK") {
+              if (cell.innerText.toLowerCase() == "tak") {
                 cell.innerText = "✔️";
-              } else if (cell.innerText == "NIE") {
+              } else if (cell.innerText.toLowerCase() == "nie") {
                 cell.innerText = "❌";
               }
             }
