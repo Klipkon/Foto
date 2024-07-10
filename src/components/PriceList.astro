@@ -28,17 +28,17 @@ const { title, table, options } = Astro.props;
       </div>
       <div
         set:html={DOMPurify.sanitize(table)}
-        class="flex flex-col items-start justify-center w-full [&>figure]:w-full [&>figure>table]:w-full py-5 gap-5"
+        class="flex flex-col items-start justify-center w-full [&>figure]:w-full [&>figure>table]:w-full py-5 gap-5 [&>p]:w-full"
       />
     </div>
     {
-      options ? (
+      options?.length != 0 ? (
         <div class="flex flex-col items-center justify-center gap-12">
           <div class="flex items-stretc justify-center w-full">
             <Title className="sm:text-[32px]">Dodatkowe opcje</Title>
           </div>
           <div class="flex items-stretch justify-center flex-wrap gap-12">
-            {options.map((option) => (
+            {options?.map((option) => (
               <Card className="flex-1 max-w-[345px] h-auto">
                 <CardContent className="items-center justify-between h-full text-center gap-4">
                   <CardTitle className="text-[32px] font-bold">

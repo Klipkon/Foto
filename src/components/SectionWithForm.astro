@@ -11,8 +11,8 @@ interface Props {
   fields: Field[];
   id: number;
   button: IButton;
-  address: string;
-  phone: string;
+  address?: string;
+  phone?: string;
 }
 
 const { title, description, fields, id, address, phone, button } = Astro.props;
@@ -27,16 +27,20 @@ const { title, description, fields, id, address, phone, button } = Astro.props;
     <Description className="text-center lg:text-left desc"
       >{description}</Description
     >
-    <div class="flex flex-col gap-4 pt-6" id="contactInfo">
-      <div class="flex justify-start gap-4">
-        <Home size={24} />
-        <p class="text-lg">{address}</p>
-      </div>
-      <div class="flex justify-start gap-4">
-        <Phone size={24} />
-        <p class="text-lg">{phone}</p>
-      </div>
-    </div>
+    {
+      button && phone ? (
+        <div class="flex flex-col gap-4 pt-6" id="contactInfo">
+          <div class="flex justify-start gap-4">
+            <Home size={24} />
+            <p class="text-lg">{address}</p>
+          </div>
+          <div class="flex justify-start gap-4">
+            <Phone size={24} />
+            <p class="text-lg">{phone}</p>
+          </div>
+        </div>
+      ) : null
+    }
   </div>
   <Form fields={fields} button={button} />
 </div>
