@@ -35,6 +35,8 @@ export interface Component {
   address?: string;
   featured?: boolean;
   phone?: string;
+  table?: string;
+  options?: Card[];
 }
 
 export interface Button {

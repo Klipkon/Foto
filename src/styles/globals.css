@@ -39,11 +39,79 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-black;
   }
 
   .card-width {
     width: calc(100% - 32px);
+  }
+
+  table {
+    @apply border-collapse flex flex-col lg:flex-row w-full lg:justify-between;
+  }
+
+  table tbody {
+    @apply flex flex-col lg:flex-row gap-5;
+  }
+
+  table thead th {
+    @apply lg:flex lg:flex-1;
+  }
+
+  thead th:first-of-type {
+    @apply h-[52px] items-center;
+  }
+
+  table tbody tr th {
+    @apply flex justify-center py-[10px] text-2xl text-center w-full;
+  }
+
+  thead {
+    @apply hidden lg:flex;
+  }
+
+  tbody {
+    @apply flex;
+  }
+
+  tbody {
+    @apply flex-1;
+  }
+
+  table tr {
+    @apply rounded-md lg:rounded-xl p-5 w-full;
+  }
+
+  table thead th {
+    justify-content: start !important;
+  }
+
+  tbody tr:not(:last-of-type) {
+    @apply border-1 border-black lg:border-none;
+  }
+
+  table tbody tr:last-of-type {
+    @apply bg-secondary shadow-accent;
+  }
+
+  td,
+  th:not(:first-of-type) {
+    @apply py-[30px] lg:py-[20px] flex items-center justify-between text-center lg:justify-center h-6 text-sm;
+  }
+
+  table td::before {
+    content: attr(data-label);
+    display: block;
+    float: left;
+    font-weight: bold;
+    width: 50%;
+    text-align: start;
+    @apply lg:hidden;
+  }
+
+  .image {
+    @apply flex items-center justify-center;
   }
 }
