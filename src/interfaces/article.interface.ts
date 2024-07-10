@@ -12,8 +12,8 @@ export interface ArticleData {
 
 export interface DatumAttributes {
   title: string;
-  category: {
-    data: CategoryData;
+  categories: {
+    data: CategoryData[];
   };
   content: string;
   createdAt: Date;

@@ -98,7 +98,6 @@ const sortedCategories = categories.sort((a, b) => (a.id > b.id ? 1 : -1));
         <BlogPostCard
           imageAltTxt={article.attributes.image.data.attributes.alternativeText}
           title={article.attributes.title}
-          categoryName={article.attributes.category.data.attributes.name}
           imageUrl={article.attributes.image.data.attributes.url}
           imageWidth={article.attributes.image.data.attributes.width}
           imageHeight={article.attributes.image.data.attributes.height}

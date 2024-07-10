@@ -95,12 +95,7 @@ const typeUrl = () => {
     {
       articles.map((article) => (
         <a
-          href={
-            "/portfolio/" +
-            titleToSlug(article.attributes.category.data.attributes.name) +
-            "/" +
-            titleToSlug(article.attributes.title)
-          }
+          href={"/portfolio/" + titleToSlug(article.attributes.title)}
           class="group"
         >
           <Card className="p-6 lg:p-8 border-none shadow-none bg-secondary h-full">

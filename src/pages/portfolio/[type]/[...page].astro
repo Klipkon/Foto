@@ -1,41 +1,49 @@
 ---
-import "@/styles/globals.css"
-import type { ArticleData, CategoryData } from '@/interfaces/article.interface'
-import fetchApi from '@/lib/strapi';
-import type { GetStaticPathsOptions } from 'astro';
+import "@/styles/globals.css";
+import type { ArticleData, CategoryData } from "@/interfaces/article.interface";
+import fetchApi from "@/lib/strapi";
+import type { GetStaticPathsOptions } from "astro";
 import QueryString from "qs";
-import { titleToSlug } from "@/lib/utils";
+import { filterArticles, titleToSlug } from "@/lib/utils";
 import Portfolio from "@/layouts/Portfolio.astro";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-    const types = await fetchApi<CategoryData[]>({
-        endpoint: 'types',
-        wrappedByKey: 'data'
-    })
+  const types = await fetchApi<CategoryData[]>({
+    endpoint: "types",
+    wrappedByKey: "data",
+  });
 
-    const projects = await fetchApi<ArticleData[]>({
-        endpoint: 'projects',
-        wrappedByKey: 'data',
-        query: QueryString.stringify({
-           populate: {
-            category: true,
-            image: true
-           }
-        }) 
-    })
+  const projects = await fetchApi<ArticleData[]>({
+    endpoint: "projects",
+    wrappedByKey: "data",
+    query: QueryString.stringify({
+      populate: {
+        categories: true,
+        image: true,
+      },
+    }),
+  });
 
-    return types.flatMap(type => {
-        const typeName = type.attributes.name;
-        const typeNameSlug = titleToSlug(typeName).toString();
-        const filtredProjects = projects.filter(project => project.attributes.category.data.attributes.name == typeName);
-        return paginate(filtredProjects, { 
-            params: { type: typeNameSlug}, 
-            pageSize: 9 
-        });
-    })
+  return types.flatMap((type) => {
+    const typeName = type.attributes.name;
+    const typeNameSlug = titleToSlug(typeName).toString();
+    const filteredProjects = filterArticles(projects, typeName);
+
+    console.log(filteredProjects);
+
+    return paginate(filteredProjects, {
+      params: { type: typeNameSlug },
+      pageSize: 9,
+    });
+  });
 }
 
 const { page } = Astro.props;
 ---
 
-<Portfolio previousUrl={page.url.prev} nextUrl={page.url.next} currentPage={page.currentPage} articles={page.data}  />
+<Portfolio
+  previousUrl={page.url.prev}
+  nextUrl={page.url.next}
+  currentPage={page.currentPage}
+  articles={page.data}
+/>

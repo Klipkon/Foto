@@ -51,15 +51,7 @@ const { title, description, button } = Astro.props;
     >
       {
         projects.map((project, i) => (
-          <a
-            href={
-              "/portfolio/" +
-              titleToSlug(project.attributes.category.data.attributes.name) +
-              "/" +
-              titleToSlug(project.attributes.title)
-            }
-            class="flex-1"
-          >
+          <a href={"/" + titleToSlug(project.attributes.title)} class="flex-1">
             <Card shadowcolor={i == 0 ? "bg-cyan" : "bg-green"} hover={true}>
               <CardContent className="flex flex-col gap-5">
                 <Image

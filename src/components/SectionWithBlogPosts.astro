@@ -61,7 +61,6 @@ const { title, description, button } = Astro.props;
           shadowColor={getCardShadow(i)}
           id={"blogCard" + (i + 1)}
           title={article.attributes.title}
-          categoryName={article.attributes.category.data.attributes.name}
           imageUrl={article.attributes.image.data.attributes.url}
           imageWidth={article.attributes.image.data.attributes.width}
           imageHeight={article.attributes.image.data.attributes.height}

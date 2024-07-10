@@ -1,41 +1,46 @@
 ---
-import "@/styles/globals.css"
-import type { ArticleData, CategoryData } from '@/interfaces/article.interface'
-import fetchApi from '@/lib/strapi';
-import type { GetStaticPathsOptions } from 'astro';
+import "@/styles/globals.css";
+import type { ArticleData, CategoryData } from "@/interfaces/article.interface";
+import fetchApi from "@/lib/strapi";
+import type { GetStaticPathsOptions } from "astro";
 import QueryString from "qs";
-import { titleToSlug } from "@/lib/utils";
+import { filterArticles, titleToSlug } from "@/lib/utils";
 import Blog from "@/layouts/Blog.astro";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-    const categories = await fetchApi<CategoryData[]>({
-        endpoint: 'categories',
-        wrappedByKey: 'data'
-    })
+  const categories = await fetchApi<CategoryData[]>({
+    endpoint: "categories",
+    wrappedByKey: "data",
+  });
 
-    const articles = await fetchApi<ArticleData[]>({
-        endpoint: 'articles',
-        wrappedByKey: 'data',
-        query: QueryString.stringify({
-           populate: {
-            category: true,
-            image: true
-           }
-        }) 
-    })
+  const articles = await fetchApi<ArticleData[]>({
+    endpoint: "articles",
+    wrappedByKey: "data",
+    query: QueryString.stringify({
+      populate: {
+        categories: true,
+        image: true,
+      },
+    }),
+  });
 
-    return categories.flatMap(category => {
-        const categoryName = category.attributes.name;
-        const categoryNameSlug = titleToSlug(categoryName).toString();
-        const filtredArticles = articles.filter(article => article.attributes.category.data.attributes.name == categoryName);
-        return paginate(filtredArticles, { 
-            params: { category: categoryNameSlug}, 
-            pageSize: 9 
-        });
-    })
+  return categories.flatMap((category) => {
+    const categoryName = category.attributes.name;
+    const categoryNameSlug = titleToSlug(categoryName).toString();
+    const filteredArticles = filterArticles(articles, categoryName);
+    return paginate(filteredArticles, {
+      params: { category: categoryNameSlug },
+      pageSize: 9,
+    });
+  });
 }
 
 const { page } = Astro.props;
 ---
 
-<Blog previousUrl={page.url.prev} nextUrl={page.url.next} currentPage={page.currentPage} articles={page.data}  />
+<Blog
+  previousUrl={page.url.prev}
+  nextUrl={page.url.next}
+  currentPage={page.currentPage}
+  articles={page.data}
+/>
