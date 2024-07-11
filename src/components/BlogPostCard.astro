@@ -16,6 +16,7 @@ interface Props {
   id?: string;
   imageAltTxt: string;
   shadowColor?: shadowColor;
+  isPortfolio?: boolean;
 }
 
 const {
@@ -26,10 +27,15 @@ const {
   id,
   imageAltTxt,
   shadowColor,
+  isPortfolio,
 } = Astro.props;
 ---
 
-<a id={id} href={"/blog/" + titleToSlug(title)} class="group">
+<a
+  id={id}
+  href={(isPortfolio ? "/portfolio/" : "/blog/") + titleToSlug(title)}
+  class="group"
+>
   <Card className="h-full p-1 lg:px-1" shadowcolor={shadowColor} hover={true}>
     <CardContent
       className="flex flex-col justify-beetwen items-start p-0 gap-5 relative"
