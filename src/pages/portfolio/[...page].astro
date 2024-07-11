@@ -1,30 +1,37 @@
 ---
-import "@/styles/globals.css"
-import type { ArticleData } from '@/interfaces/article.interface'
-import fetchApi from '@/lib/strapi';
-import type { GetStaticPathsOptions } from 'astro';
+import "@/styles/globals.css";
+import type { ArticleData } from "@/interfaces/article.interface";
+import fetchApi from "@/lib/strapi";
+import type { GetStaticPathsOptions } from "astro";
 import QueryString from "qs";
 import Portfolio from "@/layouts/Portfolio.astro";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const projects = await fetchApi<ArticleData[]>({
+    endpoint: "projects",
+    wrappedByKey: "data",
+    query: QueryString.stringify({
+      populate: {
+        category: true,
+        image: true,
+      },
+      pagination: {
+        limit: 100,
+      },
+    }),
+  });
 
-    const projects = await fetchApi<ArticleData[]>({
-        endpoint: 'projects',
-        wrappedByKey: 'data',
-        query: QueryString.stringify({
-           populate: {
-            category: true,
-            image: true
-           }
-        }) 
-    })
-
-    return paginate(projects, { 
-        pageSize: 9 
-    });
+  return paginate(projects, {
+    pageSize: 9,
+  });
 }
 
 const { page } = Astro.props;
 ---
 
-<Portfolio previousUrl={page.url.prev} nextUrl={page.url.next} currentPage={page.currentPage} articles={page.data}  />
+<Portfolio
+  previousUrl={page.url.prev}
+  nextUrl={page.url.next}
+  currentPage={page.currentPage}
+  articles={page.data}
+/>

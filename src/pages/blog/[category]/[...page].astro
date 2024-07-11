@@ -21,6 +21,9 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
         categories: true,
         image: true,
       },
+      pagination: {
+        limit: 100,
+      },
     }),
   });
 
