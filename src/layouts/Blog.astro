@@ -54,6 +54,21 @@ const categoryUrl = () => {
 };
 
 const sortedCategories = categories.sort((a, b) => (a.id > b.id ? 1 : -1));
+
+function chooseColor(i: number) {
+  const roundedDvision = Math.floor(i / 3);
+
+  const idxInRow = i - roundedDvision * 3;
+
+  switch (idxInRow) {
+    case 0:
+      return "bg-orange";
+    case 1:
+      return "bg-fuchsia";
+    case 2:
+      return "bg-ocean-green";
+  }
+}
 ---
 
 <MainLayout seo={blogPage[0].attributes.seo}>
@@ -94,8 +109,9 @@ const sortedCategories = categories.sort((a, b) => (a.id > b.id ? 1 : -1));
     class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-10 pt-14"
   >
     {
-      articles.map((article) => (
+      articles.map((article, i) => (
         <BlogPostCard
+          shadowColor={chooseColor(i)}
           imageAltTxt={article.attributes.image.data.attributes.alternativeText}
           title={article.attributes.title}
           imageUrl={article.attributes.image.data.attributes.url}
