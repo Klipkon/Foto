@@ -20,7 +20,7 @@ const { title, table, options } = Astro.props;
 
 <price-list>
   <div class="py-12">
-    <div class="flex flex-col items-start justify-center pb-4">
+    <div class="flex flex-col items-start justify-center pb-4 priceList">
       <div
         class="flex flex-col items-center justify-center w-full py-5 border-b-1 border-black"
       >
@@ -33,7 +33,7 @@ const { title, table, options } = Astro.props;
     </div>
     {
       options?.length != 0 ? (
-        <div class="flex flex-col items-center justify-center gap-12">
+        <div class="flex flex-col items-center justify-center gap-12 additionalOptions">
           <div class="flex items-stretc justify-center w-full">
             <Title className="sm:text-[32px]">Dodatkowe opcje</Title>
           </div>
@@ -59,11 +59,44 @@ const { title, table, options } = Astro.props;
 </price-list>
 
 <script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { isMobile } from "@/lib/utils.ts";
+
   class PriceList extends HTMLElement {
     constructor() {
       super();
 
+      gsap.registerPlugin(ScrollTrigger);
+
+      let tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: this,
+          start: "top center",
+          end: "top center",
+        },
+      });
+
       const tableRows = this.querySelectorAll("tr");
+      const priceList = this.querySelector(".priceList");
+      const additionalOptions = this.querySelector(".additionalOptions");
+
+      if (!isMobile()) {
+        tl.from(priceList, { y: "-20%", opacity: 0 })
+          .to(priceList, {
+            y: 0,
+            opacity: 1,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(additionalOptions, { y: "-20%", opacity: 0 })
+          .to(additionalOptions, {
+            y: 0,
+            opacity: 1,
+            duration: 0.1,
+            ease: "power4.in",
+          });
+      }
 
       tableRows.forEach((row, i) => {
         if (i > 0) {
