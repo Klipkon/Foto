@@ -6,12 +6,11 @@ import Description from "@/components/Description.astro";
 import { Button } from "@/components/ui/button";
 import MainLayout from "@/layouts/MainLayout.astro";
 import Pagination from "@/components/Pagination.astro";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { titleToSlug } from "@/lib/utils";
 import fetchApi from "@/lib/strapi";
 import QueryString from "qs";
 import type { Page } from "@/interfaces/page";
-import Image from "astro/components/Image.astro";
+import BlogPostCard from "@/components/BlogPostCard.astro";
 
 const portfolioPage = await fetchApi<Page[]>({
   endpoint: "pages",
@@ -53,6 +52,21 @@ const typeUrl = () => {
   const params = Astro.params;
   return "type" in params ? params.type : "";
 };
+
+function chooseColor(i: number) {
+  const roundedDvision = Math.floor(i / 3);
+
+  const idxInRow = i - roundedDvision * 3;
+
+  switch (idxInRow) {
+    case 0:
+      return "bg-cyan";
+    case 1:
+      return "bg-green";
+    case 2:
+      return "bg-accent";
+  }
+}
 ---
 
 <MainLayout seo={portfolioPage[0].attributes.seo}>
@@ -93,36 +107,16 @@ const typeUrl = () => {
     class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-10 pt-14"
   >
     {
-      articles.map((article) => (
-        <a
-          href={"/portfolio/" + titleToSlug(article.attributes.title)}
-          class="group"
-        >
-          <Card className="p-6 lg:p-8 border-none shadow-none bg-secondary h-full">
-            <CardContent className="flex flex-col justify-beetwen items-start p-0 gap-5 md:gap-6">
-              <Image
-                class="w-full rounded-lg max-h-[302px]"
-                src={
-                  import.meta.env.PUBLIC_STRAPI_URL +
-                  article.attributes.image.data.attributes.formats.thumbnail.url
-                }
-                alt={article.attributes.image.data.attributes.alternativeText}
-                width={
-                  article.attributes.image.data.attributes.formats.thumbnail
-                    .width
-                }
-                height={
-                  article.attributes.image.data.attributes.formats.thumbnail
-                    .height
-                }
-                loading="eager"
-              />
-              <CardTitle className="font-semibold text-lg sm:text-2xl">
-                {article.attributes.title}
-              </CardTitle>
-            </CardContent>
-          </Card>
-        </a>
+      articles.map((article, i) => (
+        <BlogPostCard
+          isPortfolio={true}
+          shadowColor={chooseColor(i)}
+          imageAltTxt={article.attributes.image.data.attributes.alternativeText}
+          title={article.attributes.title}
+          imageUrl={article.attributes.image.data.attributes.url}
+          imageWidth={article.attributes.image.data.attributes.width}
+          imageHeight={article.attributes.image.data.attributes.height}
+        />
       ))
     }
   </div>
