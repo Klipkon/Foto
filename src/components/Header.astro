@@ -53,19 +53,3 @@ const { logo, navigation, cta } = header.attributes;
     <MobileMenu navigation={navigation} cta={cta} client:load />
   </header>
 </div>
-
-<script>
-  import gsap from "gsap";
-  import { isMobile } from "@/lib/utils.ts";
-
-  if (!isMobile()) {
-    let tl = gsap.timeline();
-
-    tl.from("#header", { y: "20%", opacity: 0 }).to("#header", {
-      y: 0,
-      opacity: 1,
-      duration: 1,
-      ease: "power2.in",
-    });
-  }
-</script>
