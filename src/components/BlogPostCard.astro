@@ -30,19 +30,24 @@ const {
 ---
 
 <a id={id} href={"/blog/" + titleToSlug(title)} class="group">
-  <Card className="h-full" shadowcolor={shadowColor} hover={true}>
+  <Card className="h-full p-1 lg:px-1" shadowcolor={shadowColor} hover={true}>
     <CardContent
-      className="flex flex-col justify-beetwen items-start p-0 gap-5"
+      className="flex flex-col justify-beetwen items-start p-0 gap-5 relative"
     >
       <Image
-        class="w-full rounded-lg max-h-[302px]"
+        class="w-full rounded-[48px] object-cover max-h-[300px]"
         src={import.meta.env.PUBLIC_STRAPI_URL + imageUrl}
         alt={imageAltTxt}
         width={imageWidth}
         height={imageHeight}
         loading="eager"
       />
-      <CardTitle className="font-semibold text-lg sm:text-2xl"
+      <div
+        class="absolute left-0 top-0 bg-black/50 w-full h-full rounded-[48px]"
+      >
+      </div>
+      <CardTitle
+        className="font-semibold lg:text-2xl absolute bottom-6 left-6 right-6 text-white"
         >{title}</CardTitle
       >
     </CardContent>
