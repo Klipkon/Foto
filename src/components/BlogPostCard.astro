@@ -6,7 +6,7 @@ import {
   CardTitle,
   type shadowColor,
 } from "@/components/ui/card";
-import { titleToSlug } from "@/lib/utils";
+import { titleToSlug, cn } from "@/lib/utils";
 
 interface Props {
   title: string;
@@ -17,6 +17,7 @@ interface Props {
   imageAltTxt: string;
   shadowColor?: shadowColor;
   isPortfolio?: boolean;
+  className?: string;
 }
 
 const {
@@ -28,20 +29,21 @@ const {
   imageAltTxt,
   shadowColor,
   isPortfolio,
+  className,
 } = Astro.props;
 ---
 
 <a
   id={id}
   href={(isPortfolio ? "/portfolio/" : "/blog/") + titleToSlug(title)}
-  class="group"
+  class={cn(className, "group")}
 >
   <Card className="h-full p-1 lg:px-1" shadowcolor={shadowColor} hover={true}>
     <CardContent
-      className="flex flex-col justify-beetwen items-start p-0 gap-5 relative"
+      className="flex flex-col w-full h-full p-0 gap-5 relative max-h-[300px]"
     >
       <Image
-        class="w-full rounded-[48px] object-cover max-h-[300px]"
+        class="w-full rounded-[48px] object-cover h-full"
         src={import.meta.env.PUBLIC_STRAPI_URL + imageUrl}
         alt={imageAltTxt}
         width={imageWidth}
