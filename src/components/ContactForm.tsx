@@ -40,12 +40,10 @@ export function ContactForm({ fields, button }: Props) {
 
   const handleReCaptchaVerify = useCallback(async () => {
     if (!executeRecaptcha) {
-      console.log("Execute recaptcha not yet available");
       return;
     }
 
     await executeRecaptcha("Submit").then((token) => setToken(token));
-    console.log(token);
   }, [executeRecaptcha]);
 
   useEffect(() => {
