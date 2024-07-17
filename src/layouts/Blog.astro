@@ -6,6 +6,7 @@ import Description from "@/components/Description.astro";
 import { Button } from "@/components/ui/button";
 import MainLayout from "@/layouts/MainLayout.astro";
 import Pagination from "@/components/Pagination.astro";
+import TitleWithDescription from "@/components/TitleWithDescription.astro";
 import { titleToSlug } from "@/lib/utils";
 import fetchApi from "@/lib/strapi";
 import QueryString from "qs";
@@ -74,12 +75,7 @@ function chooseColor(i: number) {
 <MainLayout seo={blogPage[0].attributes.seo}>
   <div class="flex flex-col items-start justify-center pb-14">
     <div class="flex flex-col lg:flex-row items-start justify-between gap-6">
-      <div
-        class="flex flex-col items-start justify-center gap-4 w-full lg:w-1/2"
-      >
-        <Title>{title}</Title>
-        <Description>{description}</Description>
-      </div>
+      <TitleWithDescription title={title} description={description} />
       <div class="w-full lg:w-1/2 flex items-center justify-end"></div>
     </div>
   </div>
