@@ -14,81 +14,133 @@ interface Props {
   id: number;
   featured: boolean;
   button?: IButton;
+  animateOnScroll?: string;
 }
 
-const { title, description, image, reversed, id, featured, button } =
-  Astro.props;
+const {
+  title,
+  description,
+  image,
+  reversed,
+  id,
+  featured,
+  button,
+  animateOnScroll,
+} = Astro.props;
 ---
 
-<div
-  id={"sectionWithImage" + id}
-  class={cn(
-    featured ? "bg-secondary rounded-xl shadow-accent" : "",
-    "flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-48 sectionWithImage p-12"
-  )}
->
-  <Image
-    alt={image.data.attributes.alternativeText}
+<section-with-image data-animate-on-scroll={animateOnScroll}>
+  <div
+    id={title
+      .toLowerCase()
+      .replace(/\s/g, "-")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")}
     class={cn(
-      featured ? "" : "shadow-green",
-      reversed ? "md:order-first" : "md:order-last",
-      "rounded-lg w-full lg:w-[420px] lg:max-w-none object-cover"
+      featured ? "bg-secondary rounded-xl shadow-accent" : "",
+      "flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-48 sectionWithImage p-12 alphanone"
     )}
-    src={import.meta.env.STRAPI_URL + image.data.attributes.url}
-    width={image.data.attributes.width}
-    height={image.data.attributes.height}
-  />
-  <div class="flex flex-col gap-8 text items-center lg:items-start">
-    <Title className="text-center lg:text-left title">{title}</Title>
-    <Description className="text-center lg:text-left desc"
-      >{description}</Description
-    >
-    {
-      button ? (
-        <Button key={button.id} size={button.size} variant={button.variant}>
-          {button.content}
-        </Button>
-      ) : null
-    }
+  >
+    <Image
+      alt={image.data.attributes.alternativeText}
+      class={cn(
+        featured ? "" : "shadow-green",
+        reversed ? "md:order-first" : "md:order-last",
+        "rounded-lg w-full lg:w-[420px] lg:max-w-none object-cover alphanone"
+      )}
+      src={import.meta.env.STRAPI_URL + image.data.attributes.url}
+      width={image.data.attributes.width}
+      height={image.data.attributes.height}
+    />
+    <div class="flex flex-col gap-8 text items-center lg:items-start">
+      <Title className="text-center lg:text-left title alphanone">{title}</Title
+      >
+      <Description className="text-center lg:text-left desc alphanone"
+        >{description}</Description
+      >
+      {
+        button ? (
+          <Button
+            key={button.id}
+            size={button.size}
+            variant={button.variant}
+            className="alphanone"
+          >
+            {button.content}
+          </Button>
+        ) : null
+      }
+    </div>
   </div>
-</div>
+</section-with-image>
 
 <script>
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { isMobile } from "@/lib/utils.ts";
+  import { isMobileOrReducedMotion } from "@/lib/utils.ts";
 
   gsap.registerPlugin(ScrollTrigger);
 
-  if (!isMobile()) {
-    let tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".sectionWithImage",
-        start: "top center",
-        end: "top center",
-      },
-    });
+  class SectionWithImage extends HTMLElement {
+    constructor() {
+      super();
 
-    tl.from(".sectionWithImage .image", { y: "20%", opacity: 0 })
-      .to(".sectionWithImage .image", {
-        y: 0,
-        opacity: 1,
-        duration: 0.1,
-        ease: "power4.in",
-      })
-      .from(".sectionWithImage .text .title", { y: "20%", opacity: 0 }, 0.2)
-      .to(".sectionWithImage .text .title", {
-        y: 0,
-        opacity: 1,
-        duration: 0.1,
-        ease: "power4.in",
-      })
-      .from(".sectionWithImage .text .desc", { y: "20%", opacity: 0 }, 0.3)
-      .to(".sectionWithImage .text .desc", {
-        y: 0,
-        opacity: 1,
-        duration: 0.1,
-        ease: "power4.in",
-      });
+      const animateOnScroll =
+        this.dataset.animateOnScroll == "true" ? true : false;
+      console.log(animateOnScroll);
+
+      if (!isMobileOrReducedMotion()) {
+        const background = this.querySelector(".sectionWithImage");
+        const image = this.querySelector("img");
+        const title = this.querySelector(".title");
+        const desc = this.querySelector(".desc");
+        const button = this.querySelector("button");
+
+        let tl = gsap.timeline(
+          animateOnScroll
+            ? {
+                scrollTrigger: {
+                  trigger: this,
+                  start: "top center",
+                  end: "top center",
+                },
+              }
+            : {}
+        );
+
+        tl.from(background, { y: "20%", autoAlpha: 0 })
+          .to(background, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(image, { y: "20%", autoAlpha: 0 })
+          .to(image, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(title, { y: "20%", autoAlpha: 0 }, 0.2)
+          .to(title, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(desc, { y: "20%", autoAlpha: 0 }, 0.3)
+          .to(desc, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(button, { y: "20%", autoAlpha: 0 }, 0.3)
+          .to(button, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          });
+      }
+    }
   }
+
+  customElements.define("section-with-image", SectionWithImage);
 </script>

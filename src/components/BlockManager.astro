@@ -52,6 +52,7 @@ const { components } = Astro.props;
       case "components.section-with-image":
         return (
           <SectionWithImage
+            animateOnScroll={component.animateOnScroll ? "true" : "false"}
             button={component.button}
             featured={component.featured!}
             title={component.title!}
