@@ -5,6 +5,7 @@ import Footer from "@/components/Footer.astro";
 import { ViewTransitions } from "astro:transitions";
 import Breadcrumbs from "@/components/Breadcrumbs.astro";
 import type { Seo } from "@/interfaces/page";
+import { Toaster } from "@/components/ui/sonner";
 
 interface Props {
   seo: Seo;
@@ -38,5 +39,6 @@ const currentPath = Astro.url.pathname;
       <slot />
     </main>
     <Footer />
+    <Toaster richColors client:load />
   </body>
 </html>
