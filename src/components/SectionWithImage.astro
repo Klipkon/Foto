@@ -60,14 +60,16 @@ const {
       >
       {
         button ? (
-          <Button
-            key={button.id}
-            size={button.size}
-            variant={button.variant}
-            className="alphanone"
-          >
-            {button.content}
-          </Button>
+          <a href={button.href}>
+            <Button
+              key={button.id}
+              size={button.size}
+              variant={button.variant}
+              className="alphanone"
+            >
+              {button.content}
+            </Button>
+          </a>
         ) : null
       }
     </div>
