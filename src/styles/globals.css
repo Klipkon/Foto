@@ -44,6 +44,16 @@
     @apply bg-background text-black;
   }
 
+  .alphanone {
+    visibility: hidden;
+  }
+
+  @media (prefers-reduced-motion) {
+    .alphanone {
+      visibility: visible;
+    }
+  }
+
   .card-width {
     width: calc(100% - 32px);
   }
@@ -113,5 +123,9 @@
 
   .image {
     @apply flex items-center justify-center;
+  }
+
+  .grecaptcha-badge {
+    visibility: hidden;
   }
 }
