@@ -44,7 +44,7 @@ const content = await marked.parse(article.attributes.content);
       </div>
     </div>
     <div class="w-full flex justify-center">
-      <Prose set:html={DOMPurify.sanitize(content)} />
+      <Prose set:html={DOMPurify.sanitize(content, { ADD_TAGS: ["iframe"] })} />
     </div>
   </div>
 </MainLayout>
