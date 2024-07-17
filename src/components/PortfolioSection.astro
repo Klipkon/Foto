@@ -34,92 +34,113 @@ interface Props {
 const { title, description, button } = Astro.props;
 ---
 
-<div
-  id="portfolioSection"
-  class="p-7 md:p-12 lg:px-12 border-1 border-black rounded-xl"
->
-  <CardContent>
-    <div class="flex items-center justify-center lg:justify-between gap-12">
-      <Title className="portfolioTitle text-[32px] lg:text-[40px]"
-        >{title}</Title
-      >
-      <Description className="hidden w-full lg:flex portfolioDesc"
-        >{description}</Description
-      >
-    </div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 py-12">
-      {
-        projects.map((project, i) => (
-          <BlogPostCard
-            shadowColor={i == 0 ? "bg-cyan" : "bg-green"}
-            imageUrl={project.attributes.image.data.attributes.url}
-            imageAltTxt={
-              project.attributes.image.data.attributes.alternativeText
-            }
-            imageHeight={project.attributes.image.data.attributes.width}
-            imageWidth={project.attributes.image.data.attributes.height}
-            title={project.attributes.title}
-          />
-        ))
-      }
-    </div>
-    <div class="flex items-center justify-center">
-      <a href={button.href}>
-        <Button id="portfolioButton" variant={button.variant} size={button.size}
-          >{button.content}</Button
+<portfolio-section>
+  <div
+    id="portfolioSection"
+    class="p-7 md:p-12 lg:px-12 border-1 border-black rounded-xl alphanone"
+  >
+    <CardContent>
+      <div class="flex items-center justify-center lg:justify-between gap-12">
+        <Title className="portfolioTitle text-[32px] lg:text-[40px] alphanone"
+          >{title}</Title
         >
-      </a>
-    </div>
-  </CardContent>
+        <Description className="hidden w-full lg:flex portfolioDesc alphanone"
+          >{description}</Description
+        >
+      </div>
+      <div
+        class="grid grid-cols-1 lg:grid-cols-2 gap-12 py-12 alphanone"
+        id="portfolioCards"
+      >
+        {
+          projects.map((project, i) => (
+            <BlogPostCard
+              isPortfolio={true}
+              shadowColor={i == 0 ? "bg-cyan" : "bg-green"}
+              imageUrl={project.attributes.image.data.attributes.url}
+              imageAltTxt={
+                project.attributes.image.data.attributes.alternativeText
+              }
+              imageHeight={project.attributes.image.data.attributes.width}
+              imageWidth={project.attributes.image.data.attributes.height}
+              title={project.attributes.title}
+            />
+          ))
+        }
+      </div>
+      <div class="flex items-center justify-center">
+        <a href={button.href}>
+          <Button
+            id="portfolioButton"
+            className="alphanone"
+            variant={button.variant}
+            size={button.size}>{button.content}</Button
+          >
+        </a>
+      </div>
+    </CardContent>
+  </div>
+</portfolio-section>
 
-  <script>
-    import gsap from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-    import { isMobile } from "@/lib/utils.ts";
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { isMobileOrReducedMotion } from "@/lib/utils.ts";
 
-    gsap.registerPlugin(ScrollTrigger);
+  class PortfolioSection extends HTMLElement {
+    constructor() {
+      super();
 
-    if (!isMobile()) {
-      let tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: "#portfolioSection",
-          start: "top center",
-          end: "top center",
-        },
-      });
+      gsap.registerPlugin(ScrollTrigger);
 
-      tl.from("#portfolioSection", { y: "20%", opacity: 0 })
-        .to("#portfolioSection", {
-          y: 0,
-          opacity: 1,
-          duration: 0.1,
-          ease: "power4.in",
-        })
-        .from(".portfolioTitle", { y: "20%", opacity: 0 }, 0.2)
-        .to(".portfolioTitle", {
-          y: 0,
-          opacity: 1,
-          duration: 0.1,
-          ease: "power4.in",
-        })
-        .from(".portfolioDesc", { y: "20%", opacity: 0 }, 0.3)
-        .to(".portfolioDesc", {
-          y: 0,
-          opacity: 1,
-          duration: 0.1,
-          ease: "power4.in",
-        })
-        .from("#img1", { y: "20%", opacity: 0 }, 0.5)
-        .to("#img1", { y: 0, opacity: 1, duration: 0.1, ease: "power4.in" })
-        .from("#img2", { y: "20%", opacity: 0 }, 0.6)
-        .to("#img2", { y: 0, opacity: 1, duration: 0.1, ease: "power4.in" })
-        .from("#portfolioButton", { y: "20%", opacity: 0 }, 0.8)
-        .to("#portfolioButton", {
-          y: 0,
-          opacity: 1,
-          duration: 0.1,
-          ease: "power4.in",
+      if (!isMobileOrReducedMotion()) {
+        const portfolioSection = this.querySelector("#portfolioSection");
+        const portfolioTitle = this.querySelector(".portfolioTitle");
+        const portfolioDesc = this.querySelector(".portfolioDesc");
+        const portfolioCards = this.querySelector("#portfolioCards");
+        const portfolioButton = this.querySelector("#portfolioButton");
+
+        let tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: this,
+            start: "top center",
+            end: "top center",
+          },
         });
+
+        tl.from(portfolioSection, { y: "20%", autoAlpha: 0 })
+          .to(portfolioSection, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(portfolioTitle, { y: "20%", autoAlpha: 0 }, 0.2)
+          .to(portfolioTitle, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(portfolioDesc, { y: "20%", autoAlpha: 0 }, 0.3)
+          .to(portfolioDesc, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(portfolioCards, { y: "20%", autoAlpha: 0 }, 0.5)
+          .to(portfolioCards, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(portfolioButton, { y: "20%", autoAlpha: 0 }, 0.8)
+          .to(portfolioButton, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          });
+      }
     }
-  </script>
-</div>
+  }
+
+  customElements.define("portfolio-section", PortfolioSection);
+</script>

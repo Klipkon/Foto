@@ -19,63 +19,74 @@ interface Props {
 const { video, buttons, title } = Astro.props;
 ---
 
-<div
-  class="flex flex-col items-center justify-center gap-10 py-5"
-  style={{ height: "calc(100dvh - 80px)" }}
->
-  <Title
-    h1
-    className="text-[32px] lg:text-[40px] font-bold lg:leading-[3rem] text-center max-w-[426px] flex flex-col items-center justify-center"
-    set:html={DOMPurify.sanitize(title)}
-  />
+<hero-section>
   <div
-    class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8"
+    class="flex flex-col items-center justify-center gap-10 py-5"
+    style={{ height: "calc(100dvh - 80px)" }}
   >
-    {
-      buttons.map((button) => (
-        <Button key={button.id} size={button.size} variant={button.variant}>
-          {button.content}
-        </Button>
-      ))
-    }
+    <Title
+      h1
+      className="text-[32px] lg:text-[40px] font-bold lg:leading-[3rem] text-center max-w-[426px] flex flex-col items-center justify-center alphanone"
+      set:html={DOMPurify.sanitize(title)}
+    />
+    <div
+      class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 buttons alphanone"
+    >
+      {
+        buttons.map((button) => (
+          <a href={button.href}>
+            <Button key={button.id} size={button.size} variant={button.variant}>
+              {button.content}
+            </Button>
+          </a>
+        ))
+      }
+    </div>
+    <div class="rounded-md sm:rounded-xl">
+      <video
+        class="w-full max-w-[1130px] aspect-video h-auto rounded-md sm:rounded-xl shadow-accent alphanone"
+        autoplay
+        muted
+        loop
+        src={import.meta.env.STRAPI_URL + video.data.attributes.url}></video>
+    </div>
   </div>
-  <div class="rounded-md sm:rounded-xl">
-    <video
-      class="w-full max-w-[1130px] aspect-video h-auto rounded-md sm:rounded-xl shadow-accent"
-      autoplay
-      muted
-      loop
-      src={import.meta.env.STRAPI_URL + video.data.attributes.url}></video>
-  </div>
-</div>
+</hero-section>
 
 <script>
-  // import gsap from "gsap";
-  // import { isMobile } from "@/lib/utils";
+  import gsap from "gsap";
+  import { isMobileOrReducedMotion } from "@/lib/utils.ts";
 
-  // let width = window.innerWidth;
-  // let x = "100%";
-  // let y = "0";
+  class HeroSection extends HTMLElement {
+    constructor() {
+      super();
 
-  // if (width < 1024) {
-  //   x = "0";
-  //   y = "100%";
-  // }
+      const video = this.querySelector("video");
+      const title = this.querySelector("h1");
+      const buttonContainer = this.querySelector(".buttons");
 
-  // if (!isMobile()) {
-  //   let tl = gsap.timeline();
+      if (!isMobileOrReducedMotion()) {
+        let tl = gsap.timeline();
 
-  //   tl.from(".hero-image", { scale: 0, transformOrigin: "bottom left" })
-  //     .to(".hero-image", { scale: 1, duration: 0.5, ease: "power4.in" })
-  //     .from(".modalButton", { scale: 0, transformOrigin: "bottom left" }, 0.5)
-  //     .to(".modalButton", { scale: 1, duration: 0.5, ease: "power4.in" })
-  //     .from("#textPanel", { x: x, y: y, opacity: 0 }, 0.9)
-  //     .to("#textPanel", {
-  //       x: 0,
-  //       y: 0,
-  //       duration: 0.25,
-  //       opacity: 1,
-  //       ease: "power4.in",
-  //     });
-  // }
+        tl.from(buttonContainer, { y: 50, autoAlpha: 0 }, 0.2)
+          .to(buttonContainer, {
+            y: 0,
+            duration: 2,
+            ease: "power4.in",
+          })
+          .from(title, { autoAlpha: 0 }, 0.9)
+          .to(title, {
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(video, { autoAlpha: 0 }, 0.7)
+          .to(video, {
+            duration: 0.1,
+            ease: "power4.in",
+          });
+      }
+    }
+  }
+
+  customElements.define("hero-section", HeroSection);
 </script>

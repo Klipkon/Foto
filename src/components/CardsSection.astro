@@ -22,110 +22,149 @@ interface Props {
 const { title, description, cards, buttons } = Astro.props;
 ---
 
-<div
-  id="servicesSection"
-  class="w-full flex flex-col items-center justify-center gap-12 py-52"
->
-  <Title className="text-center servicesTitle">{title}</Title>
-  <Description className="text-center">{description}</Description>
+<cards-section>
   <div
-    id="cardsContainer"
-    class="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-full flex flex-col items-center justify-center xl:flex-row gap-12"
+    id="servicesSection"
+    class="w-full flex flex-col items-center justify-center gap-12 py-52 alphanone"
   >
-    {
-      cards.map((card, i) => (
-        <Card
-          key={card.id}
-          id={"card" + (i + 1)}
-          featured={card.highlighted}
-          className={card.highlighted ? "" : "w-full md:w-5/6 xl:w-[360px]"}
-        >
-          <CardContent className={card.highlighted ? "gap-5" : ""}>
-            <Image
-              class={cn(
-                card.highlighted
-                  ? "max-h-[334px]"
-                  : "max-h-[245px] w-full xl:w-auto xl:max-w-[300px]",
-                "rounded-md object-cover hidden md:block"
+    <Title className="text-center servicesTitle">{title}</Title>
+    <Description className="text-center">{description}</Description>
+    <div
+      id="cardsContainer"
+      class="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-full flex flex-col items-center justify-center xl:flex-row gap-12"
+    >
+      {
+        cards.map((card, i) => (
+          <Card
+            key={card.id}
+            id={"card" + (i + 1)}
+            featured={card.highlighted}
+            className={
+              card.highlighted ? "" : "w-full md:w-5/6 xl:w-[360px] alphanone"
+            }
+          >
+            <CardContent className={card.highlighted ? "gap-5" : ""}>
+              <Image
+                class={cn(
+                  card.highlighted
+                    ? "max-h-[334px]"
+                    : "max-h-[245px] w-full xl:w-auto xl:max-w-[300px]",
+                  "rounded-md object-cover hidden md:block"
+                )}
+                src={
+                  import.meta.env.STRAPI_URL + card.image.data.attributes.url
+                }
+                alt={card.image.data.attributes.alternativeText}
+                width={card.image.data.attributes.width}
+                height={card.image.data.attributes.height}
+              />
+              <CardTitle className="font-bold text-2xl lg::text-4xl">
+                {card.title}
+              </CardTitle>
+              {card.description && (
+                <CardDescription className="text-base text-black">
+                  {card.description}
+                </CardDescription>
               )}
-              src={import.meta.env.STRAPI_URL + card.image.data.attributes.url}
-              alt={card.image.data.attributes.alternativeText}
-              width={card.image.data.attributes.width}
-              height={card.image.data.attributes.height}
-            />
-            <CardTitle className="font-bold text-2xl lg::text-4xl">
-              {card.title}
-            </CardTitle>
-            {card.description && (
-              <CardDescription className="text-base text-black">
-                {card.description}
-              </CardDescription>
-            )}
-          </CardContent>
-        </Card>
-      ))
-    }
+            </CardContent>
+          </Card>
+        ))
+      }
+    </div>
+    <div class="pt-5 md:pt-10">
+      {
+        buttons.map((button) => (
+          <a href={button.href}>
+            <Button
+              className="alphanone"
+              key={button.id}
+              id="servicesButton"
+              variant={button.variant}
+            >
+              {button.content}
+            </Button>
+          </a>
+        ))
+      }
+    </div>
   </div>
-  <div class="pt-5 md:pt-10">
-    {
-      buttons.map((button) => (
-        <a href={button.href}>
-          <Button key={button.id} id="servicesButton" variant={button.variant}>
-            {button.content}
-          </Button>
-        </a>
-      ))
-    }
-  </div>
-</div>
+</cards-section>
 
 <script>
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { isMobile } from "@/lib/utils.ts";
+  import { isMobileOrReducedMotion } from "@/lib/utils.ts";
 
-  gsap.registerPlugin(ScrollTrigger);
+  class CardSection extends HTMLElement {
+    constructor() {
+      super();
 
-  if (!isMobile()) {
-    let tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#servicesSection",
-        start: "top center",
-        end: "top center",
-      },
-    });
+      gsap.registerPlugin(ScrollTrigger);
 
-    tl.from(".servicesTitle", { x: "-20%", opacity: 0 })
-      .to(".servicesTitle", {
-        x: 0,
-        opacity: 1,
-        duration: 0.1,
-        ease: "power4.in",
-      })
-      .from("#card2", { y: "20%", opacity: 0, transformOrigin: "bottom left" })
-      .to("#card2", { y: 0, opacity: 1, duration: 0.1, ease: "power4.in" })
-      .from(
-        "#card1",
-        { y: "20%", opacity: 0, transformOrigin: "bottom left" },
-        0.2
-      )
-      .to("#card1", { y: 0, opacity: 1, duration: 0.1, ease: "power4.in" })
-      .from(
-        "#card3",
-        { y: "20%", opacity: 0, transformOrigin: "bottom left" },
-        0.4
-      )
-      .to("#card3", { y: 0, opacity: 1, duration: 0.1, ease: "power4.in" })
-      .from(
-        "#servicesButton",
-        { y: "20%", opacity: 0, transformOrigin: "bottom left" },
-        0.6
-      )
-      .to("#servicesButton", {
-        y: 0,
-        opacity: 1,
-        duration: 0.1,
-        ease: "power4.in",
-      });
+      if (!isMobileOrReducedMotion()) {
+        const servicesSection = this.querySelector("#servicesSection");
+        const secondCard = this.querySelector("#card2");
+        const firsstCard = this.querySelector("#card1");
+        const thirdCard = this.querySelector("#card3");
+        const servicesButton = this.querySelector("#servicesButton");
+
+        let tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: this,
+            start: "top center",
+            end: "top center",
+          },
+        });
+
+        tl.from(servicesSection, { y: "20%", autoAlpha: 0 })
+          .to(servicesSection, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(secondCard, {
+            y: "20%",
+            autoAlpha: 0,
+            transformOrigin: "bottom left",
+          })
+          .to(secondCard, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(
+            firsstCard,
+            { y: "20%", autoAlpha: 0, transformOrigin: "bottom left" },
+            0.2
+          )
+          .to(firsstCard, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(
+            thirdCard,
+            { y: "20%", autoAlpha: 0, transformOrigin: "bottom left" },
+            0.4
+          )
+          .to(thirdCard, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(
+            servicesButton,
+            { y: "20%", autoAlpha: 0, transformOrigin: "bottom left" },
+            0.6
+          )
+          .to(servicesButton, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          });
+      }
+    }
   }
+
+  customElements.define("cards-section", CardSection);
 </script>

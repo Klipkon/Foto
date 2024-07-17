@@ -6,7 +6,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function isMobile() {
+export function isMobileOrReducedMotion() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+    return true;
+
   const regex =
     /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
   return regex.test(navigator.userAgent);

@@ -22,86 +22,95 @@ const footer = await fetchApi<Footer>({
 const { logo, column, cta } = footer.attributes;
 ---
 
-<footer id="footer" class="container pt-24">
-  <div
-    class="flex flex-col lg:flex-row items-center justify-center gap-12 lg:justify-between w-full border-y py-12"
-  >
-    <div class="flex flex-col gap-8 items-start">
-      <a href="/">
-        <Image
-          src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url}
-          width={logo.data.attributes.width}
-          height={logo.data.attributes.height}
-          alt="Logo"
-          loading="eager"
-          class="h-14"
-        />
-      </a>
-      {
-        cta ? (
-          <Button variant={cta.variant} size={cta.size}>
-            {cta.content}
-          </Button>
-        ) : (
-          ""
-        )
-      }
-    </div>
-    <nav
-      class="flex flex-wrap items-start justify-center gap-6 px-10 py-3 footerElem"
+<footer-section>
+  <footer id="footer" class="container pt-24 alphanone">
+    <div
+      class="flex flex-col lg:flex-row items-center justify-center gap-12 lg:justify-between w-full border-y py-12"
     >
-      {
-        column.map((elem) => (
-          <div class="flex flex-col gap-3 items-center md:items-start justify-start h-full column">
-            {elem.link.map((link, i) => (
-              <a href={link.href}>
-                <Button fontbold={i == 0} variant="ghost">
-                  {link.title}
-                </Button>
-              </a>
-            ))}
-          </div>
-        ))
-      }
-    </nav>
-  </div>
-  <div class="w-full py-6 flex items-center justify-center">
-    &copy; Klipkon {new Date().getFullYear()}
-  </div>
-</footer>
+      <div class="flex flex-col gap-8 items-start">
+        <a href="/">
+          <Image
+            src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url}
+            width={logo.data.attributes.width}
+            height={logo.data.attributes.height}
+            alt="Logo"
+            loading="eager"
+            class="h-14"
+          />
+        </a>
+        {
+          cta ? (
+            <a href={cta.href}>
+              <Button variant={cta.variant} size={cta.size}>
+                {cta.content}
+              </Button>
+            </a>
+          ) : (
+            ""
+          )
+        }
+      </div>
+      <nav
+        class="flex flex-wrap items-start justify-center gap-6 px-10 py-3 footerElem alphanone"
+      >
+        {
+          column.map((elem) => (
+            <div class="flex flex-col gap-3 items-center md:items-start justify-start h-full column">
+              {elem.link.map((link, i) => (
+                <a href={link.href}>
+                  <Button fontbold={i == 0} variant="ghost">
+                    {link.title}
+                  </Button>
+                </a>
+              ))}
+            </div>
+          ))
+        }
+      </nav>
+    </div>
+    <div class="w-full py-6 flex items-center justify-center">
+      &copy; Klipkon {new Date().getFullYear()}
+    </div>
+  </footer>
+</footer-section>
 
 <script>
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { isMobile } from "@/lib/utils.ts";
+  import { isMobileOrReducedMotion } from "@/lib/utils.ts";
 
-  gsap.registerPlugin(ScrollTrigger);
+  class Footer extends HTMLElement {
+    constructor() {
+      super();
+      gsap.registerPlugin(ScrollTrigger);
 
-  const sections = document.querySelector("#container")?.children!;
-  const lastSection = sections[sections.length - 1];
+      if (!isMobileOrReducedMotion()) {
+        const footer = this.querySelector("footer");
+        const nav = this.querySelector("nav");
 
-  if (!isMobile()) {
-    let tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: `#${lastSection.hasAttribute("id") ? lastSection.id : "container"}`,
-        start: "top center",
-        end: "top center",
-      },
-    });
+        let tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: this,
+            start: "top bottom",
+            end: "top bottom",
+          },
+        });
 
-    tl.from("footer", { y: "20%", opacity: 0 })
-      .to("footer", {
-        y: 0,
-        opacity: 1,
-        duration: 0.1,
-        ease: "power4.in",
-      })
-      .from("footer nav", { y: "20%", opacity: 0 })
-      .to("footer nav", {
-        y: 0,
-        opacity: 1,
-        duration: 0.1,
-        ease: "power4.in",
-      });
+        tl.from(footer, { y: "20%", autoAlpha: 0 })
+          .to(footer, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          })
+          .from(nav, { y: "20%", autoAlpha: 0 })
+          .to(nav, {
+            y: 0,
+            duration: 0.1,
+            ease: "power4.in",
+          });
+      }
+    }
   }
+
+  customElements.define("footer-section", Footer);
 </script>
