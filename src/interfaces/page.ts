@@ -37,6 +37,7 @@ export interface Component {
   phone?: string;
   table?: string;
   options?: Card[];
+  animateOnScroll?: boolean;
 }
 
 export interface Button {
@@ -144,7 +145,5 @@ export interface Attributes {
 export interface Field {
   id: number;
   label: string;
-  type: "email" | "text" | "password";
   placeholder: string;
-  textarea: boolean;
 }
