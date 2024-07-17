@@ -39,13 +39,15 @@ const { logo, navigation, cta } = header.attributes;
     </nav>
     {
       cta ? (
-        <Button
-          variant={cta.variant}
-          size={cta.size}
-          className="hidden lg:flex"
-        >
-          {cta.content}
-        </Button>
+        <a href={cta.href}>
+          <Button
+            variant={cta.variant}
+            size={cta.size}
+            className="hidden lg:flex"
+          >
+            {cta.content}
+          </Button>
+        </a>
       ) : (
         ""
       )
