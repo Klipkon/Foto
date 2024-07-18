@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import type { Button as IButton, Field as IField } from "@/interfaces/page.tsx";
+import { cn } from "@/lib/utils.ts";
 import { Field, Form, Formik, type FormikHelpers } from "formik";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -18,6 +19,7 @@ import { Separator } from "./ui/separator.tsx";
 interface Props {
   fields: IField[];
   button: IButton;
+  fullWidth?: boolean;
 }
 
 const FormSchema = Yup.object().shape({
@@ -33,7 +35,7 @@ const FormSchema = Yup.object().shape({
     .required(),
 });
 
-export function ContactForm({ fields, button }: Props) {
+export function ContactForm({ fields, button, fullWidth }: Props) {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [token, setToken] = useState<string>("");
 
@@ -86,12 +88,16 @@ export function ContactForm({ fields, button }: Props) {
 
   return (
     <Card
-      className="title form w-full p-[35px] md:w-2/3 lg:px-[35px] xl:w-1/2"
+      className={cn(
+        !fullWidth ? "md:w-2/3 xl:w-1/2" : "",
+        "title form w-full p-[35px] lg:px-[35px]",
+      )}
       featured
       id="contactForm"
     >
       <Formik
         validationSchema={FormSchema}
+        validateOnBlur={false}
         initialValues={{
           email: "",
           message: "",

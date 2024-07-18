@@ -1,9 +1,9 @@
 ---
+import HeaderCta from "@/components/HeaderCta";
 import { Button } from "@/components/ui/button";
 import type { Header } from "@/interfaces/header";
 import fetchApi from "@/lib/strapi";
 import { Image } from "astro:assets";
-import MobileMenu from "./MobileMenu";
 
 const header = await fetchApi<Header>({
   endpoint: "header",
@@ -37,21 +37,6 @@ const { logo, navigation, cta } = header.attributes;
         ))
       }
     </nav>
-    {
-      cta ? (
-        <a href={cta.href}>
-          <Button
-            variant={cta.variant}
-            size={cta.size}
-            className="hidden lg:flex"
-          >
-            {cta.content}
-          </Button>
-        </a>
-      ) : (
-        ""
-      )
-    }
-    <MobileMenu navigation={navigation} cta={cta} client:load />
+    <HeaderCta client:load navigation={navigation} cta={cta} />
   </header>
 </div>
