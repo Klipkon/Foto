@@ -1,12 +1,12 @@
 ---
-import { Image } from "astro:assets";
 import {
   Card,
   CardContent,
   CardTitle,
   type shadowColor,
 } from "@/components/ui/card";
-import { titleToSlug, cn } from "@/lib/utils";
+import { cn, titleToSlug } from "@/lib/utils";
+import { Image } from "astro:assets";
 
 interface Props {
   title: string;
@@ -39,11 +39,9 @@ const {
   class={cn(className, "group")}
 >
   <Card className="h-full p-1 lg:px-1" shadowcolor={shadowColor} hover={true}>
-    <CardContent
-      className="flex flex-col w-full h-full p-0 gap-5 relative max-h-[300px]"
-    >
+    <CardContent className="relative flex h-[300px] w-full flex-col gap-5 p-0">
       <Image
-        class="w-full rounded-[48px] object-cover h-full"
+        class="h-full w-full rounded-[48px] object-cover"
         src={import.meta.env.PUBLIC_STRAPI_URL + imageUrl}
         alt={imageAltTxt}
         width={imageWidth}
@@ -51,11 +49,11 @@ const {
         loading="eager"
       />
       <div
-        class="absolute left-0 top-0 bg-black/50 w-full h-full rounded-[48px]"
+        class="absolute left-0 top-0 h-full w-full rounded-[48px] bg-black/50"
       >
       </div>
       <CardTitle
-        className="font-semibold lg:text-2xl absolute bottom-6 left-6 right-6 text-white"
+        className="absolute bottom-6 left-6 right-6 font-semibold text-white lg:text-2xl"
         >{title}</CardTitle
       >
     </CardContent>
