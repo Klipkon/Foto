@@ -78,6 +78,8 @@ export function ContactForm({ fields, button }: Props) {
             actions.setErrors({ [data[i].path[0]]: data[i].message });
           }
         });
+      } else {
+        toast.error("Nie udało się wysłać wiadomości!");
       }
     });
     actions.setSubmitting(false);
