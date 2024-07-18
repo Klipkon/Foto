@@ -54,6 +54,10 @@
     "@types/dompurify": "^3.0.5",
     "@types/module-alias": "^2.0.4",
     "@types/qs": "^6.9.15",
+    "prettier": "^3.3.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-astro-organize-imports": "^0.4.9",
+    "prettier-plugin-tailwindcss": "^0.6.5",
     "vite": "^5.2.10"
   }
 }
