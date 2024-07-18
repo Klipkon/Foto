@@ -124,8 +124,8 @@
   .image {
     @apply flex items-center justify-center;
   }
+}
 
-  .grecaptcha-badge {
-    visibility: hidden;
-  }
+.grecaptcha-badge {
+  visibility: hidden;
 }
