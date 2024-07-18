@@ -55,7 +55,7 @@ const { video, buttons, title } = Astro.props;
 
 <script>
   import gsap from "gsap";
-  import { isMobileOrReducedMotion } from "@/lib/utils.ts";
+  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
 
   class HeroSection extends HTMLElement {
     constructor() {
@@ -84,6 +84,8 @@ const { video, buttons, title } = Astro.props;
             duration: 0.1,
             ease: "power4.in",
           });
+      } else {
+        turnVisible(this);
       }
     }
   }

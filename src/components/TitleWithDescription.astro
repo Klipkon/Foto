@@ -22,7 +22,7 @@ const { title, description } = Astro.props;
 <script>
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { isMobileOrReducedMotion } from "@/lib/utils.ts";
+  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
 
   class TitleWithDescription extends HTMLElement {
     constructor() {
@@ -54,6 +54,8 @@ const { title, description } = Astro.props;
             duration: 0.1,
             ease: "power4.in",
           });
+      } else {
+        turnVisible(this);
       }
     }
   }

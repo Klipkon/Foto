@@ -93,7 +93,7 @@ const { title, description, cards, buttons } = Astro.props;
 <script>
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { isMobileOrReducedMotion } from "@/lib/utils.ts";
+  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
 
   class CardSection extends HTMLElement {
     constructor() {
@@ -162,6 +162,8 @@ const { title, description, cards, buttons } = Astro.props;
             duration: 0.1,
             ease: "power4.in",
           });
+      } else {
+        turnVisible(this);
       }
     }
   }
