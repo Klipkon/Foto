@@ -51,7 +51,7 @@ export function ContactForm({ fields, button }: Props) {
 
   async function onSumbmit(
     values: Yup.InferType<typeof FormSchema>,
-    actions: FormikHelpers<Yup.InferType<typeof FormSchema>>
+    actions: FormikHelpers<Yup.InferType<typeof FormSchema>>,
   ) {
     await handleReCaptchaVerify();
     fetch(import.meta.env.PUBLIC_STRAPI_URL + "/api/mail", {
@@ -86,7 +86,7 @@ export function ContactForm({ fields, button }: Props) {
 
   return (
     <Card
-      className="title form p-[35px] lg:px-[35px] w-full md:w-2/3 xl:w-1/2"
+      className="title form w-full p-[35px] md:w-2/3 lg:px-[35px] xl:w-1/2"
       featured
       id="contactForm"
     >
@@ -110,7 +110,7 @@ export function ContactForm({ fields, button }: Props) {
                 placeholder={fields[0].placeholder}
               />
               {errors.email && touched.email ? (
-                <span className="text-red-500 block text-sm pt-1">
+                <span className="block pt-1 text-sm text-red-500">
                   {errors.email}
                 </span>
               ) : null}
@@ -123,20 +123,20 @@ export function ContactForm({ fields, button }: Props) {
                 placeholder={fields[1].placeholder}
               />
               {errors.message && touched.message ? (
-                <span className="text-red-500 block text-sm pt-1">
+                <span className="block pt-1 text-sm text-red-500">
                   {errors.message}
                 </span>
               ) : null}
             </div>
             <div>
-              <div className="flex justify-start items-start gap-2">
+              <div className="flex items-start justify-start gap-2">
                 <Field
                   name="allowToSendMarketingInfo"
                   component={Checkbox}
                   onCheckedChange={() =>
                     setFieldValue(
                       "allowToSendMarketingInfo",
-                      !values.allowToSendMarketingInfo
+                      !values.allowToSendMarketingInfo,
                     )
                   }
                   id="allowToSendMarketingInfo"
@@ -151,7 +151,7 @@ export function ContactForm({ fields, button }: Props) {
               </div>
               {errors.allowToSendMarketingInfo &&
               touched.allowToSendMarketingInfo ? (
-                <span className="text-red-500 block text-sm pt-1">
+                <span className="block pt-1 text-sm text-red-500">
                   {errors.allowToSendMarketingInfo}
                 </span>
               ) : null}
@@ -163,7 +163,7 @@ export function ContactForm({ fields, button }: Props) {
               type="submit"
               variant={button.variant}
               size={button.size}
-              className="w-full mt-4"
+              className="mt-4 w-full"
             >
               {button.content}
             </Button>

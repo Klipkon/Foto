@@ -27,19 +27,19 @@ export default function MobileMenu({ navigation, cta }: IMobileMenuProps) {
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="h-full flex flex-col items-center justify-between"
+        className="flex h-full flex-col items-center justify-between"
       >
         <SheetHeader>
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
-        <nav className="flex flex-col items-center sm:items-start justify-center gap-8 py-6">
+        <nav className="flex flex-col items-center justify-center gap-8 py-6 sm:items-start">
           {navigation.map((element) => (
             <a key={element.id} className="text-2xl" href={element.href}>
               {element.title}
             </a>
           ))}
         </nav>
-        <SheetFooter className="flex-col items-center gap-4 w-full">
+        <SheetFooter className="w-full flex-col items-center gap-4">
           {cta ? (
             <Button variant={cta.variant} fullwidth={true}>
               {cta.content}

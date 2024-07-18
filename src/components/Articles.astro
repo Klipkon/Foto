@@ -1,50 +1,55 @@
 ---
-import type { ArticleData, CategoryData } from '@/interfaces/article.interface'
-import fetchApi from '@/lib/strapi';
-import Title from './Title.astro';
-import Description from './Description.astro';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
-import { Label } from './ui/label';
-import AtriclesCards from './ArticlesCards'
+import type { ArticleData, CategoryData } from "@/interfaces/article.interface";
+import fetchApi from "@/lib/strapi";
+import AtriclesCards from "./ArticlesCards";
+import Description from "./Description.astro";
+import Title from "./Title.astro";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 const articles = await fetchApi<ArticleData[]>({
-    endpoint: 'articles',
-    wrappedByKey: 'data',
-    query: "populate=*"
-})
+  endpoint: "articles",
+  wrappedByKey: "data",
+  query: "populate=*",
+});
 
 const categories = await fetchApi<CategoryData[]>({
-    endpoint: 'categories',
-    wrappedByKey: 'data'
-})
+  endpoint: "categories",
+  wrappedByKey: "data",
+});
 
 interface Props {
-    title: string;
-    description: string;
+  title: string;
+  description: string;
 }
 
 const { title, description } = Astro.props;
 ---
+
 <div class="flex flex-col items-start justify-center pb-14">
-    <div class="flex flex-col lg:flex-row items-start justify-between gap-6">
-        <div class="flex flex-col items-start justify-center gap-4 w-full lg:w-1/2">
-           <Title>{title}</Title>
-           <Description>{description}</Description> 
-        </div>
-        <div class="w-full lg:w-1/2 flex items-center justify-end">
-            <div class="bg-secondary rounded-xl p-8 w-full lg:w-3/4">
-                <form >
-                    <div class="grid w-full items-center gap-3">
-                    <Label htmlFor="searchTitle">Szukaj artykułu</Label>
-                        <div class="flex items-center justify-between gap-2">
-                            <Input id='searchTitle' placeholder="Tytuł artykułu..." />
-                            <Button>Szukaj</Button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+  <div class="flex flex-col items-start justify-between gap-6 lg:flex-row">
+    <div class="flex w-full flex-col items-start justify-center gap-4 lg:w-1/2">
+      <Title>{title}</Title>
+      <Description>{description}</Description>
     </div>
+    <div class="flex w-full items-center justify-end lg:w-1/2">
+      <div class="w-full rounded-xl bg-secondary p-8 lg:w-3/4">
+        <form>
+          <div class="grid w-full items-center gap-3">
+            <Label htmlFor="searchTitle">Szukaj artykułu</Label>
+            <div class="flex items-center justify-between gap-2">
+              <Input id="searchTitle" placeholder="Tytuł artykułu..." />
+              <Button>Szukaj</Button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
-<AtriclesCards articles={articles} categories={categories.sort((a, b) => a.id - b.id )} client:load />
+<AtriclesCards
+  articles={articles}
+  categories={categories.sort((a, b) => a.id - b.id)}
+  client:load
+/>

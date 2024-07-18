@@ -59,11 +59,11 @@
   }
 
   table {
-    @apply border-collapse flex flex-col lg:flex-row w-full lg:justify-between;
+    @apply flex w-full border-collapse flex-col lg:flex-row lg:justify-between;
   }
 
   table tbody {
-    @apply flex flex-col lg:flex-row gap-5;
+    @apply flex flex-col gap-5 lg:flex-row;
   }
 
   table thead th {
@@ -75,7 +75,7 @@
   }
 
   table tbody tr th {
-    @apply flex justify-center py-[10px] text-2xl text-center w-full;
+    @apply flex w-full justify-center py-[10px] text-center text-2xl;
   }
 
   thead {
@@ -91,7 +91,7 @@
   }
 
   table tr {
-    @apply rounded-md lg:rounded-xl p-5 w-full;
+    @apply w-full rounded-md p-5 lg:rounded-xl;
   }
 
   table thead th {
@@ -108,7 +108,7 @@
 
   td,
   th:not(:first-of-type) {
-    @apply py-[30px] lg:py-[20px] flex items-center justify-between text-center lg:justify-center h-6 text-sm;
+    @apply flex h-6 items-center justify-between py-[30px] text-center text-sm lg:justify-center lg:py-[20px];
   }
 
   table td::before {

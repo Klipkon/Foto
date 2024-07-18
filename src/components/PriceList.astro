@@ -1,13 +1,13 @@
 ---
-import Title from "./Title.astro";
-import DOMPurify from "isomorphic-dompurify";
-import type { Card as ICard } from "@/interfaces/page";
 import {
   Card,
   CardContent,
   CardDescription,
   CardTitle,
 } from "@/components/ui/card";
+import type { Card as ICard } from "@/interfaces/page";
+import DOMPurify from "isomorphic-dompurify";
+import Title from "./Title.astro";
 
 interface Props {
   title: string;
@@ -20,24 +20,24 @@ const { title, table, options } = Astro.props;
 
 <price-list>
   <div class="py-12">
-    <div class="flex flex-col items-start justify-center pb-4 priceList">
+    <div class="priceList flex flex-col items-start justify-center pb-4">
       <div
-        class="flex flex-col items-center justify-center w-full py-5 border-b-1 border-black"
+        class="flex w-full flex-col items-center justify-center border-b-1 border-black py-5"
       >
         <Title>{title}</Title>
       </div>
       <div
         set:html={DOMPurify.sanitize(table)}
-        class="flex flex-col items-start justify-center w-full [&>figure]:w-full [&>figure>table]:w-full py-5 gap-5 [&>p]:w-full"
+        class="flex w-full flex-col items-start justify-center gap-5 py-5 [&>figure>table]:w-full [&>figure]:w-full [&>p]:w-full"
       />
     </div>
     {
       options?.length != 0 ? (
-        <div class="flex flex-col items-center justify-center gap-12 additionalOptions alphanone">
-          <div class="flex items-stretc justify-center w-full">
+        <div class="additionalOptions alphanone flex flex-col items-center justify-center gap-12">
+          <div class="items-stretc flex w-full justify-center">
             <Title className="sm:text-[32px]">Dodatkowe opcje</Title>
           </div>
-          <div class="flex items-stretch justify-center flex-wrap gap-12">
+          <div class="flex flex-wrap items-stretch justify-center gap-12">
             {options?.map((option) => (
               <Card className="flex-1 max-w-[345px] h-auto">
                 <CardContent className="items-center justify-between h-full text-center gap-4">
@@ -59,9 +59,9 @@ const { title, table, options } = Astro.props;
 </price-list>
 
 <script>
+  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
 
   class PriceList extends HTMLElement {
     constructor() {

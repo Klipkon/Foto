@@ -10,13 +10,13 @@ const { className, h1 } = Astro.props;
 {
   h1 ? (
     <h1
-      class={`text-2xl sm:text-[40px] font-bold sm:leading-[3rem] ${className}`}
+      class={`text-2xl font-bold sm:text-[40px] sm:leading-[3rem] ${className}`}
     >
       <slot />
     </h1>
   ) : (
     <h2
-      class={`text-2xl sm:text-[40px] font-bold sm:leading-[3rem] ${className}`}
+      class={`text-2xl font-bold sm:text-[40px] sm:leading-[3rem] ${className}`}
     >
       <slot />
     </h2>

@@ -1,16 +1,16 @@
 ---
-import type { Card as ICard, Button as IButton } from "@/interfaces/page.ts";
 import Description from "@/components/Description.astro";
 import Title from "@/components/Title.astro";
+import { Button } from "@/components/ui/button.tsx";
 import {
   Card,
   CardContent,
   CardDescription,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button.tsx";
-import { Image } from "astro:assets";
+import type { Button as IButton, Card as ICard } from "@/interfaces/page.ts";
 import { cn } from "@/lib/utils";
+import { Image } from "astro:assets";
 
 interface Props {
   title: string;
@@ -25,13 +25,13 @@ const { title, description, cards, buttons } = Astro.props;
 <cards-section>
   <div
     id="servicesSection"
-    class="w-full flex flex-col items-center justify-center gap-12 py-52 alphanone"
+    class="alphanone flex w-full flex-col items-center justify-center gap-12 py-52"
   >
-    <Title className="text-center servicesTitle">{title}</Title>
+    <Title className="servicesTitle text-center">{title}</Title>
     <Description className="text-center">{description}</Description>
     <div
       id="cardsContainer"
-      class="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-full flex flex-col items-center justify-center xl:flex-row gap-12"
+      class="flex w-full flex-col items-center justify-center gap-12 sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-full xl:flex-row"
     >
       {
         cards.map((card, i) => (
@@ -40,7 +40,7 @@ const { title, description, cards, buttons } = Astro.props;
             id={"card" + (i + 1)}
             featured={card.highlighted}
             className={
-              card.highlighted ? "" : "w-full md:w-5/6 xl:w-[360px] alphanone"
+              card.highlighted ? "" : "alphanone w-full md:w-5/6 xl:w-[360px]"
             }
           >
             <CardContent className={card.highlighted ? "gap-5" : ""}>
@@ -49,7 +49,7 @@ const { title, description, cards, buttons } = Astro.props;
                   card.highlighted
                     ? "max-h-[334px]"
                     : "max-h-[245px] w-full xl:w-auto xl:max-w-[300px]",
-                  "rounded-md object-cover hidden md:block"
+                  "hidden rounded-md object-cover md:block",
                 )}
                 src={
                   import.meta.env.STRAPI_URL + card.image.data.attributes.url
@@ -91,9 +91,9 @@ const { title, description, cards, buttons } = Astro.props;
 </cards-section>
 
 <script>
+  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
 
   class CardSection extends HTMLElement {
     constructor() {
@@ -135,7 +135,7 @@ const { title, description, cards, buttons } = Astro.props;
           .from(
             firsstCard,
             { y: "20%", autoAlpha: 0, transformOrigin: "bottom left" },
-            0.2
+            0.2,
           )
           .to(firsstCard, {
             y: 0,
@@ -145,7 +145,7 @@ const { title, description, cards, buttons } = Astro.props;
           .from(
             thirdCard,
             { y: "20%", autoAlpha: 0, transformOrigin: "bottom left" },
-            0.4
+            0.4,
           )
           .to(thirdCard, {
             y: 0,
@@ -155,7 +155,7 @@ const { title, description, cards, buttons } = Astro.props;
           .from(
             servicesButton,
             { y: "20%", autoAlpha: 0, transformOrigin: "bottom left" },
-            0.6
+            0.6,
           )
           .to(servicesButton, {
             y: 0,

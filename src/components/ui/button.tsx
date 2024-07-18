@@ -40,7 +40,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           className,
           props.fullwidth ? "w-full" : "w-fit",
-          "text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative group"
+          "group relative text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
         )}
         ref={ref}
         {...props}
@@ -53,7 +53,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               : "group-hover:-translate-x-[3px] group-hover:-translate-y-[3px]",
             props.fullwidth ? "w-full" : "w-fit",
             props.fontbold ? "font-bold" : "font-medium",
-            "rounded-md inline-flex items-center justify-center whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative transition-transform"
+            "relative inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
           )}
         >
           {props.children}
@@ -62,12 +62,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             variant == "default" ? "bg-accent" : "bg-black",
             variant == "ghost" ? "hidden" : "block",
-            "w-full h-full absolute top-0 left-0 z-[-1] rounded-md"
+            "absolute left-0 top-0 z-[-1] h-full w-full rounded-md",
           )}
         ></div>
       </Comp>
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

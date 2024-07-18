@@ -1,10 +1,10 @@
 ---
-import { Image } from "astro:assets";
-import Title from "./Title.astro";
-import Description from "./Description.astro";
-import type { Image as IImage, Button as IButton } from "@/interfaces/page";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import type { Button as IButton, Image as IImage } from "@/interfaces/page";
+import { cn } from "@/lib/utils";
+import { Image } from "astro:assets";
+import Description from "./Description.astro";
+import Title from "./Title.astro";
 
 interface Props {
   title: string;
@@ -38,7 +38,7 @@ const {
       .replace(/[\u0300-\u036f]/g, "")}
     class={cn(
       featured ? "bg-secondary rounded-xl shadow-accent" : "",
-      "flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-48 sectionWithImage p-12 alphanone"
+      "flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-48 sectionWithImage p-12 alphanone",
     )}
   >
     <Image
@@ -46,16 +46,16 @@ const {
       class={cn(
         featured ? "" : "shadow-green",
         reversed ? "md:order-first" : "md:order-last",
-        "rounded-lg w-full lg:w-[420px] lg:max-w-none object-cover alphanone"
+        "rounded-lg w-full lg:w-[420px] lg:max-w-none object-cover alphanone",
       )}
       src={import.meta.env.STRAPI_URL + image.data.attributes.url}
       width={image.data.attributes.width}
       height={image.data.attributes.height}
     />
-    <div class="flex flex-col gap-8 text items-center lg:items-start">
-      <Title className="text-center lg:text-left title alphanone">{title}</Title
+    <div class="text flex flex-col items-center gap-8 lg:items-start">
+      <Title className="title alphanone text-center lg:text-left">{title}</Title
       >
-      <Description className="text-center lg:text-left desc alphanone"
+      <Description className="desc alphanone text-center lg:text-left"
         >{description}</Description
       >
       {
@@ -77,9 +77,9 @@ const {
 </section-with-image>
 
 <script>
+  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -106,7 +106,7 @@ const {
                   end: "top center",
                 },
               }
-            : {}
+            : {},
         );
 
         tl.from(background, { y: "20%", autoAlpha: 0 })

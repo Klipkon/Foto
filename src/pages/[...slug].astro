@@ -1,8 +1,8 @@
 ---
-import fetchApi from "@/lib/strapi";
-import type { Page } from "@/interfaces/page";
 import BlockManager from "@/components/BlockManager.astro";
+import type { Page } from "@/interfaces/page";
 import MainLayout from "@/layouts/MainLayout.astro";
+import fetchApi from "@/lib/strapi";
 import QueryString from "qs";
 
 export async function getStaticPaths() {
