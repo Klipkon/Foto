@@ -1,3 +1,7 @@
+import { Menu } from "lucide-react";
+import type { Navigation } from "../interfaces/header.ts";
+import type { Button as IButton } from "../interfaces/page.ts";
+import { Button } from "./ui/button.tsx";
 import {
   Sheet,
   SheetClose,
@@ -7,17 +11,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet.tsx";
-import type { Button as IButton } from "../interfaces/page.ts";
-import type { Navigation } from "../interfaces/header.ts";
-import { Button } from "./ui/button.tsx";
-import { Menu } from "lucide-react";
 
 interface IMobileMenuProps {
   navigation: Navigation[];
   cta?: IButton;
+  toggleModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function MobileMenu({ navigation, cta }: IMobileMenuProps) {
+export default function MobileMenu({
+  navigation,
+  cta,
+  toggleModal,
+}: IMobileMenuProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -27,21 +32,26 @@ export default function MobileMenu({ navigation, cta }: IMobileMenuProps) {
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="h-full flex flex-col items-center justify-between"
+        className="flex h-full flex-col items-center justify-between"
       >
         <SheetHeader>
           <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
-        <nav className="flex flex-col items-center sm:items-start justify-center gap-8 py-6">
+        <nav className="flex flex-col items-center justify-center gap-8 py-6 sm:items-start">
           {navigation.map((element) => (
             <a key={element.id} className="text-2xl" href={element.href}>
               {element.title}
             </a>
           ))}
         </nav>
-        <SheetFooter className="flex-col items-center gap-4 w-full">
+        <SheetFooter className="w-full flex-col items-center gap-4">
           {cta ? (
-            <Button variant={cta.variant} fullwidth={true}>
+            <Button
+              fullwidth={true}
+              variant={cta.variant}
+              size={cta.size}
+              onClick={() => toggleModal((prev) => !prev)}
+            >
               {cta.content}
             </Button>
           ) : (

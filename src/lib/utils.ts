@@ -6,13 +6,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function isMobileDevice() {
+  const regex =
+    /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+  return regex.test(navigator.userAgent);
+}
+
 export function isMobileOrReducedMotion() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches)
     return true;
 
-  const regex =
-    /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-  return regex.test(navigator.userAgent);
+  return isMobileDevice();
+}
+
+export function turnVisible(element: HTMLElement) {
+  const elems = element.querySelectorAll(".alphanone");
+  elems.forEach((elem) => elem.classList.remove("alphanone"));
 }
 
 export function titleToSlug(title: string) {

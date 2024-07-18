@@ -1,11 +1,11 @@
 ---
-import "@/styles/globals.css";
 import type { ArticleData, CategoryData } from "@/interfaces/article.interface";
+import Portfolio from "@/layouts/Portfolio.astro";
 import fetchApi from "@/lib/strapi";
+import { filterArticles, titleToSlug } from "@/lib/utils";
+import "@/styles/globals.css";
 import type { GetStaticPathsOptions } from "astro";
 import QueryString from "qs";
-import { filterArticles, titleToSlug } from "@/lib/utils";
-import Portfolio from "@/layouts/Portfolio.astro";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const types = await fetchApi<CategoryData[]>({

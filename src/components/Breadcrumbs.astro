@@ -1,48 +1,54 @@
 ---
-import { Slash } from "lucide-react";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "./ui/breadcrumb";
 import { capitalizeFirstLetter, getBreadcrumbs } from "@/lib/utils";
+import { Slash } from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "./ui/breadcrumb";
 
 interface Props {
-    currentPath: string;
+  currentPath: string;
 }
 
-const {currentPath} = Astro.props;
-
-
+const { currentPath } = Astro.props;
 
 const breadcrumbs = getBreadcrumbs(currentPath);
 ---
 
 {
+  (
     <Breadcrumb>
-        <BreadcrumbList>
-            <BreadcrumbItem>
-                <BreadcrumbLink href="/">Strona Główna</BreadcrumbLink>
-            </BreadcrumbItem>
-            {
-                breadcrumbs.map((path, index) => {
-                        const entirePath = breadcrumbs.slice(0, index + 1).join("/");
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Strona Główna</BreadcrumbLink>
+        </BreadcrumbItem>
+        {breadcrumbs.map((path, index) => {
+          const entirePath = breadcrumbs.slice(0, index + 1).join("/");
 
-                        return <>
-                            <BreadcrumbSeparator>
-                                <Slash />
-                            </BreadcrumbSeparator>
-                            {
-                                index == breadcrumbs.length - 1 ? (
-                                    <BreadcrumbItem>
-                                        <BreadcrumbPage>{capitalizeFirstLetter(path)}</BreadcrumbPage>
-                                    </BreadcrumbItem>
-                                ) : (
-                                    <BreadcrumbItem>
-                                        <BreadcrumbLink href={"/" + entirePath}>{capitalizeFirstLetter(path)}</BreadcrumbLink>
-                                    </BreadcrumbItem>
-                                )
-                            }
-                        </>
-                    }
-                )
-            }
-        </BreadcrumbList>
+          return (
+            <>
+              <BreadcrumbSeparator>
+                <Slash />
+              </BreadcrumbSeparator>
+              {index == breadcrumbs.length - 1 ? (
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{capitalizeFirstLetter(path)}</BreadcrumbPage>
+                </BreadcrumbItem>
+              ) : (
+                <BreadcrumbItem>
+                  <BreadcrumbLink href={"/" + entirePath}>
+                    {capitalizeFirstLetter(path)}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              )}
+            </>
+          );
+        })}
+      </BreadcrumbList>
     </Breadcrumb>
+  )
 }

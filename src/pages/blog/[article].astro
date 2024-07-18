@@ -1,14 +1,9 @@
 ---
-import "@/styles/globals.css";
-import fetchApi from "@/lib/strapi";
-import ArticleLayout from "@/layouts/ArticleLayout.astro";
 import type { ArticleData } from "@/interfaces/article.interface";
-import Title from "@/components/Title.astro";
-import Prose from "@/components/Prose.astro";
-import { marked } from "marked";
-import DOMPurify from "isomorphic-dompurify";
+import ArticleLayout from "@/layouts/ArticleLayout.astro";
+import fetchApi from "@/lib/strapi";
 import { titleToSlug } from "@/lib/utils";
-import { Image } from "astro:assets";
+import "@/styles/globals.css";
 
 export async function getStaticPaths() {
   const articles = await fetchApi<ArticleData[]>({

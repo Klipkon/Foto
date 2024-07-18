@@ -1,11 +1,11 @@
 ---
-import fetchApi from "@/lib/strapi";
-import Description from "./Description.astro";
-import Title from "./Title.astro";
 import type { ArticleData } from "@/interfaces/article.interface";
+import type { Button as IButton } from "@/interfaces/page";
+import fetchApi from "@/lib/strapi";
 import QueryString from "qs";
 import BlogPostCard from "./BlogPostCard.astro";
-import type { Button as IButton } from "@/interfaces/page";
+import Description from "./Description.astro";
+import Title from "./Title.astro";
 import { Button } from "./ui/button";
 
 const articles = await fetchApi<ArticleData[]>({
@@ -46,15 +46,15 @@ const { title, description, button } = Astro.props;
 <blog-post-section>
   <div
     id="blogSection"
-    class="w-full flex flex-col items-center justify-center gap-8 md:gap-12 py-52"
+    class="flex w-full flex-col items-center justify-center gap-8 py-52 md:gap-12"
   >
-    <Title className="text-center blogSectionTitle alphanone">{title}</Title>
-    <Description className="text-center blogSectionDesc alphanone"
+    <Title className="blogSectionTitle alphanone text-center">{title}</Title>
+    <Description className="blogSectionDesc alphanone text-center"
       >{description}</Description
     >
     <div
       id="cardsContainer"
-      class="w-full sm:w-3/4 md:w-1/2 lg:w-full grid grid-cols-1 lg:grid-cols-3 gap-10 xl:gap-10"
+      class="grid w-full grid-cols-1 gap-10 sm:w-3/4 md:w-1/2 lg:w-full lg:grid-cols-3 xl:gap-10"
     >
       {
         articles.map((article, i) => (
@@ -86,9 +86,9 @@ const { title, description, button } = Astro.props;
 </blog-post-section>
 
 <script>
+  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { isMobileOrReducedMotion } from "@/lib/utils.ts";
 
   class BlogPostSection extends HTMLElement {
     constructor() {
@@ -131,12 +131,12 @@ const { title, description, button } = Astro.props;
               duration: 0.4,
               ease: "power4.in",
             },
-            0.5
+            0.5,
           )
           .from(
             servicesButton,
             { y: "20%", autoAlpha: 0, transformOrigin: "bottom left" },
-            0.6
+            0.6,
           )
           .to(servicesButton, {
             y: 0,
@@ -144,6 +144,8 @@ const { title, description, button } = Astro.props;
             duration: 0.1,
             ease: "power4.in",
           });
+      } else {
+        turnVisible(this);
       }
     }
   }

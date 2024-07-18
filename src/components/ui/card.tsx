@@ -19,21 +19,21 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, ...props }, ref) =>
     props.hover ? (
-      <div className="relative group h-full" ref={ref}>
+      <div className="group relative h-full" ref={ref}>
         <div
           className={cn(
             props.featured
-              ? "bg-secondary shadow-accent border-none"
+              ? "border-none bg-secondary shadow-accent"
               : "bg-card",
-            "rounded-xl border-1 border-black text-card-foreground px-[25px] py-[30px] lg:px-[30px] h-full -translate-x-[3px] -translate-y-[3px] group-hover:-translate-x-[6px] group-hover:-translate-y-[6px] transition-transform",
-            className
+            "h-full -translate-x-[3px] -translate-y-[3px] rounded-xl border-1 border-black px-[25px] py-[30px] text-card-foreground transition-transform group-hover:-translate-x-[6px] group-hover:-translate-y-[6px] lg:px-[30px]",
+            className,
           )}
           {...props}
         />
         <div
           className={cn(
             `${props.shadowcolor ?? "bg-black"}`,
-            "absolute top-0 left-0 w-full h-full z-[-1] rounded-xl"
+            "absolute left-0 top-0 z-[-1] h-full w-full rounded-xl",
           )}
         ></div>
       </div>
@@ -41,13 +41,13 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          props.featured ? "bg-secondary shadow-accent border-none" : "bg-card",
-          "rounded-xl border-1 border-black text-card-foreground px-[25px] py-[30px] lg:px-[30px] h-full",
-          className
+          props.featured ? "border-none bg-secondary shadow-accent" : "bg-card",
+          "h-full rounded-xl border-1 border-black px-[25px] py-[30px] text-card-foreground lg:px-[30px]",
+          className,
         )}
         {...props}
       />
-    )
+    ),
 );
 Card.displayName = "Card";
 
@@ -70,8 +70,8 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "text-2xl lg:text-[32px] font-semibold lg:leading-10",
-      className
+      "text-2xl font-semibold lg:text-[32px] lg:leading-10",
+      className,
     )}
     {...props}
   />
@@ -84,7 +84,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm lg:text-base text-card-foreground", className)}
+    className={cn("text-sm text-card-foreground lg:text-base", className)}
     {...props}
   />
 ));
@@ -116,9 +116,9 @@ CardFooter.displayName = "CardFooter";
 
 export {
   Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
   CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 };

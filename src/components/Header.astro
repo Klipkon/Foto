@@ -1,6 +1,6 @@
 ---
+import HeaderCta from "@/components/HeaderCta";
 import { Button } from "@/components/ui/button";
-import MobileMenu from "./MobileMenu";
 import type { Header } from "@/interfaces/header";
 import fetchApi from "@/lib/strapi";
 import { Image } from "astro:assets";
@@ -15,10 +15,10 @@ const { logo, navigation, cta } = header.attributes;
 ---
 
 <div
-  class="container bg-background sticky top-0 z-40"
+  class="container sticky top-0 z-40 bg-background"
   transition:animate="none"
 >
-  <header id="header" class="w-full flex items-center justify-between h-20">
+  <header id="header" class="flex h-20 w-full items-center justify-between">
     <a href="/">
       <Image
         src={import.meta.env.PUBLIC_STRAPI_URL + logo.data.attributes.url}
@@ -28,7 +28,7 @@ const { logo, navigation, cta } = header.attributes;
         loading="eager"
       />
     </a>
-    <nav class="hidden lg:flex items-center justify-center gap-5">
+    <nav class="hidden items-center justify-center gap-5 lg:flex">
       {
         navigation.map((element) => (
           <a class="hover:underline" href={element.href}>
@@ -37,21 +37,6 @@ const { logo, navigation, cta } = header.attributes;
         ))
       }
     </nav>
-    {
-      cta ? (
-        <a href={cta.href}>
-          <Button
-            variant={cta.variant}
-            size={cta.size}
-            className="hidden lg:flex"
-          >
-            {cta.content}
-          </Button>
-        </a>
-      ) : (
-        ""
-      )
-    }
-    <MobileMenu navigation={navigation} cta={cta} client:load />
+    <HeaderCta client:load navigation={navigation} cta={cta} />
   </header>
 </div>

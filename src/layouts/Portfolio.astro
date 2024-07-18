@@ -1,15 +1,15 @@
 ---
-import "@/styles/globals.css";
-import type { ArticleData, CategoryData } from "@/interfaces/article.interface";
+import BlogPostCard from "@/components/BlogPostCard.astro";
+import Pagination from "@/components/Pagination.astro";
 import TitleWithDescription from "@/components/TitleWithDescription.astro";
 import { Button } from "@/components/ui/button";
-import MainLayout from "@/layouts/MainLayout.astro";
-import Pagination from "@/components/Pagination.astro";
-import { titleToSlug } from "@/lib/utils";
-import fetchApi from "@/lib/strapi";
-import QueryString from "qs";
+import type { ArticleData, CategoryData } from "@/interfaces/article.interface";
 import type { Page } from "@/interfaces/page";
-import BlogPostCard from "@/components/BlogPostCard.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+import fetchApi from "@/lib/strapi";
+import { titleToSlug } from "@/lib/utils";
+import "@/styles/globals.css";
+import QueryString from "qs";
 
 const portfolioPage = await fetchApi<Page[]>({
   endpoint: "pages",
@@ -70,9 +70,9 @@ function chooseColor(i: number) {
 
 <MainLayout seo={portfolioPage[0].attributes.seo}>
   <div class="flex flex-col items-start justify-center pb-14">
-    <div class="flex flex-col lg:flex-row items-start justify-between gap-6">
+    <div class="flex flex-col items-start justify-between gap-6 lg:flex-row">
       <TitleWithDescription title={title} description={description} />
-      <div class="w-full lg:w-1/2 flex items-center justify-end"></div>
+      <div class="flex w-full items-center justify-end lg:w-1/2"></div>
     </div>
   </div>
   <div class="flex flex-wrap items-center justify-start gap-5">
@@ -98,7 +98,7 @@ function chooseColor(i: number) {
   </div>
   <div
     id="cardsContainer"
-    class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-10 pt-14"
+    class="grid w-full grid-cols-1 gap-10 pt-14 md:grid-cols-2 xl:grid-cols-3 xl:gap-10"
   >
     {
       articles.map((article, i) => (
