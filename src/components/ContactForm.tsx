@@ -92,7 +92,7 @@ export function ContactForm({ fields, button, fullWidth }: Props) {
         !fullWidth ? "md:w-2/3 xl:w-1/2" : "",
         "title form w-full p-[35px] lg:px-[35px]",
       )}
-      featured
+      featured={true}
       id="contactForm"
     >
       <Formik
