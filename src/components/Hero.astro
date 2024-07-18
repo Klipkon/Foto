@@ -1,12 +1,12 @@
 ---
+import { Button } from "@/components/ui/button.tsx";
+import DOMPurify from "isomorphic-dompurify";
 import type {
   Button as IButton,
   Image as IImage,
   Video,
 } from "../interfaces/page";
 import Title from "./Title.astro";
-import { Button } from "@/components/ui/button.tsx";
-import DOMPurify from "isomorphic-dompurify";
 
 interface Props {
   image: IImage;
@@ -26,11 +26,11 @@ const { video, buttons, title } = Astro.props;
   >
     <Title
       h1
-      className="text-[32px] lg:text-[40px] font-bold lg:leading-[3rem] text-center max-w-[426px] flex flex-col items-center justify-center alphanone"
+      className="alphanone flex max-w-[426px] flex-col items-center justify-center text-center text-[32px] font-bold lg:text-[40px] lg:leading-[3rem]"
       set:html={DOMPurify.sanitize(title)}
     />
     <div
-      class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 buttons alphanone"
+      class="buttons alphanone flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-8"
     >
       {
         buttons.map((button) => (
@@ -44,7 +44,7 @@ const { video, buttons, title } = Astro.props;
     </div>
     <div class="rounded-md sm:rounded-xl">
       <video
-        class="w-full max-w-[1130px] aspect-video h-auto rounded-md sm:rounded-xl shadow-accent alphanone"
+        class="alphanone aspect-video h-auto w-full max-w-[1130px] rounded-md shadow-accent sm:rounded-xl"
         autoplay
         muted
         loop
@@ -54,8 +54,8 @@ const { video, buttons, title } = Astro.props;
 </hero-section>
 
 <script>
-  import gsap from "gsap";
   import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
+  import gsap from "gsap";
 
   class HeroSection extends HTMLElement {
     constructor() {

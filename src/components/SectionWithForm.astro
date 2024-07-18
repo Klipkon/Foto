@@ -1,9 +1,9 @@
 ---
-import Title from "./Title.astro";
-import Description from "./Description.astro";
-import type { Field, Button as IButton } from "@/interfaces/page";
 import Form from "@/components/ContactForm";
+import type { Field, Button as IButton } from "@/interfaces/page";
 import { Home, Phone } from "lucide-react";
+import Description from "./Description.astro";
+import Title from "./Title.astro";
 
 interface Props {
   title: string;
@@ -21,17 +21,22 @@ const { title, description, fields, id, address, phone, button } = Astro.props;
 <form-section>
   <div
     id={"sectionWithForm" + id}
-    class="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-12 sectionWithForm alphanone"
+    class="sectionWithForm alphanone flex flex-col items-center justify-between gap-12 py-12 lg:flex-row lg:gap-24"
   >
-    <div class="flex flex-col gap-4 text w-full lg:w-1/2">
-      <Title className="text-center lg:text-left title alphanone">{title}</Title
+    <div
+      class="text flex w-full flex-col items-center justify-center gap-4 lg:w-1/2 lg:items-start"
+    >
+      <Title className="title alphanone text-center lg:text-left">{title}</Title
       >
-      <Description className="text-center lg:text-left desc alphanone"
+      <Description className="desc alphanone text-center lg:text-left"
         >{description}</Description
       >
       {
         button && phone ? (
-          <div class="flex flex-col gap-4 pt-6 alphanone" id="contactInfo">
+          <div
+            class="alphanone flex flex-col items-center justify-center gap-3 pt-6 lg:items-start"
+            id="contactInfo"
+          >
             <div class="flex justify-start gap-4">
               <Home size={24} />
               <p class="text-lg">{address}</p>
@@ -49,9 +54,9 @@ const { title, description, fields, id, address, phone, button } = Astro.props;
 </form-section>
 
 <script>
+  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
 
   class FormSection extends HTMLElement {
     constructor() {
