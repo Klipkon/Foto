@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { Card as ICard } from "@/interfaces/page";
+import { titleToSlug } from "@/lib/utils";
 import DOMPurify from "isomorphic-dompurify";
 import Title from "./Title.astro";
 
@@ -19,7 +20,7 @@ const { title, table, options } = Astro.props;
 ---
 
 <price-list>
-  <div class="py-12">
+  <div class="py-12" id={titleToSlug(title)}>
     <div class="priceList flex flex-col items-start justify-center pb-4">
       <div
         class="flex w-full flex-col items-center justify-center border-b-1 border-black py-5"

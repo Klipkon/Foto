@@ -1,7 +1,7 @@
 ---
 import { Button } from "@/components/ui/button";
 import type { Button as IButton, Image as IImage } from "@/interfaces/page";
-import { cn } from "@/lib/utils";
+import { cn, titleToSlug } from "@/lib/utils";
 import { Image } from "astro:assets";
 import Description from "./Description.astro";
 import Title from "./Title.astro";
@@ -31,11 +31,7 @@ const {
 
 <section-with-image data-animate-on-scroll={animateOnScroll}>
   <div
-    id={title
-      .toLowerCase()
-      .replace(/\s/g, "-")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")}
+    id={titleToSlug(title)}
     class={cn(
       featured ? "bg-secondary rounded-xl shadow-accent" : "",
       "flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 py-48 sectionWithImage p-12 alphanone"
