@@ -1,6 +1,6 @@
 ---
-import BlogPostCard from "@/components/BlogPostCard.astro";
 import Pagination from "@/components/Pagination.astro";
+import PortfolioModal from "@/components/PortfolioModal";
 import TitleWithDescription from "@/components/TitleWithDescription.astro";
 import { Button } from "@/components/ui/button";
 import type { ArticleData, CategoryData } from "@/interfaces/article.interface";
@@ -51,21 +51,6 @@ const typeUrl = () => {
   const params = Astro.params;
   return "type" in params ? params.type : "";
 };
-
-function chooseColor(i: number) {
-  const roundedDvision = Math.floor(i / 3);
-
-  const idxInRow = i - roundedDvision * 3;
-
-  switch (idxInRow) {
-    case 0:
-      return "bg-cyan";
-    case 1:
-      return "bg-green";
-    case 2:
-      return "bg-accent";
-  }
-}
 ---
 
 <MainLayout seo={portfolioPage[0].attributes.seo}>
@@ -96,23 +81,6 @@ function chooseColor(i: number) {
       })
     }
   </div>
-  <div
-    id="cardsContainer"
-    class="grid w-full grid-cols-1 gap-10 pt-14 md:grid-cols-2 xl:grid-cols-3 xl:gap-10"
-  >
-    {
-      articles.map((article, i) => (
-        <BlogPostCard
-          isPortfolio={true}
-          shadowColor={chooseColor(i)}
-          imageAltTxt={article.attributes.image.data.attributes.alternativeText}
-          title={article.attributes.title}
-          imageUrl={article.attributes.image.data.attributes.url}
-          imageWidth={article.attributes.image.data.attributes.width}
-          imageHeight={article.attributes.image.data.attributes.height}
-        />
-      ))
-    }
-  </div>
+  <PortfolioModal data={articles} client:only="react" />
   <Pagination previous={previousUrl} next={nextUrl} currentPage={currentPage} />
 </MainLayout>

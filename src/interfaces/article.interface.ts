@@ -21,6 +21,11 @@ export interface DatumAttributes {
   publishedAt: Date;
   slug: null;
   image: Image;
+  images?: {
+    data: Data[];
+  };
+  thumbnail?: Image;
+  url?: string;
   seo: Seo;
 }
 

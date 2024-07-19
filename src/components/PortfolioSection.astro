@@ -1,5 +1,5 @@
 ---
-import BlogPostCard from "@/components/BlogPostCard.astro";
+import PortfolioModal from "@/components/PortfolioModal";
 import Title from "@/components/Title.astro";
 import { CardContent } from "@/components/ui/card";
 import type { ArticleData } from "@/interfaces/article.interface";
@@ -13,7 +13,7 @@ const projects = await fetchApi<ArticleData[]>({
   endpoint: "projects",
   wrappedByKey: "data",
   query: QueryString.stringify({
-    populate: { category: true, image: true },
+    populate: { category: true, thumbnail: true },
     pagination: {
       limit: 2,
     },
@@ -45,26 +45,7 @@ const { title, description, button } = Astro.props;
           >{description}</Description
         >
       </div>
-      <div
-        class="alphanone grid grid-cols-1 grid-rows-2 gap-12 py-12 lg:grid-cols-2 lg:grid-rows-1"
-        id="portfolioCards"
-      >
-        {
-          projects.map((project, i) => (
-            <BlogPostCard
-              isPortfolio={true}
-              shadowColor={i == 0 ? "bg-cyan" : "bg-green"}
-              imageUrl={project.attributes.image.data.attributes.url}
-              imageAltTxt={
-                project.attributes.image.data.attributes.alternativeText
-              }
-              imageHeight={project.attributes.image.data.attributes.width}
-              imageWidth={project.attributes.image.data.attributes.height}
-              title={project.attributes.title}
-            />
-          ))
-        }
-      </div>
+      <PortfolioModal data={projects} twoColumn={true} client:only="react" />
       <div class="flex items-center justify-center">
         <a href={button.href}>
           <Button
@@ -100,7 +81,7 @@ const { title, description, button } = Astro.props;
         let tl = gsap.timeline({
           scrollTrigger: {
             trigger: this,
-            start: "top center",
+            start: "top center+=25%",
             end: "top center",
           },
         });

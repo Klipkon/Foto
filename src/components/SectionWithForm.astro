@@ -20,7 +20,7 @@ const { title, description, fields, id, address, phone, button } = Astro.props;
 
 <form-section>
   <div
-    id={"sectionWithForm" + id}
+    id={"contact" + id}
     class="sectionWithForm alphanone flex flex-col items-center justify-between gap-12 py-12 lg:flex-row lg:gap-24"
   >
     <div
@@ -73,7 +73,7 @@ const { title, description, fields, id, address, phone, button } = Astro.props;
         let tl = gsap.timeline({
           scrollTrigger: {
             trigger: this,
-            start: "top center",
+            start: "top center+=25%",
             end: "top center",
           },
         });
