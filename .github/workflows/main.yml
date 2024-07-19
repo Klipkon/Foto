@@ -13,6 +13,7 @@ concurrency:
 jobs:
   build:
     runs-on: self-hosted
+    environment: production
     env:
       STRAPI_URL: ${{ secrets.STRAPI_URL }}
       PUBLIC_STRAPI_URL: ${{ secrets.PUBLIC_STRAPI_URL }}
