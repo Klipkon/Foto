@@ -13,7 +13,7 @@ const projects = await fetchApi<ArticleData[]>({
   endpoint: "projects",
   wrappedByKey: "data",
   query: QueryString.stringify({
-    populate: { category: true, thumbnail: true },
+    populate: { category: true, thumbnail: true, images: true },
     pagination: {
       limit: 2,
     },
