@@ -51,8 +51,6 @@ const typeUrl = () => {
   const params = Astro.params;
   return "type" in params ? params.type : "";
 };
-
-console.log(articles);
 ---
 
 <MainLayout seo={portfolioPage[0].attributes.seo}>
