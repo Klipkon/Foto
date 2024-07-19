@@ -62,8 +62,8 @@ const { title, description, button } = Astro.props;
 
 <script>
   import { isMobileOrReducedMotion, turnVisible } from "@/lib/utils.ts";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
 
   class PortfolioSection extends HTMLElement {
     constructor() {
@@ -81,7 +81,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
         let tl = gsap.timeline({
           scrollTrigger: {
             trigger: this,
-            start: "top center",
+            start: "top center+=25%",
             end: "top center",
           },
         });

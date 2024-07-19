@@ -49,7 +49,7 @@ const { title, description, cards, buttons } = Astro.props;
                   card.highlighted
                     ? "max-h-[334px]"
                     : "max-h-[245px] w-full xl:w-auto xl:max-w-[300px]",
-                  "hidden rounded-md object-cover md:block",
+                  "hidden rounded-md object-cover md:block"
                 )}
                 src={
                   import.meta.env.STRAPI_URL + card.image.data.attributes.url
@@ -111,7 +111,7 @@ const { title, description, cards, buttons } = Astro.props;
         let tl = gsap.timeline({
           scrollTrigger: {
             trigger: this,
-            start: "top center",
+            start: "top center+=25%",
             end: "top center",
           },
         });
@@ -135,7 +135,7 @@ const { title, description, cards, buttons } = Astro.props;
           .from(
             firsstCard,
             { y: "20%", autoAlpha: 0, transformOrigin: "bottom left" },
-            0.2,
+            0.2
           )
           .to(firsstCard, {
             y: 0,
@@ -145,7 +145,7 @@ const { title, description, cards, buttons } = Astro.props;
           .from(
             thirdCard,
             { y: "20%", autoAlpha: 0, transformOrigin: "bottom left" },
-            0.4,
+            0.4
           )
           .to(thirdCard, {
             y: 0,
@@ -155,7 +155,7 @@ const { title, description, cards, buttons } = Astro.props;
           .from(
             servicesButton,
             { y: "20%", autoAlpha: 0, transformOrigin: "bottom left" },
-            0.6,
+            0.6
           )
           .to(servicesButton, {
             y: 0,
