@@ -19,7 +19,8 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     query: QueryString.stringify({
       populate: {
         categories: true,
-        image: true,
+        thumbnail: true,
+        images: true,
       },
       pagination: {
         limit: 100,

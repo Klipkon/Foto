@@ -36,7 +36,7 @@ const formButton: IButton = {
 export default function FormDialog({ isOpen, toggleModal }: Props) {
   return (
     <Dialog onOpenChange={toggleModal} open={isOpen}>
-      <DialogContent className="h-dvh w-full gap-6 overflow-y-auto rounded-none p-2 py-5 sm:h-auto sm:gap-12 sm:rounded-md md:w-fit md:p-10">
+      <DialogContent className="h-dvh w-full gap-6 overflow-y-auto rounded-none p-2 py-5 shadow-green sm:h-auto sm:gap-12 sm:rounded-md md:w-fit md:p-10">
         <DialogHeader className="gap-2">
           <DialogTitle className="text-2xl">Formularz Kontaktowy</DialogTitle>
           <DialogDescription className="text-black">
